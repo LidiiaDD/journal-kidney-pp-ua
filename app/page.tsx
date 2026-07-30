@@ -1,54 +1,183 @@
+const directions = [
+  ["01", "Клінічна нефрологія", "Діагностика, профілактика й лікування гострих та хронічних захворювань нирок."],
+  ["02", "Діаліз і НЗТ", "Гемодіаліз, перитонеальний діаліз, безперервні методики та якість лікування."],
+  ["03", "Трансплантація", "Імунологія, ведення реципієнтів, ускладнення та довгострокові результати."],
+  ["04", "Біомаркери", "Трансляційні дослідження, генетика, візуалізація та нові діагностичні підходи."],
+];
+
+const stages = [
+  ["01", "Первинна перевірка", "Відповідність тематиці, структурі рукопису та етичним вимогам."],
+  ["02", "Фахове рецензування", "Незалежна оцінка методології, новизни й достовірності результатів."],
+  ["03", "Редакційне рішення", "Аргументоване рішення, рекомендації автору та можливість доопрацювання."],
+];
+
+const Arrow = () => <span aria-hidden="true">↗</span>;
+
 export default function Home() {
   return (
-    <main
-      style={{
-        maxWidth: "1000px",
-        margin: "0 auto",
-        padding: "40px",
-        fontFamily: "Arial, sans-serif",
-      }}
-    >
-      <h1 style={{ color: "#0f4c81", fontSize: "42px" }}>
-        Journal of Renal Science
-      </h1>
+    <main>
+      <div className="topline">
+        <div className="wrap">
+          <span>Independent · Peer-reviewed · Open access</span>
+          <a href="mailto:editor@kidney.pp.ua">editor@kidney.pp.ua <Arrow /></a>
+        </div>
+      </div>
 
-      <p style={{ fontSize: "20px" }}>
-        Український науковий журнал з нефрології, діалізу та трансплантації нирки.
-      </p>
+      <header className="header">
+        <div className="wrap header-inner">
+          <a href="#top" className="brand" aria-label="Journal of Renal Science — на головну">
+            <span className="logo" aria-hidden="true"><b>J</b><b>R</b><b>S</b></span>
+            <span><strong>Journal of Renal Science</strong><small>Ukrainian Journal of Nephrology</small></span>
+          </a>
+          <nav aria-label="Головна навігація">
+            <a href="#about">Про журнал</a>
+            <a href="#scope">Тематика</a>
+            <a href="#authors">Авторам</a>
+            <a href="#board">Редакція</a>
+          </nav>
+          <a className="submit" href="mailto:editor@kidney.pp.ua?subject=Подання рукопису до Journal of Renal Science">
+            Подати рукопис
+          </a>
+        </div>
+      </header>
 
-      <hr />
+      <section className="hero" id="top">
+        <div className="wrap hero-grid">
+          <div className="hero-copy">
+            <p className="eyebrow"><i /> Науковий журнал нового покоління</p>
+            <h1>Renal science.<br /><em>Clinical impact.</em></h1>
+            <p className="lead">
+              Міжнародний рецензований журнал про дослідження, що змінюють
+              розуміння хвороб нирок і щоденну клінічну практику.
+            </p>
+            <div className="hero-actions">
+              <a className="primary" href="#authors">Інформація для авторів <Arrow /></a>
+              <a className="quiet-link" href="#about">Про журнал <span>↓</span></a>
+            </div>
+            <div className="values">
+              <span>Незалежне рецензування</span><span>Відкритий доступ</span>
+              <span>Доказова медицина</span><span>Публікаційна етика</span>
+            </div>
+          </div>
 
-      <h2>Про журнал</h2>
+          <div className="cover-stage">
+            <div className="orbit large" /><div className="orbit small" />
+            <article className="cover">
+              <div className="cover-meta"><span>Journal of</span><span>2026</span></div>
+              <div className="cover-name"><strong>RENAL</strong><strong>SCIENCE</strong></div>
+              <div className="renal-art" aria-hidden="true"><i /><i /></div>
+              <div className="cover-meta"><span>Nephrology · Dialysis</span><span>Transplantation</span></div>
+            </article>
+            <div className="issue-status"><i /><span><small>Перший випуск</small><strong>У підготовці</strong></span></div>
+          </div>
+        </div>
+      </section>
 
-      <p>
-        Journal of Renal Science — міжнародний рецензований науковий журнал,
-        присвячений сучасним дослідженням у галузі нефрології, діалізу,
-        трансплантації нирки та суміжних дисциплін.
-      </p>
+      <div className="ticker">
+        <span>Nephrology</span><i /><span>Dialysis</span><i /><span>Transplantation</span>
+        <i /><span>Renal biomarkers</span><i /><span>Clinical research</span>
+      </div>
 
-      <h2>Поточний випуск</h2>
+      <section className="section about" id="about">
+        <div className="wrap split">
+          <p className="section-tag"><span>01</span> Про журнал</p>
+          <div>
+            <h2 className="statement">
+              Простір, де якісна наука стає зрозумілою, видимою і корисною для
+              нефрологічної спільноти.
+            </h2>
+            <div className="two-columns">
+              <p>
+                Journal of Renal Science публікує оригінальні дослідження,
+                систематичні огляди, клінічні рекомендації, короткі повідомлення
+                та клінічні випадки у сфері нефрології й суміжних дисциплін.
+              </p>
+              <p>
+                Редакційний процес ґрунтується на науковій доброчесності,
+                прозорості рішень та повазі до авторів, рецензентів і читачів.
+                Матеріали журналу поширюються у відкритому доступі.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      <p>Випуск буде додано найближчим часом.</p>
+      <section className="section scope" id="scope">
+        <div className="wrap">
+          <div className="scope-heading">
+            <div><p className="eyebrow pale"><i /> Сфера наукових інтересів</p>
+              <h2>Від фундаментальних механізмів — до клінічного рішення.</h2>
+            </div>
+            <p>Журнал об’єднує дослідників, клініцистів і фахівців суміжних напрямів навколо сучасної науки про нирки.</p>
+          </div>
+          <div className="direction-grid">
+            {directions.map(([number, title, text]) => (
+              <article key={number}><span>{number}</span><b>↗</b><h3>{title}</h3><p>{text}</p></article>
+            ))}
+          </div>
+        </div>
+      </section>
 
-      <h2>Для авторів</h2>
+      <section className="section authors" id="authors">
+        <div className="wrap">
+          <div className="split">
+            <p className="section-tag"><span>02</span> Для авторів</p>
+            <div><h2>Ясні вимоги.<br />Фахове рецензування.</h2>
+              <p className="intro">Ми прагнемо зробити шлях рукопису передбачуваним і професійним на кожному етапі.</p>
+            </div>
+          </div>
+          <div className="stage-grid">
+            {stages.map(([number, title, text]) => (
+              <article key={number}><span>{number}</span><h3>{title}</h3><p>{text}</p></article>
+            ))}
+          </div>
+          <div className="resources">
+            <div><small>Перед поданням</small><h3>Підготуйте рукопис відповідно до стандартів журналу</h3></div>
+            <div>
+              <a href="mailto:editor@kidney.pp.ua?subject=Правила оформлення рукопису">Правила оформлення <Arrow /></a>
+              <a href="mailto:editor@kidney.pp.ua?subject=Етичні вимоги журналу">Етичні вимоги <Arrow /></a>
+              <a href="mailto:editor@kidney.pp.ua?subject=Процедура рецензування">Процедура рецензування <Arrow /></a>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      <ul>
-        <li>Правила оформлення статей</li>
-        <li>Етичні вимоги</li>
-        <li>Процедура рецензування</li>
-      </ul>
+      <section className="section board" id="board">
+        <div className="wrap split">
+          <p className="section-tag"><span>03</span> Редакційна колегія</p>
+          <div>
+            <p className="eyebrow"><i /> Editorial board</p>
+            <h2>Наукова незалежність починається з відповідальної редакції.</h2>
+            <p className="board-lead">
+              Тут буде представлено головного редактора, заступників, наукових
+              редакторів і міжнародних радників із зазначенням афіліацій та ORCID.
+            </p>
+            <div className="board-placeholder">
+              <div>JRS</div>
+              <span><small>Склад готується до публікації</small>
+                <p>Персональний склад редакційної колегії буде додано після завершення організаційного формування журналу.</p>
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      <h2>Редакційна колегія</h2>
+      <section className="contact">
+        <div className="wrap contact-grid">
+          <div><p className="eyebrow pale"><i /> Редакція журналу</p><h2>Поговорімо про вашу роботу.</h2></div>
+          <div><p>З питань подання рукописів, рецензування та співпраці звертайтеся до редакції.</p>
+            <a href="mailto:editor@kidney.pp.ua">editor@kidney.pp.ua <Arrow /></a>
+          </div>
+        </div>
+      </section>
 
-      <p>Інформація буде опублікована найближчим часом.</p>
-
-      <h2>Контакти</h2>
-
-      <p>Email: editor@kidney.pp.ua</p>
-
-      <p>
-        © {new Date().getFullYear()} Journal of Renal Science
-      </p>
+      <footer>
+        <div className="wrap footer-top">
+          <div className="brand footer-brand"><span className="logo"><b>J</b><b>R</b><b>S</b></span><span><strong>Journal of Renal Science</strong></span></div>
+          <nav><a href="#about">Про журнал</a><a href="#scope">Тематика</a><a href="#authors">Для авторів</a><a href="#board">Редакція</a></nav>
+        </div>
+        <div className="wrap footer-bottom"><span>© {new Date().getFullYear()} Journal of Renal Science</span><span>Nephrology · Dialysis · Transplantation</span></div>
+      </footer>
     </main>
   );
 }
