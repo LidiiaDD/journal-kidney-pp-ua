@@ -47,10 +47,15 @@ create policy "jrs_see_published_or_editor"
 create policy "jrs_insert_editor_only"
   on public.jrs_articles for insert to authenticated
   with check (exists (select 1 from public.jrs_editors e where e.user_id = (select auth.uid())));
-create policy "jrs_update_editor_only"
+create policy "jrs_update_draft_only"
   on public.jrs_articles for update to authenticated
-  using (exists (select 1 from public.jrs_editors e where e.user_id = (select auth.uid())))
-  with check (exists (select 1 from public.jrs_editors e where e.user_id = (select auth.uid())));
+  using (
+    status = 'draft'
+    and exists (select 1 from public.jrs_editors e where e.user_id = (select auth.uid()))
+  )
+  with check (
+    exists (select 1 from public.jrs_editors e where e.user_id = (select auth.uid()))
+  );
 create policy "jrs_delete_editor_only"
   on public.jrs_articles for delete to authenticated
   using (exists (select 1 from public.jrs_editors e where e.user_id = (select auth.uid())));
@@ -80,11 +85,15 @@ create policy "jrs_storage_upload_editor_only"
     and split_part(name, '/', 1) = (select auth.uid())::text
     and exists (select 1 from public.jrs_editors e where e.user_id = (select auth.uid()))
   );
-create policy "jrs_storage_delete_editor_only"
+create policy "jrs_storage_delete_unpublished_only"
   on storage.objects for delete to authenticated
   using (
     bucket_id = 'jrs-pdfs'
     and exists (select 1 from public.jrs_editors e where e.user_id = (select auth.uid()))
+    and not exists (
+      select 1 from public.jrs_articles a
+      where a.pdf_path = name and a.status = 'published'
+    )
   );
 
 -- AFTER CREATING EXACTLY ONE editor account in Authentication > Users:
