@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Journal of Renal Science",
   description:
-    "Міжнародний рецензований журнал з нефрології, діалізу, трансплантації нирки та клінічних досліджень.",
+    "Незалежний науково-інформаційний онлайн-журнал з нефрології, діалізу, трансплантації нирки та клінічних досліджень.",
   keywords: ["nephrology", "renal science", "dialysis", "kidney transplantation", "нефрологія"],
   openGraph: {
     title: "Journal of Renal Science",
