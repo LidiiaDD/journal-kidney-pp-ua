@@ -25,7 +25,7 @@ create table if not exists public.jrs_articles (
   keywords text[] not null default '{}'::text[],
   status text not null default 'draft' check (status in ('draft','published')),
   published_at date,
-  pdf_path text,
+  pdf_path text check (pdf_path is null or pdf_path ~ '^[0-9a-f-]{36}/[0-9a-f-]{36}\\.pdf
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   constraint jrs_published_has_date check (status <> 'published' or published_at is not null)
@@ -64,19 +64,86 @@ insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_typ
 values ('jrs-pdfs','jrs-pdfs',false,3670016,array['application/pdf'])
 on conflict (id) do nothing;
 
--- The bucket is PRIVATE; published articles are readable only through
--- authorized Storage API calls passing RLS checks.
-create policy "jrs_storage_read_published_or_editor"
-  on storage.objects for select to anon, authenticated
+-- Storage is PRIVATE. Only authenticated editors can read files directly.
+-- Public PDF requests go through a server route after checking publication status.
+create policy "jrs_storage_read_editor_only"
+  on storage.objects for select to authenticated
   using (
     bucket_id = 'jrs-pdfs'
-    and (
-      exists (
-        select 1 from public.jrs_articles a
-        where a.pdf_path = name and a.status = 'published'
-      )
-      or exists (select 1 from public.jrs_editors e where e.user_id = (select auth.uid()))
+    and exists (select 1 from public.jrs_editors e where e.user_id = (select auth.uid()))
+  );
+create policy "jrs_storage_upload_editor_only"
+  on storage.objects for insert to authenticated
+  with check (
+    bucket_id = 'jrs-pdfs'
+    and split_part(name, '/', 1) = (select auth.uid())::text
+    and exists (select 1 from public.jrs_editors e where e.user_id = (select auth.uid()))
+  );
+create policy "jrs_storage_delete_unpublished_only"
+  on storage.objects for delete to authenticated
+  using (
+    bucket_id = 'jrs-pdfs'
+    and exists (select 1 from public.jrs_editors e where e.user_id = (select auth.uid()))
+    and not exists (
+      select 1 from public.jrs_articles a
+      where a.pdf_path = name and a.status = 'published'
     )
+  );
+
+-- AFTER CREATING EXACTLY ONE editor account in Authentication > Users:
+-- replace the placeholder below with THAT account's real UUID and execute it.
+--
+-- insert into public.jrs_editors (user_id)
+-- values ('00000000-0000-0000-0000-000000000000');
+--
+-- Never put this SQL into public app code with a real UUID and do not grant
+-- editor rights based on email or user-editable metadata.
+),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  constraint jrs_published_has_date check (status <> 'published' or published_at is not null)
+);
+create index if not exists jrs_articles_status_published_idx
+  on public.jrs_articles (status, published_at desc);
+alter table public.jrs_articles enable row level security;
+
+revoke all on public.jrs_articles from anon, authenticated;
+grant select on public.jrs_articles to anon, authenticated;
+grant insert, update, delete on public.jrs_articles to authenticated;
+
+create policy "jrs_see_published_or_editor"
+  on public.jrs_articles for select to anon, authenticated
+  using (
+    status = 'published'
+    or exists (select 1 from public.jrs_editors e where e.user_id = (select auth.uid()))
+  );
+create policy "jrs_insert_editor_only"
+  on public.jrs_articles for insert to authenticated
+  with check (exists (select 1 from public.jrs_editors e where e.user_id = (select auth.uid())));
+create policy "jrs_update_draft_only"
+  on public.jrs_articles for update to authenticated
+  using (
+    status = 'draft'
+    and exists (select 1 from public.jrs_editors e where e.user_id = (select auth.uid()))
+  )
+  with check (
+    exists (select 1 from public.jrs_editors e where e.user_id = (select auth.uid()))
+  );
+create policy "jrs_delete_editor_only"
+  on public.jrs_articles for delete to authenticated
+  using (exists (select 1 from public.jrs_editors e where e.user_id = (select auth.uid())));
+
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('jrs-pdfs','jrs-pdfs',false,3670016,array['application/pdf'])
+on conflict (id) do nothing;
+
+-- Storage is PRIVATE. Only authenticated editors can read files directly.
+-- Public PDF requests go through a server route after checking publication status.
+create policy "jrs_storage_read_editor_only"
+  on storage.objects for select to authenticated
+  using (
+    bucket_id = 'jrs-pdfs'
+    and exists (select 1 from public.jrs_editors e where e.user_id = (select auth.uid()))
   );
 create policy "jrs_storage_upload_editor_only"
   on storage.objects for insert to authenticated
