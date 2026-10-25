@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { findPublicArticle } from "@/app/lib/jrs-catalogue";
 import JournalInfoLayout from "@/app/components/JournalInfoLayout";
 import {
-  findPublication,
   formatPublicationDate,
-  listPublications,
   publicationTypeLabels,
 } from "@/app/lib/publications";
 
@@ -12,13 +11,11 @@ type Props = {
   params: Promise<{ slug: string }>;
 };
 
-export function generateStaticParams() {
-  return listPublications().map((item) => ({ slug: item.slug }));
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const publication = findPublication(slug);
+  const publication = await findPublicArticle(slug);
   if (!publication) return { title: "Публікацію не знайдено | JRS" };
 
   return {
@@ -36,7 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function PublicationPage({ params }: Props) {
   const { slug } = await params;
-  const item = findPublication(slug);
+  const item = await findPublicArticle(slug);
   if (!item) notFound();
 
   const sections = [
