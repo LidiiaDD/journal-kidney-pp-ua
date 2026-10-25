@@ -25,7 +25,7 @@ create table if not exists public.jrs_articles (
   keywords text[] not null default '{}'::text[],
   status text not null default 'draft' check (status in ('draft','published')),
   published_at date,
-  pdf_path text check (pdf_path is null or pdf_path ~ '^[0-9a-f-]{36}/[0-9a-f-]{36}\\.pdf
+  pdf_path text check (pdf_path is null or pdf_path ~ '^[0-9a-f-]{36}/[0-9a-f-]{36}[.]pdf$'),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   constraint jrs_published_has_date check (status <> 'published' or published_at is not null)
