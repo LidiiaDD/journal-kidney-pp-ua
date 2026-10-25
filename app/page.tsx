@@ -1,3 +1,5 @@
+import { formatPublicationDate, listPublications, publicationTypeLabels } from "@/app/lib/publications";
+
 const directions = [
   ["01", "Клінічна нефрологія", "Діагностика, профілактика й лікування гострих та хронічних захворювань нирок."],
   ["02", "Діаліз і НЗТ", "Гемодіаліз, перитонеальний діаліз, безперервні методики та якість лікування."],
@@ -12,6 +14,7 @@ const stages = [
 ];
 
 const Arrow = () => <span aria-hidden="true">↗</span>;
+const latestPublications = listPublications().slice(0, 3);
 
 export default function Home() {
   return (
@@ -32,6 +35,7 @@ export default function Home() {
           <nav aria-label="Головна навігація">
             <a href="#about">Про журнал</a>
             <a href="#scope">Тематика</a>
+            <a href="/publications">Публікації</a>
             <a href="/authors">Авторам</a>
             <a href="/editorial-policy">Політика</a>
             <a href="#board">Редакція</a>
@@ -119,10 +123,47 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="section pub-feature" id="publications">
+        <div className="wrap split">
+          <p className="section-tag"><span>02</span> Публікації</p>
+          <div>
+            <p className="eyebrow"><i /> Research & clinical insights</p>
+            <h2>Наукові результати, доступні кожному.</h2>
+            <p className="pub-feature-intro">
+              Оригінальні дослідження, оглядові роботи та клінічні спостереження.
+              Кожна публікація матиме власну сторінку з анотацією,
+              авторами, ключовими словами та повним текстом PDF за наявності.
+            </p>
+            {latestPublications.length > 0 ? (
+              <div className="pub-feature-list">
+                {latestPublications.map((item) => (
+                  <article key={item.slug}>
+                    <p>{publicationTypeLabels[item.type]} · {formatPublicationDate(item.publishedAt)}</p>
+                    <h3><a href={`/publications/${item.slug}`}>{item.title} ↗</a></h3>
+                    <span>{item.authors.map((author) => author.name).join(", ")}</span>
+                  </article>
+                ))}
+              </div>
+            ) : (
+              <div className="pub-feature-pending">
+                <span aria-hidden="true">01 / JRS</span>
+                <div>
+                  <strong>Перші наукові матеріали готуються</strong>
+                  <p>Каталог відкрито; записи з’являться після фактичної публікації досліджень.</p>
+                </div>
+              </div>
+            )}
+            <a className="pub-feature-link" href="/publications">
+              Переглянути каталог публікацій <Arrow />
+            </a>
+          </div>
+        </div>
+      </section>
+
       <section className="section authors" id="authors">
         <div className="wrap">
           <div className="split">
-            <p className="section-tag"><span>02</span> Для авторів</p>
+            <p className="section-tag"><span>03</span> Для авторів</p>
             <div><h2>Ясні вимоги.<br />Наукова оцінка.</h2>
               <p className="intro">Ми прагнемо зробити шлях рукопису передбачуваним і професійним на кожному етапі.</p>
             </div>
@@ -145,7 +186,7 @@ export default function Home() {
 
       <section className="section board" id="board">
         <div className="wrap split">
-          <p className="section-tag"><span>03</span> Редакційна рада</p>
+          <p className="section-tag"><span>04</span> Редакційна рада</p>
           <div>
             <p className="eyebrow"><i /> Editorial board</p>
             <h2>Наукова відповідальність починається з редакції.</h2>
@@ -178,7 +219,7 @@ export default function Home() {
       <footer>
         <div className="wrap footer-top">
           <div className="brand footer-brand"><span className="logo"><b>J</b><b>R</b><b>S</b></span><span><strong>Journal of Renal Science</strong></span></div>
-          <nav><a href="#about">Про журнал</a><a href="#scope">Тематика</a><a href="/authors">Для авторів</a><a href="/editorial-policy">Редакційна політика</a><a href="#board">Редакція</a></nav>
+          <nav><a href="#about">Про журнал</a><a href="#scope">Тематика</a><a href="/publications">Публікації</a><a href="/authors">Для авторів</a><a href="/editorial-policy">Редакційна політика</a><a href="#board">Редакція</a></nav>
         </div>
         <div className="wrap footer-bottom"><span>© {new Date().getFullYear()} Journal of Renal Science</span><span>Nephrology · Dialysis · Transplantation</span></div>
       </footer>
