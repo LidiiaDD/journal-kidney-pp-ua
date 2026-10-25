@@ -1,4 +1,5 @@
-import { formatPublicationDate, listPublications, publicationTypeLabels } from "@/app/lib/publications";
+import { formatPublicationDate, publicationTypeLabels } from "@/app/lib/publications";
+import { allPublications } from "@/app/lib/jrs-catalogue";
 
 const directions = [
   ["01", "Клінічна нефрологія", "Діагностика, профілактика й лікування гострих та хронічних захворювань нирок."],
@@ -14,9 +15,10 @@ const stages = [
 ];
 
 const Arrow = () => <span aria-hidden="true">↗</span>;
-const latestPublications = listPublications().slice(0, 3);
+export const dynamic = "force-dynamic";
 
-export default function Home() {
+export default async function Home() {
+  const latestPublications = (await allPublications()).slice(0, 3);
   return (
     <main>
       <div className="topline">
