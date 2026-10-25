@@ -57,6 +57,10 @@ export default function JournalInfoLayout({
               <span>Journal of Renal Science</span>
               <span>Незалежне науково-інформаційне видання</span>
             </div>
+            <nav className="info-switch-links" aria-label="Інформація про публікації">
+              <a href="/authors">Правила для авторів</a>
+              <a href="/editorial-policy">Редакційна політика</a>
+            </nav>
           </div>
         </section>
 
