@@ -32,7 +32,8 @@ export default function Home() {
           <nav aria-label="Головна навігація">
             <a href="#about">Про журнал</a>
             <a href="#scope">Тематика</a>
-            <a href="#authors">Авторам</a>
+            <a href="/authors">Авторам</a>
+            <a href="/editorial-policy">Політика</a>
             <a href="#board">Редакція</a>
           </nav>
           <a className="submit" href="mailto:editor@kidney.pp.ua?subject=Подання рукопису до Journal of Renal Science">
@@ -51,7 +52,7 @@ export default function Home() {
               хвороб нирок, діаліз, трансплантацію та клінічну практику.
             </p>
             <div className="hero-actions">
-              <a className="primary" href="#authors">Інформація для авторів <Arrow /></a>
+              <a className="primary" href="/authors">Інформація для авторів <Arrow /></a>
               <a className="quiet-link" href="#about">Про журнал <span>↓</span></a>
             </div>
             <div className="values">
@@ -89,8 +90,8 @@ export default function Home() {
             <div className="two-columns">
               <p>
                 Journal of Renal Science створено для публікації оригінальних досліджень,
-                систематичні огляди, клінічні рекомендації, короткі повідомлення
-                та клінічні випадки у сфері нефрології й суміжних дисциплін.
+                оглядових статей, коротких повідомлень та описів клінічних випадків
+                у сфері нефрології й суміжних дисциплін.
               </p>
               <p>
                 Редакційний процес ґрунтується на науковій доброчесності,
@@ -134,9 +135,9 @@ export default function Home() {
           <div className="resources">
             <div><small>Перед поданням</small><h3>Підготуйте рукопис відповідно до стандартів журналу</h3></div>
             <div>
-              <a href="mailto:editor@kidney.pp.ua?subject=Правила оформлення рукопису">Правила оформлення <Arrow /></a>
-              <a href="mailto:editor@kidney.pp.ua?subject=Етичні вимоги журналу">Етичні вимоги <Arrow /></a>
-              <a href="mailto:editor@kidney.pp.ua?subject=Редакційний розгляд рукописів">Редакційний розгляд <Arrow /></a>
+              <a href="/authors#format">Правила оформлення <Arrow /></a>
+              <a href="/editorial-policy#research-ethics">Етичні вимоги <Arrow /></a>
+              <a href="/editorial-policy#review">Редакційний розгляд <Arrow /></a>
             </div>
           </div>
         </div>
@@ -168,7 +169,7 @@ export default function Home() {
       <section className="contact">
         <div className="wrap contact-grid">
           <div><p className="eyebrow pale"><i /> Редакція журналу</p><h2>Поговорімо про вашу роботу.</h2></div>
-          <div><p>З питань подання рукописів, рецензування та співпраці звертайтеся до редакції.</p>
+          <div><p>З питань подання рукописів, редакційного розгляду та співпраці звертайтеся до редакції.</p>
             <a href="mailto:editor@kidney.pp.ua">editor@kidney.pp.ua <Arrow /></a>
           </div>
         </div>
@@ -177,7 +178,7 @@ export default function Home() {
       <footer>
         <div className="wrap footer-top">
           <div className="brand footer-brand"><span className="logo"><b>J</b><b>R</b><b>S</b></span><span><strong>Journal of Renal Science</strong></span></div>
-          <nav><a href="#about">Про журнал</a><a href="#scope">Тематика</a><a href="#authors">Для авторів</a><a href="#board">Редакція</a></nav>
+          <nav><a href="#about">Про журнал</a><a href="#scope">Тематика</a><a href="/authors">Для авторів</a><a href="/editorial-policy">Редакційна політика</a><a href="#board">Редакція</a></nav>
         </div>
         <div className="wrap footer-bottom"><span>© {new Date().getFullYear()} Journal of Renal Science</span><span>Nephrology · Dialysis · Transplantation</span></div>
       </footer>
