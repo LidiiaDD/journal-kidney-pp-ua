@@ -1,14 +1,16 @@
 import type { MetadataRoute } from "next";
-import { listPublications } from "@/app/lib/publications";
+import { allPublications } from "@/app/lib/jrs-catalogue";
 
 const origin = "https://journal.kidney.pp.ua";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export const dynamic = "force-dynamic";
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const core = ["/", "/publications", "/authors", "/editorial-policy"].map(
     (path) => ({ url: origin + path })
   );
 
-  const articles = listPublications().map((item) => ({
+  const articles = (await allPublications()).map((item) => ({
     url: `${origin}/publications/${item.slug}`,
     lastModified: new Date(item.publishedAt + "T00:00:00Z"),
   }));
