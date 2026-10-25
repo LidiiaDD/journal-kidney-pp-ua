@@ -26,13 +26,13 @@ export async function GET(_request: NextRequest, { params }: Props) {
 }
 
 export async function POST(request: NextRequest, { params }: Props) {
+  const { token, editor } = await requireEditor();
+  const { id } = await params;
   const target = (error?: string) => {
     const url = new URL(`/admin/articles/${id}`, request.url);
     url.searchParams.set(error ? "error" : "saved", error || "1");
     return NextResponse.redirect(url, 303);
   };
-  const { token, editor } = await requireEditor();
-  const { id } = await params;
   if (!/^[0-9a-f-]{36}$/i.test(id)) return new Response("Invalid article", { status: 400 });
 
   // Prevent cross-site form posts and overly large request bodies.
