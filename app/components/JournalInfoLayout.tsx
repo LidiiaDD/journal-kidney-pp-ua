@@ -34,6 +34,7 @@ export default function JournalInfoLayout({
           </a>
           <nav aria-label="Навігація журналу">
             <a href="/">Головна</a>
+            <a href="/publications">Публікації</a>
             <a href="/authors">Для авторів</a>
             <a href="/editorial-policy">Редакційна політика</a>
             <a href="/#board">Редакція</a>
@@ -58,6 +59,7 @@ export default function JournalInfoLayout({
               <span>Незалежне науково-інформаційне видання</span>
             </div>
             <nav className="info-switch-links" aria-label="Інформація про публікації">
+              <a href="/publications">Публікації</a>
               <a href="/authors">Правила для авторів</a>
               <a href="/editorial-policy">Редакційна політика</a>
             </nav>
@@ -99,6 +101,7 @@ export default function JournalInfoLayout({
           </a>
           <nav aria-label="Посилання у підвалі сайту">
             <a href="/">Головна</a>
+            <a href="/publications">Публікації</a>
             <a href="/authors">Для авторів</a>
             <a href="/editorial-policy">Редакційна політика</a>
             <a href="/#board">Редакційна рада</a>
