@@ -21,3 +21,9 @@ See **[docs/PUBLISHING.md](docs/PUBLISHING.md)** for the approval checklist, PDF
 Built with Next.js 16, React 19, and TypeScript. For a local setup with dependencies installed, use `npm ci`, then `npm run dev` or `npm run build`.
 
 Research manuscripts received by email must remain private until approval. **Never commit nonpublic manuscripts or patient-identifying files to this repository.**
+
+## Editorial cabinet (setup required)
+
+The authenticated editorial workspace is at `/admin/login`. Its Supabase backend is intentionally **disabled until a dedicated JRS project, editor authorization, private storage, and Vercel environment variables are configured**.
+
+Follow **[docs/EDITOR_CABINET.md](docs/EDITOR_CABINET.md)** before activating it. No draft or PDF should be made public without editorial approval.
