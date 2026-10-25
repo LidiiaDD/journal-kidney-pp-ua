@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import JournalInfoLayout from "@/app/components/JournalInfoLayout";
 import PublicationExplorer from "@/app/components/PublicationExplorer";
-import { listPublications } from "@/app/lib/publications";
+import { allPublications } from "@/app/lib/jrs-catalogue";
 
 export const metadata: Metadata = {
   title: "Публікації | Journal of Renal Science",
@@ -16,8 +16,10 @@ const sections = [
   { href: "#publication-details", label: "Про опубліковані матеріали" },
 ];
 
-export default function PublicationsPage() {
-  const items = listPublications();
+export const dynamic = "force-dynamic";
+
+export default async function PublicationsPage() {
+  const items = await allPublications();
 
   return (
     <JournalInfoLayout
