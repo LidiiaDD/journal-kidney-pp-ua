@@ -75,6 +75,21 @@ create policy "jrs_storage_read_editor_only"
     bucket_id = 'jrs-pdfs'
     and exists (select 1 from public.jrs_editors e where e.user_id = (select auth.uid()))
   );
+-- Readers can download only PDF files that are referenced by published articles.
+-- An operation-aware SELECT policy does not expose draft files or object listings.
+create policy "jrs_storage_read_published"
+  on storage.objects for select to anon, authenticated
+  using (
+    bucket_id = 'jrs-pdfs'
+    and storage.allow_any_operation(
+      array['object.get_authenticated_info', 'object.get_authenticated']
+    )
+    and exists (
+      select 1 from public.jrs_articles a
+      where a.pdf_path = name and a.status = 'published'
+    )
+  );
+
 create policy "jrs_storage_upload_editor_only"
   on storage.objects for insert to authenticated
   with check (
