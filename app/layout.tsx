@@ -13,6 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://journal.kidney.pp.ua"),
   title: "Journal of Renal Science",
   description:
     "Незалежний науково-інформаційний онлайн-журнал з нефрології, діалізу, трансплантації нирки та клінічних досліджень.",
