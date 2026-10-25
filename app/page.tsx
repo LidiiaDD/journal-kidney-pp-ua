@@ -7,7 +7,7 @@ const directions = [
 
 const stages = [
   ["01", "Первинна перевірка", "Відповідність тематиці, структурі рукопису та етичним вимогам."],
-  ["02", "Фахове рецензування", "Незалежна оцінка методології, новизни й достовірності результатів."],
+  ["02", "Наукова оцінка", "Оцінювання змісту, методології та достовірності результатів із залученням фахівців за потреби."],
   ["03", "Редакційне рішення", "Аргументоване рішення, рекомендації автору та можливість доопрацювання."],
 ];
 
@@ -18,7 +18,7 @@ export default function Home() {
     <main>
       <div className="topline">
         <div className="wrap">
-          <span>Independent · Peer-reviewed · Open access</span>
+          <span>Independent · Research · Open access</span>
           <a href="mailto:editor@kidney.pp.ua">editor@kidney.pp.ua <Arrow /></a>
         </div>
       </div>
@@ -27,7 +27,7 @@ export default function Home() {
         <div className="wrap header-inner">
           <a href="#top" className="brand" aria-label="Journal of Renal Science — на головну">
             <span className="logo" aria-hidden="true"><b>J</b><b>R</b><b>S</b></span>
-            <span><strong>Journal of Renal Science</strong><small>Ukrainian Journal of Nephrology</small></span>
+            <span><strong>Journal of Renal Science</strong><small>Незалежне видання з нефрології</small></span>
           </a>
           <nav aria-label="Головна навігація">
             <a href="#about">Про журнал</a>
@@ -44,18 +44,18 @@ export default function Home() {
       <section className="hero" id="top">
         <div className="wrap hero-grid">
           <div className="hero-copy">
-            <p className="eyebrow"><i /> Науковий журнал нового покоління</p>
+            <p className="eyebrow"><i /> Незалежний науково-інформаційний журнал</p>
             <h1>Renal science.<br /><em>Clinical impact.</em></h1>
             <p className="lead">
-              Міжнародний рецензований журнал про дослідження, що змінюють
-              розуміння хвороб нирок і щоденну клінічну практику.
+              Незалежний науково-інформаційний онлайн-журнал про дослідження
+              хвороб нирок, діаліз, трансплантацію та клінічну практику.
             </p>
             <div className="hero-actions">
               <a className="primary" href="#authors">Інформація для авторів <Arrow /></a>
               <a className="quiet-link" href="#about">Про журнал <span>↓</span></a>
             </div>
             <div className="values">
-              <span>Незалежне рецензування</span><span>Відкритий доступ</span>
+              <span>Наукова оцінка матеріалів</span><span>Відкритий доступ</span>
               <span>Доказова медицина</span><span>Публікаційна етика</span>
             </div>
           </div>
@@ -88,7 +88,7 @@ export default function Home() {
             </h2>
             <div className="two-columns">
               <p>
-                Journal of Renal Science публікує оригінальні дослідження,
+                Journal of Renal Science створено для публікації оригінальних досліджень,
                 систематичні огляди, клінічні рекомендації, короткі повідомлення
                 та клінічні випадки у сфері нефрології й суміжних дисциплін.
               </p>
@@ -122,7 +122,7 @@ export default function Home() {
         <div className="wrap">
           <div className="split">
             <p className="section-tag"><span>02</span> Для авторів</p>
-            <div><h2>Ясні вимоги.<br />Фахове рецензування.</h2>
+            <div><h2>Ясні вимоги.<br />Наукова оцінка.</h2>
               <p className="intro">Ми прагнемо зробити шлях рукопису передбачуваним і професійним на кожному етапі.</p>
             </div>
           </div>
@@ -136,7 +136,7 @@ export default function Home() {
             <div>
               <a href="mailto:editor@kidney.pp.ua?subject=Правила оформлення рукопису">Правила оформлення <Arrow /></a>
               <a href="mailto:editor@kidney.pp.ua?subject=Етичні вимоги журналу">Етичні вимоги <Arrow /></a>
-              <a href="mailto:editor@kidney.pp.ua?subject=Процедура рецензування">Процедура рецензування <Arrow /></a>
+              <a href="mailto:editor@kidney.pp.ua?subject=Редакційний розгляд рукописів">Редакційний розгляд <Arrow /></a>
             </div>
           </div>
         </div>
@@ -144,18 +144,21 @@ export default function Home() {
 
       <section className="section board" id="board">
         <div className="wrap split">
-          <p className="section-tag"><span>03</span> Редакційна колегія</p>
+          <p className="section-tag"><span>03</span> Редакційна рада</p>
           <div>
             <p className="eyebrow"><i /> Editorial board</p>
-            <h2>Наукова незалежність починається з відповідальної редакції.</h2>
+            <h2>Наукова відповідальність починається з редакції.</h2>
             <p className="board-lead">
-              Тут буде представлено головного редактора, заступників, наукових
-              редакторів і міжнародних радників із зазначенням афіліацій та ORCID.
+              Редакційна рада визначає тематичний розвиток незалежного
+              науково-інформаційного журналу та засади оцінювання матеріалів.
             </p>
-            <div className="board-placeholder">
-              <div>JRS</div>
-              <span><small>Склад готується до публікації</small>
-                <p>Персональний склад редакційної колегії буде додано після завершення організаційного формування журналу.</p>
+            <div className="board-member">
+              <div aria-hidden="true">LD</div>
+              <span>
+                <small>Редакційна рада · Editorial board</small>
+                <h3>Лідія Данилівна Денова</h3>
+                <p>Лікар-нефролог, доктор філософії (PhD) за спеціальністю
+                  222 «Медицина»; науковий напрям — нефрологія.</p>
               </span>
             </div>
           </div>
