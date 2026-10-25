@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import {
-  clearSession, getEditorArticle, jrsFetch, jrsJson, requireEditor,
+  clearSession, getAccessToken, getEditorArticle, jrsFetch, jrsJson, requireEditor,
   signInEditor,
 } from "@/app/lib/jrs-supabase";
 import type { ArticleRow } from "@/app/lib/jrs-supabase";
@@ -33,6 +33,10 @@ export async function signInAction(data: FormData) {
 }
 
 export async function signOutAction() {
+  const token = await getAccessToken();
+  if (token) {
+    await jrsFetch("/auth/v1/logout", { method: "POST" }, token).catch(() => null);
+  }
   await clearSession();
   redirect("/admin/login");
 }
