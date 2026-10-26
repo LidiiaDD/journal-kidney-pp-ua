@@ -1456,3 +1456,16 @@ footer{background:var(--deep);color:rgba(255,255,255,.62)}.footer-top{min-height
 @media(max-width:920px){.jrs-en-article-layout{grid-template-columns:minmax(0,1fr) 230px;gap:24px}.jrs-en-article-sidebar{padding:18px}.jrs-en-article-author-list{grid-template-columns:1fr}}
 @media(max-width:720px){.jrs-en-article-layout{grid-template-columns:1fr}.jrs-en-article-sidebar{position:static;grid-row:1}.jrs-en-article-sidebar dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 18px}.jrs-en-integrity-grid{grid-template-columns:1fr}.jrs-en-article-author-list{grid-template-columns:1fr}.jrs-en-article-notice{padding:18px;gap:12px}.jrs-en-article-notice-icon{height:34px;width:34px;font-size:22px}.jrs-en-article-breadcrumb{flex-direction:column}.jrs-en-article-section{margin-bottom:29px;padding-bottom:29px}}
 @media(max-width:440px){.jrs-en-citation-buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.jrs-en-citation-buttons button{min-height:46px}.jrs-en-citation-widget{padding:17px}.jrs-en-article-sidebar dl{grid-template-columns:1fr}}
+
+/* Shared technical publication gate in the private prepublication audit */
+.jrs-publish-gate{border-top:3px solid var(--teal);border-bottom:1px solid var(--line);padding:25px 0 28px;margin:25px 0 29px}
+.jrs-publish-gate-head>span{display:block;font:700 10px Arial,Helvetica,sans-serif;letter-spacing:.13em;color:var(--teal)}
+.jrs-publish-gate-head h2{font:400 clamp(25px,3vw,35px)/1.18 Georgia,serif;margin:9px 0 10px;color:var(--navy)}
+.jrs-publish-gate-head p{font:13px/1.8 Arial,Helvetica,sans-serif;color:var(--muted);max-width:770px;margin:0 0 18px}
+.jrs-publish-gate-status{font:700 13px/1.6 Arial,Helvetica,sans-serif;color:#8a4a24}
+.jrs-publish-gate-list{margin:12px 0 0!important;padding:0!important;list-style:none!important;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.jrs-publish-gate-list li{padding:15px 18px;border:1px solid #e3d2bc;background:#fff9f1;min-width:0}
+.jrs-publish-gate-list strong{font:700 13px/1.5 Arial,Helvetica,sans-serif;color:#77431c}
+.jrs-publish-gate-list p{margin:7px 0 0;font:12px/1.7 Arial,Helvetica,sans-serif;color:#665341}
+.jrs-publish-gate-clear{padding:15px 19px;border-left:3px solid var(--teal);background:#edf3f0;color:#3d5b60;font:13px/1.75 Arial,Helvetica,sans-serif}
+@media(max-width:700px){.jrs-publish-gate-list{grid-template-columns:1fr}.jrs-publish-gate{padding:21px 0}}
