@@ -45,7 +45,18 @@ try {
   check("release route reachable", false, error instanceof Error ? error.message : "network failure");
 }
 
-for (const path of ["/", "/publications", "/notices", "/en", "/en/publications", "/en/notices", "/sitemap.xml", "/robots.txt"]) {
+// Audit all primary public routes and resources, even if no articles exist.
+const publicPages = [
+  "/", "/publications", "/topics", "/issues", "/contributors", "/notices",
+  "/editorial-policy", "/manuscript-checklist", "/submission-studio", "/follow",
+  "/en", "/en/publications", "/en/topics", "/en/issues", "/en/contributors",
+  "/en/notices", "/en/policy", "/en/authors",
+];
+const publicResources = [
+  "/sitemap.xml", "/robots.txt", "/feed.xml",
+  "/feeds/articles.xml", "/feeds/notices.xml",
+];
+for (const path of [...publicPages, ...publicResources]) {
   try {
     const response = await request(path);
     check(`public ${path}`, response.status === 200, `HTTP ${response.status}`);
@@ -59,6 +70,23 @@ for (const path of ["/", "/publications", "/notices", "/en", "/en/publications",
       const body = await response.text();
       check("sitemap is a real URL collection", /<urlset[\s>]/i.test(body));
       check("sitemap excludes private editor routes", !body.includes("/admin"));
+      for (const expectedPath of ["/en/issues", "/en/contributors", "/en/topics"]) {
+        check("sitemap advertises " + expectedPath,
+          body.includes("https://journal.kidney.pp.ua" + expectedPath + "<"));
+      }
+    } else if (response.ok &&
+      ["/feed.xml", "/feeds/articles.xml", "/feeds/notices.xml"].includes(path)) {
+      const contentType = response.headers.get("content-type") || "";
+      check("RSS content type " + path, /application\/rss\+xml/i.test(contentType));
+      await response.body?.cancel();
+    } else if (response.ok && path === "/en") {
+      // The English content is marked lang="en" internally, but the shared
+      // root document can still say uk; warn until the root layout is refactored.
+      const html = await response.text();
+      const lang = /<html[^>]*\blang="([^"]+)"/i.exec(html)?.[1];
+      if (lang !== "en") {
+        process.stdout.write("WARN English document root lang is not en; accessibility follow-up required.\n");
+      }
     } else {
       await response.body?.cancel();
     }
