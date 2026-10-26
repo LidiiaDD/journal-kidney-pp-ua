@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getEditorArticle, requireEditor } from "@/app/lib/jrs-supabase";
 import { auditSavedArticle } from "@/app/lib/jrs-preflight";
+import { publicationBlockers } from "@/app/lib/jrs-publication-gate";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -28,6 +29,7 @@ export default async function ArticlePreflightPage({ params }: Props) {
   const attention = all.filter(check => check.status === "attention");
   const filled = all.filter(check => check.status === "filled").length;
   const published = article.status === "published";
+  const blockers = publicationBlockers(article);
 
   return (
     <main className="jrs-admin-main">
@@ -52,6 +54,37 @@ export default async function ArticlePreflightPage({ params }: Props) {
           <strong>Це перевірка повноти збереженого запису, а не експертний висновок.</strong>
           <p>Наявність тексту не підтверджує згоду авторів, правильність статистики, чинність DOI, етичне схвалення, анонімізацію PDF або факт незалежного рецензування. Відомості не надсилаються стороннім сервісам. Зміни у формі з’являться тут лише після збереження чернетки.</p>
         </div>
+
+        <section className="jrs-publish-gate" aria-labelledby="jrs-publish-gate-title">
+          <div className="jrs-publish-gate-head">
+            <span>TECHNICAL PUBLICATION GATE</span>
+            <h2 id="jrs-publish-gate-title">Перевірка умов серверної публікації</h2>
+            <p>Тут використано ті самі технічні правила, що й у команді
+              «Опублікувати». Це не підтвердження наукової якості, етики,
+              згоди авторів чи факту зовнішнього рецензування.</p>
+          </div>
+          {blockers.length ? (
+            <div>
+              <strong className="jrs-publish-gate-status">
+                {blockers.length} технічних пунктів потребують виправлення
+              </strong>
+              <ul className="jrs-publish-gate-list">
+                {blockers.map(blocker => (
+                  <li key={blocker.code}>
+                    <strong>{blocker.title}</strong>
+                    <p>{blocker.explanation}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <p className="jrs-publish-gate-clear">
+              Технічних блокерів у збереженому записі не знайдено.
+              Перед оприлюдненням обов’язково підтвердьте чотири незалежні
+              редакційні перевірки та перегляньте остаточний рукопис.
+            </p>
+          )}
+        </section>
 
         <div className="jrs-preflight-stats">
           <div><span>Усього пунктів</span><strong>{all.length}</strong></div>
