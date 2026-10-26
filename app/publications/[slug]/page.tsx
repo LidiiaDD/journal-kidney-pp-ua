@@ -6,6 +6,9 @@ import ArticleContent, { articleSectionLinks } from "@/app/components/ArticleCon
 import { formatPublicationDate, publicationTypeLabels } from "@/app/lib/publications";
 import { articleUrl } from "@/app/lib/citations";
 import { issueHref, makeIssueKey } from "@/app/lib/jrs-issues";
+import PublicationNoticeTimeline from "@/app/components/PublicationNoticeTimeline";
+import { getPublishedRow } from "@/app/lib/jrs-supabase";
+import { noticesForPublishedArticle } from "@/app/lib/jrs-notices";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -32,13 +35,18 @@ export default async function PublicationPage({ params }: Props) {
   const { slug } = await params;
   const article = await findPublicArticle(slug);
   if (!article) notFound();
+  const row = await getPublishedRow(slug);
+  const notices = row ? await noticesForPublishedArticle(row.id) : [];
 
   return (
     <JournalInfoLayout
       eyebrow="Наукова публікація"
       title={article.title}
       description={`${publicationTypeLabels[article.type]} · ${formatPublicationDate(article.publishedAt)}`}
-      sections={articleSectionLinks(Boolean(article.pdfUrl), false, Boolean(article.references?.length))}
+      sections={[
+        ...(notices.length ? [{ href: "#publication-history", label: "Історія публікації" }] : []),
+        ...articleSectionLinks(Boolean(article.pdfUrl), false, Boolean(article.references?.length)),
+      ]}
     >
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         "@context": "https://schema.org",
@@ -70,6 +78,7 @@ export default async function PublicationPage({ params }: Props) {
           <b aria-hidden="true">↗</b>
         </a>
       )}
+      <PublicationNoticeTimeline notices={notices} />
       <ArticleContent article={article} />
     </JournalInfoLayout>
   );

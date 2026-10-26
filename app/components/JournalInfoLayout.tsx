@@ -70,6 +70,7 @@ export default function JournalInfoLayout({
               <a href="/manuscript-checklist">Навігатор рукопису</a>
               <a href="/submission-studio">Майстер подання</a>
               <a href="/editorial-policy">Редакційна політика</a>
+              <a href="/notices">Редакційні повідомлення</a>
             </nav>
           </div>
         </section>
@@ -117,6 +118,7 @@ export default function JournalInfoLayout({
             <a href="/manuscript-checklist">Навігатор рукопису</a>
             <a href="/submission-studio">Майстер подання</a>
             <a href="/editorial-policy">Редакційна політика</a>
+            <a href="/notices">Історія публікацій</a>
             <a href="/#board">Редакційна рада</a>
           </nav>
         </div>

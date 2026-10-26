@@ -1,10 +1,12 @@
 import { notFound } from "next/navigation";
 import { getEditorArticle, requireEditor } from "@/app/lib/jrs-supabase";
 import ArticleForm from "../../components/ArticleForm";
+import EditorNoticePanel from "../../components/EditorNoticePanel";
+import { noticesForPublishedArticle } from "@/app/lib/jrs-notices";
 
 type Props = {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ error?: string; created?: string; saved?: string; published?: string }>;
+  searchParams: Promise<{ error?: string; created?: string; saved?: string; published?: string; noticeAdded?: string }>;
 };
 
 export default async function EditArticlePage({ params, searchParams }: Props) {
@@ -13,6 +15,7 @@ export default async function EditArticlePage({ params, searchParams }: Props) {
   const article = await getEditorArticle(id, token);
   if (!article) notFound();
   const flags = await searchParams;
+  const notices = article.status === "published" ? await noticesForPublishedArticle(article.id) : [];
   return (
     <main className="jrs-admin-main">
       <div className="wrap">
@@ -31,6 +34,10 @@ export default async function EditArticlePage({ params, searchParams }: Props) {
           <b aria-hidden="true">↗</b>
         </a>
         <ArticleForm article={article} {...flags} />
+        {article.status === "published" && (
+          <EditorNoticePanel articleId={article.id} notices={notices}
+            error={flags.error} added={flags.noticeAdded === "1"} />
+        )}
       </div>
     </main>
   );

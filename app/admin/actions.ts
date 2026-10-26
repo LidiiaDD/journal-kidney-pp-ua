@@ -200,3 +200,50 @@ export async function publishAction(data: FormData) {
   revalidatePath("/admin");
   redirect(`/admin/articles/${id}?published=1`);
 }
+
+
+/**
+ * Append an official post-publication notice without altering the scientific
+ * record. Only authorized editors can use this action; PostgreSQL independently
+ * verifies the editor membership, author identity, and published parent.
+ */
+export async function issueEditorialNoticeAction(data: FormData) {
+  const { token, editor } = await requireEditor();
+  const id = value(data, "article_id", 36);
+  if (!/^[0-9a-f-]{36}$/i.test(id)) redirect("/admin");
+
+  const kind = value(data, "kind", 40);
+  const title = value(data, "title", 220);
+  const explanation = value(data, "explanation", 10000);
+  const acknowledged = data.get("confirm_public") === "yes";
+  const back = `/admin/articles/${id}`;
+
+  if (!["correction", "concern", "retraction"].includes(kind)
+      || title.trim().length < 10 || explanation.trim().length < 40 || !acknowledged) {
+    redirect(`${back}?error=notice-fields`);
+  }
+
+  const article = await getEditorArticle(id, token);
+  if (!article || article.status !== "published") redirect("/admin?error=locked");
+
+  const response = await jrsFetch("/rest/v1/jrs_article_notices?select=id", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Prefer: "return=representation" },
+    body: JSON.stringify({
+      article_id: article.id,
+      kind,
+      title,
+      explanation,
+      issued_by: editor.id,
+    }),
+  }, token);
+
+  if (!response.ok) redirect(`${back}?error=notice-save`);
+  const entries = await response.json() as { id: string }[];
+  if (!entries[0]?.id) redirect(`${back}?error=notice-save`);
+
+  revalidatePath(`/publications/${article.slug}`);
+  revalidatePath("/notices");
+  revalidatePath(`/notices/${entries[0].id}`);
+  redirect(`${back}?noticeAdded=1`);
+}

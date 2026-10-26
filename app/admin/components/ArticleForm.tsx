@@ -16,7 +16,7 @@ export default function ArticleForm({ article, error, saved, created, published 
 
   return (
     <div className="jrs-admin-editor">
-      {error && <div className="jrs-admin-notice error" role="alert">
+      {error && !error.startsWith("notice-") && <div className="jrs-admin-notice error" role="alert">
         {error === "fields" ? "Перевірте назву, анотацію, авторів, ключові слова, повноту перекладу, формат DOI та відомості про рецензування."
           : error === "checks" ? "Перед публікацією обов’язково підтвердьте всі чотири редакційні перевірки."
           : error === "review" ? "Перед публікацією виберіть фактичний тип редакційного розгляду. Для незалежного рецензування заповніть його опис."
