@@ -22,6 +22,14 @@ export default async function EditArticlePage({ params, searchParams }: Props) {
           <h1>{article.status === "draft" ? "Редагування статті" : "Опублікована стаття"}</h1>
           <p>Картка матеріалу · {article.slug}</p>
         </div></div>
+        <a className="jrs-preflight-teaser" href={`/admin/articles/${article.id}/preflight`}>
+          <span>
+            <small>JRS · ПЕРЕДПУБЛІКАЦІЙНИЙ КОНТРОЛЬ</small>
+            <strong>Перевірити метадані та декларації</strong>
+            <em>Приватний звіт щодо повноти збереженого запису. Без змін, оприлюднення чи автоматичних схвалень.</em>
+          </span>
+          <b aria-hidden="true">↗</b>
+        </a>
         <ArticleForm article={article} {...flags} />
       </div>
     </main>
