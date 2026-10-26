@@ -13,6 +13,7 @@ const sections = [
   { href: "#reporting", label: "Методологія і результати" },
   { href: "#ethics", label: "Етика та дані пацієнтів" },
   { href: "#declarations", label: "Авторство, фінансування та ШІ" },
+  { href: "#navigator", label: "Навігатор рукопису" },
   { href: "#submission", label: "Як подати рукопис" },
   { href: "#after-submission", label: "Що відбувається далі" },
 ];
@@ -78,6 +79,12 @@ export default function AuthorsPage() {
           <li><strong>Оригінальність.</strong> Повідомляйте про препринти, попереднє поширення результатів, пов’язані публікації та використання матеріалів третіх осіб.</li>
         </ul>
         <p className="info-source">Орієнтир: <a href="https://www.icmje.org/recommendations/" target="_blank" rel="noopener noreferrer">рекомендації ICMJE ↗</a>.</p>
+      </section>
+
+      <section id="navigator">
+        <h2>Навігатор рукопису</h2>
+        <p>Не впевнені, чи все готово? Оберіть тип роботи, перевірте вимоги та відзначте виконані пункти в інтерактивному чеклісті. Він працює локально у вашому браузері та не надсилає матеріали редакції.</p>
+        <a className="mn-author-link" href="/manuscript-navigator">Відкрити навігатор рукопису ↗</a>
       </section>
 
       <section id="submission">
