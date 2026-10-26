@@ -204,7 +204,7 @@ export default function EnglishArticleContent({ article, notices }: { article: P
             <div><dt>Journal</dt><dd>Journal of Renal Science</dd></div>
           </dl>
           <div className="jrs-en-article-sidebar-actions">
-            <BookmarkButton slug={article.slug} />
+            <BookmarkButton slug={article.slug} locale="en" />
             <a href={articleUrl(article)} lang="uk" hrefLang="uk">View primary publication record ↗</a>
           </div>
           <p>Independent scientific-information online journal. Journal status, indexing and review claims are documented separately.</p>
