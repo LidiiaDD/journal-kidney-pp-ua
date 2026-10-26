@@ -23,6 +23,13 @@ export default async function AdminPage({ searchParams }: Props) {
           <a className="jrs-admin-primary" href="/admin/articles/new">+ Нова стаття</a>
         </div>
 
+        <a href="/admin/issues" className="jrs-issue-work-teaser">
+          <span><small>EDITORIAL WORKSPACE · JRS</small>
+            <strong>Підготовка випусків</strong>
+            <em>Плануйте томи й номери та відстежуйте, які статті залишаються чернетками.</em>
+          </span><b aria-hidden="true">↗</b>
+        </a>
+
         {(loadingError || error) && (
           <div className="jrs-admin-notice error" role="alert">
             {loadingError ? "Не вдалося завантажити матеріали. Перевірте підключення до Supabase та політики доступу."

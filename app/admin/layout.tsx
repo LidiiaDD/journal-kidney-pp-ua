@@ -17,6 +17,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <nav aria-label="Навігація редактора">
             <a href="/admin">Матеріали</a>
             <a href="/admin/articles/new">Нова стаття</a>
+            <a href="/admin/issues">План випусків</a>
             <a href="/publications">Публікації</a>
           </nav>
           <form action={signOutAction}>
