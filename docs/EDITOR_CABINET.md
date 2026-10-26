@@ -333,3 +333,13 @@
 - English index has its own canonical and reciprocal language alternatives to the Ukrainian index. English issue detail pages are `noindex` with canonical URLs pointing to original `/issues/[key]`, avoiding duplicate indexing of identical research collections.
 - The pure issue grouping code resides in `app/lib/jrs-issue-index.ts` to enable direct Node regression tests, while `app/lib/jrs-issues.ts` retains the original `server-only` public server import path unchanged.
 - The module changes no publication statuses, editor permissions, database content, identifiers or fee settings.
+
+
+## Розширений контроль реального Production після релізу (26.10.2026)
+
+- Фактична перевірка на `journal.kidney.pp.ua` показала `404` для `/robots.txt` та `/en/issues`, хоча відповідні маршрути вже є в неповністю розгорнутому `main`. Тому старого контрольного переліку було недостатньо.
+- Ручна, **read-only** перевірка `scripts/verify-jrs-live.mjs` тепер перевіряє 18 основних публічних сторінок двома мовами, зокрема `/en/issues`, `/en/contributors`, `/en/topics`, а також `sitemap.xml`, `robots.txt` і три RSS-ресурси.
+- Для RSS перевіряється `Content-Type: application/rss+xml`, для `sitemap.xml` — фактична наявність `/en/issues`, `/en/contributors`, `/en/topics` та відсутність `/admin`. Усі запити здійснюються **анонімно**, лише методом GET.
+- Скрипт, як і раніше, перевіряє фактичний SHA через `/api/release` і недоступність `/admin`, приватних PDF та JSON-експорту без редакторського входу; він **не** запускає деплоїв, не змінює редакторських статусів і не читає приватних рукописів.
+- Виявлену семантичну проблему `<html lang="uk">` на сторінках `/en` виведено як **WARN**, а не приховано. Власний міжнародний макет позначений `lang="en"`, але правильна мова кореневого HTML документа потребує окремої обережної перебудови root layouts у Next.js. Попередження не плутається з перевіркою доступності маршруту.
+- `npm run test:live-coverage` виконує сім локальних регресійних перевірок повноти списку URL, контролю RSS/sitemap, захисту приватних маршрутів і відсутності дій запису. Вони не замінюють повноцінного браузерного E2E-тесту.
