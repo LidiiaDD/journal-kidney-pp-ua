@@ -266,3 +266,19 @@
 - Retractions, expressions of concern and corrections remain visibly distinct. Every English article's existing warning now links to its corresponding `/en/notices/[id]` route and the English public register.
 - No mutation or translation of editor-issued decisions. Backend read failures must not be silently converted into an empty registry; official notices remain the responsibility of the editorial office.
 - New English navigation links are present in the International Desk, the English editorial policy, and the Ukrainian primary notice register. Publicity and editor permissions remain unchanged.
+
+
+## Перевірка фактичної версії Production — release identity (26.10.2026)
+
+**Важливо:** успішна перевірка `npm run build` або GitHub Actions не означає, що зміни вже відображаються на `journal.kidney.pp.ua`. Якщо Vercel Hobby повертає `402 api-deployments-free-per-day`, Production лишається на попередній успішній версії.
+
+- Додано публічний **діагностичний**, безпечний для читання маршрут `GET /api/release`. Він повертає лише сталу назву сервісу, `VERCEL_ENV` (з обмеженого списку `production/preview/development/unknown`) та повний **фактичний** `VERCEL_GIT_COMMIT_SHA` або `null`, якщо той недоступний. Немає доступу до бази, значень інших змінних середовища, ключів, авторів, сесій або рукописів.
+- Заголовки відповіді забороняють кешування (`Cache-Control: public, no-store, max-age=0`) та індексацію (`X-Robots-Tag: noindex, nofollow`). У Next.js маршрут динамічний.
+- Vercel може не передавати Git-метадані, якщо **Automatically expose System Environment Variables** вимкнено. У такому разі `commit=null`, і перевірка **чесно падає**. Не підставляти відомий SHA із GitHub: тоді сайт міг би помилково оголосити себе новою версією.
+- Для перевірки **після успішного Production deploy** знайдіть точний 40-символьний SHA у Vercel Deployments, а потім у GitHub Actions запустіть **Verify live JRS production → Run workflow** з полем `expected_sha`, або локально:
+  ```bash
+  npm run verify:live -- <40-символьний SHA розгорнутого коміту>
+  ```
+- Це лише запити `GET`: перевіряється ідентичність `/api/release`, публічні сторінки (укр./англ., повідомлення, sitemap, robots) та **недоступність без авторизації** `/admin`, приватного перегляду запису, PDF і JSON-експорту. Немає публікації, входу, записів у базу, таємних ключів, cookie або даних пацієнтів. Якщо Production відстає, сценарій повідомляє **FAIL**, не маскує ситуацію.
+- Це перевірка доступності й контролю доступу з анонімної сесії; вона **не** підміняє вхід редактора, наскрізний E2E редакційної роботи або перевірку фактичного вмісту PDF. Для оцінки налаштування RLS слід окремо перевіряти правила в Supabase.
+- На GitHub Actions є окрема автоматична `Verify JRS` для тестів коду та **ручна** `Verify live JRS production` для вже опублікованого релізу. Ручна не запускає нові Vercel-деплої та не споживає ліміт збірок.
