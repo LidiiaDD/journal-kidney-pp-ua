@@ -47,6 +47,7 @@ export default async function Home() {
             <a href="/authors">Авторам</a>
             <a href="/editorial-policy">Політика</a>
             <a href="/issues">Випуски</a>
+            <a className="jrs-language-link" href="/en" hrefLang="en" lang="en" aria-label="English version">EN</a>
           </nav>
           <a className="submit" href="mailto:editor@kidney.pp.ua?subject=Подання рукопису до Journal of Renal Science">
             Подати рукопис
@@ -66,6 +67,7 @@ export default async function Home() {
             <div className="hero-actions">
               <a className="primary" href="/authors">Інформація для авторів <Arrow /></a>
               <a className="quiet-link" href="/topics">Атлас досліджень <span>↗</span></a>
+              <a className="jrs-home-english-link" href="/en" hrefLang="en" lang="en">International Desk ↗</a>
             </div>
             <div className="values">
               <span>Наукова оцінка матеріалів</span><span>Відкритий доступ</span>
@@ -294,7 +296,7 @@ export default async function Home() {
       <footer>
         <div className="wrap footer-top">
           <div className="brand footer-brand"><span className="logo"><b>J</b><b>R</b><b>S</b></span><span><strong>Journal of Renal Science</strong></span></div>
-          <nav><a href="#about">Про журнал</a><a href="/topics">Атлас</a><a href="/publications">Публікації</a><a href="/contributors">Дослідники</a><a href="/issues">Випуски</a><a href="/reading-list">Моя бібліотека</a><a href="/submission-studio">Подання статті</a><a href="/authors">Для авторів</a><a href="/editorial-policy">Редакційна політика</a><a href="/notices">Виправлення</a><a href="/follow">Стежити за JRS</a><a href="/feed.xml" type="application/rss+xml">RSS</a><a href="#board">Редакція</a></nav>
+          <nav><a href="#about">Про журнал</a><a href="/topics">Атлас</a><a href="/publications">Публікації</a><a href="/contributors">Дослідники</a><a href="/issues">Випуски</a><a href="/reading-list">Моя бібліотека</a><a href="/submission-studio">Подання статті</a><a href="/authors">Для авторів</a><a href="/editorial-policy">Редакційна політика</a><a href="/notices">Виправлення</a><a href="/follow">Стежити за JRS</a><a href="/feed.xml" type="application/rss+xml">RSS</a><a href="/en" hrefLang="en" lang="en">English</a><a href="#board">Редакція</a></nav>
         </div>
         <div className="wrap footer-bottom"><span>© {new Date().getFullYear()} Journal of Renal Science</span><span>Nephrology · Dialysis · Transplantation</span></div>
       </footer>
