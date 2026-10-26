@@ -36,7 +36,7 @@ export default async function Home() {
           </a>
           <nav aria-label="Головна навігація">
             <a href="#about">Про журнал</a>
-            <a href="#scope">Тематика</a>
+            <a href="/topics">Атлас</a>
             <a href="/publications">Публікації</a>
             <a href="/authors">Авторам</a>
             <a href="/editorial-policy">Політика</a>
@@ -59,7 +59,7 @@ export default async function Home() {
             </p>
             <div className="hero-actions">
               <a className="primary" href="/authors">Інформація для авторів <Arrow /></a>
-              <a className="quiet-link" href="#about">Про журнал <span>↓</span></a>
+              <a className="quiet-link" href="/topics">Атлас досліджень <span>↗</span></a>
             </div>
             <div className="values">
               <span>Наукова оцінка матеріалів</span><span>Відкритий доступ</span>
@@ -122,6 +122,11 @@ export default async function Home() {
               <article key={number}><span>{number}</span><b>↗</b><h3>{title}</h3><p>{text}</p></article>
             ))}
           </div>
+          <a className="scope-atlas-link" href="/topics">
+            <span className="scope-atlas-index">JRS · RESEARCH ATLAS</span>
+            <span className="scope-atlas-title">Вісім напрямів ниркової науки <em>— знайдіть свій.</em></span>
+            <span className="scope-atlas-icon" aria-hidden="true">↗</span>
+          </a>
         </div>
       </section>
 
@@ -221,7 +226,7 @@ export default async function Home() {
       <footer>
         <div className="wrap footer-top">
           <div className="brand footer-brand"><span className="logo"><b>J</b><b>R</b><b>S</b></span><span><strong>Journal of Renal Science</strong></span></div>
-          <nav><a href="#about">Про журнал</a><a href="#scope">Тематика</a><a href="/publications">Публікації</a><a href="/authors">Для авторів</a><a href="/editorial-policy">Редакційна політика</a><a href="#board">Редакція</a></nav>
+          <nav><a href="#about">Про журнал</a><a href="/topics">Атлас</a><a href="/publications">Публікації</a><a href="/authors">Для авторів</a><a href="/editorial-policy">Редакційна політика</a><a href="#board">Редакція</a></nav>
         </div>
         <div className="wrap footer-bottom"><span>© {new Date().getFullYear()} Journal of Renal Science</span><span>Nephrology · Dialysis · Transplantation</span></div>
       </footer>

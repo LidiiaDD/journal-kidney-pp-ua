@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import JournalInfoLayout from "@/app/components/JournalInfoLayout";
 import PublicationExplorer from "@/app/components/PublicationExplorer";
 import { allPublications } from "@/app/lib/jrs-catalogue";
+import { isTopicSlug } from "@/app/lib/research-topics";
 
 export const metadata: Metadata = {
   title: "Публікації | Journal of Renal Science",
@@ -12,14 +13,20 @@ export const metadata: Metadata = {
 
 const sections = [
   { href: "#catalogue", label: "Каталог публікацій" },
-  { href: "#topics", label: "Тематика журналу" },
+  { href: "#topics", label: "Атлас досліджень" },
   { href: "#publication-details", label: "Про опубліковані матеріали" },
 ];
 
 export const dynamic = "force-dynamic";
 
-export default async function PublicationsPage() {
+export default async function PublicationsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ topic?: string }>;
+}) {
   const items = await allPublications();
+  const { topic } = await searchParams;
+  const initialTopic = topic && isTopicSlug(topic) ? topic : "all";
 
   return (
     <JournalInfoLayout
@@ -33,12 +40,13 @@ export default async function PublicationsPage() {
           <h2>Каталог публікацій</h2>
           {items.length > 0 && <span>{items.length} матеріалів</span>}
         </div>
-        <PublicationExplorer items={items} />
+        <PublicationExplorer items={items} initialTopic={initialTopic} />
       </section>
 
       <section id="topics">
         <h2>Наукові напрями</h2>
-        <p>Тематика матеріалів охоплює хронічну хворобу нирок, гостре пошкодження нирок, діаліз і замісну ниркову терапію, трансплантацію, лабораторні й візуалізаційні методи діагностики, біомаркери та супутні клінічні питання.</p>
+        <p>Тематика матеріалів охоплює хронічну хворобу нирок, гостре пошкодження нирок, діаліз і замісну ниркову терапію, трансплантацію, лабораторні й візуалізаційні методи діагностики, біомаркери та суміжні клінічні питання.</p>
+        <p><a href="/topics">Відкрити тематичний атлас JRS ↗</a></p>
       </section>
 
       <section id="publication-details">

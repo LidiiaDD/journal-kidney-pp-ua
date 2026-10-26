@@ -2,16 +2,19 @@
 
 import { useMemo, useState } from "react";
 import type { Publication, PublicationType } from "@/app/lib/publications";
+import { researchTopics, topicsForPublication, type TopicSlug } from "@/app/lib/research-topics";
 import {
   formatPublicationDate,
   publicationTypeLabels,
 } from "@/app/lib/publications";
 
-type Props = { items: Publication[] };
+type Props = { items: Publication[]; initialTopic?: TopicSlug | "all" };
 
-export default function PublicationExplorer({ items }: Props) {
+export default function PublicationExplorer({ items, initialTopic = "all" }: Props) {
   const [query, setQuery] = useState("");
   const [type, setType] = useState<PublicationType | "all">("all");
+  const [topic, setTopic] = useState<TopicSlug | "all">(initialTopic);
+  const topicName = researchTopics.find(item => item.slug === topic)?.title;
 
   const categories = useMemo(
     () => Array.from(new Set(items.map((item) => item.type))),
@@ -22,6 +25,7 @@ export default function PublicationExplorer({ items }: Props) {
     const needle = query.trim().toLocaleLowerCase("uk-UA");
     return items.filter((item) => {
       if (type !== "all" && item.type !== type) return false;
+      if (topic !== "all" && !topicsForPublication(item).includes(topic)) return false;
       if (!needle) return true;
 
       const searchable = [
@@ -34,20 +38,21 @@ export default function PublicationExplorer({ items }: Props) {
       ].join(" ").toLocaleLowerCase("uk-UA");
       return searchable.includes(needle);
     });
-  }, [items, query, type]);
+  }, [items, query, type, topic]);
 
   if (items.length === 0) {
     return (
       <div className="pub-empty">
         <span className="pub-empty-mark" aria-hidden="true">JRS</span>
         <p className="pub-empty-label">Архів формується</p>
-        <h3>Перші публікації готуються</h3>
+        <h3>{topicName ? `У напрямі «${topicName}» публікацій поки немає` : "Перші публікації готуються"}</h3>
         <p>
           У каталозі з’являтимуться лише матеріали, які справді пройшли
           редакційний розгляд і були опубліковані. Ми не розміщуємо
           демонстраційні або вигадані наукові статті.
         </p>
         <div className="pub-empty-actions">
+          <a href="/topics">Тематичний атлас ↗</a>
           <a href="/authors">Правила для авторів ↗</a>
           <a href="mailto:editor@kidney.pp.ua?subject=JRS%20%E2%80%94%20%D0%BF%D0%BE%D0%B4%D0%B0%D0%BD%D0%BD%D1%8F%20%D1%80%D1%83%D0%BA%D0%BE%D0%BF%D0%B8%D1%81%D1%83">
             Подати рукопис ↗
@@ -59,6 +64,10 @@ export default function PublicationExplorer({ items }: Props) {
 
   return (
     <div className="pub-explorer">
+      <div className="pub-topic-context">
+        <span>Наукова навігація</span>
+        <a href="/topics">Переглянути всі 8 напрямів ↗</a>
+      </div>
       <div className="pub-controls">
         <label className="pub-search">
           <span>Пошук у публікаціях</span>
@@ -68,6 +77,15 @@ export default function PublicationExplorer({ items }: Props) {
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Назва, автор, ключове слово…"
           />
+        </label>
+        <label className="pub-filter">
+          <span>Науковий напрям</span>
+          <select value={topic} onChange={event => setTopic(event.target.value as TopicSlug | "all")}>
+            <option value="all">Усі напрями</option>
+            {researchTopics.map(item => (
+              <option key={item.slug} value={item.slug}>{item.title}</option>
+            ))}
+          </select>
         </label>
         <label className="pub-filter">
           <span>Тип матеріалу</span>
@@ -93,7 +111,7 @@ export default function PublicationExplorer({ items }: Props) {
         <div className="pub-no-results">
           <h3>За вашим запитом нічого не знайдено</h3>
           <p>Спробуйте інший пошуковий запит або змініть тип матеріалу.</p>
-          <button type="button" onClick={() => { setQuery(""); setType("all"); }}>
+          <button type="button" onClick={() => { setQuery(""); setType("all"); setTopic("all"); }}>
             Очистити фільтри
           </button>
         </div>

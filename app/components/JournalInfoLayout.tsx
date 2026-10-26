@@ -8,6 +8,7 @@ type JournalInfoLayoutProps = {
   description: string;
   sections: SectionLink[];
   children: ReactNode;
+  wide?: boolean;
 };
 
 export default function JournalInfoLayout({
@@ -16,6 +17,7 @@ export default function JournalInfoLayout({
   description,
   sections,
   children,
+  wide = false,
 }: JournalInfoLayoutProps) {
   return (
     <>
@@ -34,6 +36,7 @@ export default function JournalInfoLayout({
           </a>
           <nav aria-label="Навігація журналу">
             <a href="/">Головна</a>
+            <a href="/topics">Атлас</a>
             <a href="/publications">Публікації</a>
             <a href="/authors">Для авторів</a>
             <a href="/editorial-policy">Редакційна політика</a>
@@ -59,6 +62,7 @@ export default function JournalInfoLayout({
               <span>Незалежне науково-інформаційне видання</span>
             </div>
             <nav className="info-switch-links" aria-label="Інформація про публікації">
+              <a href="/topics">Атлас</a>
               <a href="/publications">Публікації</a>
               <a href="/authors">Правила для авторів</a>
               <a href="/editorial-policy">Редакційна політика</a>
@@ -67,8 +71,8 @@ export default function JournalInfoLayout({
         </section>
 
         <section className="info-content">
-          <div className="wrap info-layout">
-            <aside className="info-sidebar" aria-label="Зміст сторінки">
+          <div className={`wrap info-layout${wide ? " info-layout-wide" : ""}`}>
+            {!wide && <aside className="info-sidebar" aria-label="Зміст сторінки">
               <p>На цій сторінці</p>
               <nav aria-label="Зміст">
                 {sections.map((section) => (
@@ -76,7 +80,7 @@ export default function JournalInfoLayout({
                 ))}
               </nav>
               <a className="info-side-contact" href="mailto:editor@kidney.pp.ua">Питання до редакції ↗</a>
-            </aside>
+            </aside>}
             <article className="info-article">{children}</article>
           </div>
         </section>
@@ -101,6 +105,7 @@ export default function JournalInfoLayout({
           </a>
           <nav aria-label="Посилання у підвалі сайту">
             <a href="/">Головна</a>
+            <a href="/topics">Атлас</a>
             <a href="/publications">Публікації</a>
             <a href="/authors">Для авторів</a>
             <a href="/editorial-policy">Редакційна політика</a>
