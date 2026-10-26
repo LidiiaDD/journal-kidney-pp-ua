@@ -778,3 +778,42 @@ footer{background:var(--deep);color:rgba(255,255,255,.62)}.footer-top{min-height
 @media(max-width:720px){.jrs-issues-intro{grid-template-columns:1fr;gap:22px}.jrs-issues-numbers{display:flex;align-items:baseline;flex-wrap:wrap;gap:8px 16px}.jrs-issues-numbers strong{font-size:40px}.jrs-issues-numbers i{width:1px;height:24px;margin:0 9px}.jrs-issues-feature,.jrs-issues-upcoming,.jrs-issue-detail-intro{grid-template-columns:1fr;padding:25px 18px;gap:32px}.jrs-issues-feature-visual,.jrs-issues-upcoming-cover,.jrs-issue-detail-cover{width:100%;max-width:330px;margin:auto}.jrs-issue-cover--large{padding:26px 22px}.jrs-issues-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:17px}.jrs-issues-grid .jrs-issue-cover{padding:15px}.jrs-issues-grid .jrs-issue-cover-title{font-size:clamp(25px,6vw,44px)}.jrs-issues-grid .jrs-issue-cover-top,.jrs-issues-grid .jrs-issue-cover-bottom{font-size:7px}.jrs-issues-ungrouped{flex-direction:column;align-items:flex-start}.jrs-issue-contents-item{grid-template-columns:40px 1fr;gap:12px}.jrs-issue-contents-index{font-size:25px}.jrs-issue-contents-actions .jrs-bookmark-container{margin-left:0}.jrs-home-issues-inner{grid-template-columns:1fr;gap:20px}.jrs-home-issues-index{display:none}}
 @media(max-width:430px){.jrs-issues-grid{grid-template-columns:1fr}.jrs-issues-grid-card .jrs-issue-cover{max-width:310px;margin:auto}.jrs-issues-grid-copy{max-width:310px;margin:15px auto}.jrs-issue-cover-title{font-size:38px}.jrs-issue-cover--large .jrs-issue-cover-title{font-size:53px}.jrs-issue-contents-meta{gap:8px}.jrs-issue-contents-actions>a{font-size:11px}}
 @media(prefers-reduced-motion:reduce){.jrs-issues-grid-card .jrs-issue-cover{transition:none}.jrs-issues-grid-card:hover .jrs-issue-cover{transform:none}}
+
+
+/* Article research-integrity passport — evidence over badges */
+.jrs-transparency-editor{grid-column:1 / -1;margin:26px 0 3px;padding:27px 29px 28px;background:#f3f7f3;border:1px solid #bed0c8;border-top:3px solid var(--teal);display:flex;flex-direction:column;gap:20px}
+.jrs-transparency-intro>span{font:700 10px Arial,Helvetica,sans-serif;color:var(--teal);letter-spacing:.13em}
+.jrs-transparency-intro>h3{font:400 29px/1.2 Georgia,serif;color:var(--navy);margin:9px 0 10px}
+.jrs-transparency-intro>p,.jrs-transparency-reminder{font:13px/1.75 Arial,Helvetica,sans-serif;color:var(--muted);margin:0}
+.jrs-transparency-editor label{display:flex;flex-direction:column;gap:8px;font:700 12px/1.5 Arial,Helvetica,sans-serif;color:var(--ink)}
+.jrs-transparency-editor label>small{font-size:11px;font-weight:400;color:var(--muted);line-height:1.65}
+.jrs-transparency-editor textarea,.jrs-transparency-editor select{box-sizing:border-box;display:block;width:100%;padding:12px 13px;border:1px solid #bbd0c7;background:#fff;color:var(--ink);font:14px/1.6 Arial,Helvetica,sans-serif}
+.jrs-transparency-editor textarea:focus,.jrs-transparency-editor select:focus{outline:2px solid var(--teal);outline-offset:2px}
+.jrs-transparency-grid{display:grid;grid-template-columns:1fr 1fr;gap:21px}
+.jrs-transparency-reminder{border-top:1px solid #c6d7cf;padding-top:18px}
+.jrs-integrity-passport{margin:53px 0 58px!important;padding:0!important;border:0!important;min-width:0}
+.jrs-passport-head{display:flex;align-items:start;justify-content:space-between;gap:25px;padding:24px 27px 27px;background:var(--navy);color:#fff}
+.jrs-passport-overline{font:700 10px/1.5 Arial,Helvetica,sans-serif;color:var(--mint);letter-spacing:.16em}
+.info-article .jrs-passport-head h2{font:400 clamp(30px,3.5vw,45px)/1.16 Georgia,serif;letter-spacing:-.035em;color:#fff;margin:10px 0 13px}
+.jrs-passport-head p{font-size:13px;line-height:1.75;color:rgba(255,255,255,.76);margin:0!important}
+.jrs-passport-symbol{flex-shrink:0;display:flex;gap:3px;align-items:center;justify-content:center;width:74px;height:74px;border:1px solid rgba(255,255,255,.28);border-radius:50%;font:400 21px Georgia,serif;color:var(--mint)}
+.jrs-passport-draft{margin:0;padding:12px 25px;background:#f7eedb;color:#6d5732;font-size:12px;line-height:1.7}
+.jrs-passport-review{display:grid;grid-template-columns:minmax(150px,.7fr) minmax(0,1.3fr);gap:22px;padding:26px 28px;background:#edf3ef;border-bottom:1px solid var(--line)}
+.jrs-passport-review-badge{display:flex;flex-direction:column;gap:13px;padding-right:18px;border-right:1px solid #bdd2c8}
+.jrs-passport-review-badge>span{font:700 10px Arial,Helvetica,sans-serif;letter-spacing:.12em;color:var(--teal)}
+.jrs-passport-review-badge>strong{font:400 23px/1.28 Georgia,serif;color:var(--navy)}
+.jrs-passport-review>div:nth-child(2) p{font:13px/1.8 Arial,Helvetica,sans-serif;color:#4b6264;margin:0 0 8px!important;overflow-wrap:anywhere;white-space:pre-line}
+.jrs-passport-review>div:nth-child(2) .jrs-passport-review-details{font-weight:500;color:var(--ink);margin-top:11px!important}
+.jrs-passport-review-missing{color:#70817c!important;font-style:italic}
+.jrs-passport-columns{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-top:0}
+.jrs-passport-item{display:flex;flex-direction:column;gap:7px;min-width:0;padding:23px 25px 26px;border-bottom:1px solid var(--line);border-right:1px solid var(--line)}
+.jrs-passport-item:nth-child(2n){border-right:0}
+.jrs-passport-item-label{font:400 23px/1.2 Georgia,serif;color:var(--navy)}
+.jrs-passport-item>small{font:11px/1.6 Arial,Helvetica,sans-serif;color:var(--muted)}
+.jrs-passport-item .jrs-passport-statement{margin:10px 0 0!important;font:13px/1.8 Arial,Helvetica,sans-serif;color:#32474c;overflow-wrap:anywhere;white-space:pre-line}
+.jrs-passport-item .jrs-passport-unknown{display:inline-flex;align-self:start;margin:14px 0 0!important;padding:6px 9px;background:#f2f4f0;border:1px solid #dce5dd;color:#697e77;font:11px Arial,Helvetica,sans-serif}
+.jrs-passport-foot{display:flex;gap:24px;align-items:flex-start;justify-content:space-between;background:#f6f7f4;padding:21px 24px}
+.jrs-passport-foot>span{flex-shrink:0;font:12px/1.7 Arial,Helvetica,sans-serif;color:var(--teal)}
+.jrs-passport-foot>span strong{font:400 28px Georgia,serif}
+.jrs-passport-foot>p{font:11px/1.75 Arial,Helvetica,sans-serif;color:var(--muted);margin:0!important}
+@media(max-width:730px){.jrs-transparency-grid,.jrs-passport-columns{grid-template-columns:1fr}.jrs-passport-item{border-right:0}.jrs-passport-review{grid-template-columns:1fr}.jrs-passport-review-badge{border-right:0;border-bottom:1px solid #bdd2c8;padding-right:0;padding-bottom:16px}.jrs-passport-foot{flex-direction:column;gap:12px}.jrs-passport-head{padding:23px 19px}.jrs-passport-symbol{display:none}.jrs-transparency-editor{padding:21px 17px}.jrs-passport-review{padding:21px 19px}}

@@ -70,6 +70,20 @@ function parseArticle(data: FormData): Omit<ArticleRow, "id" | "status" | "pdf_p
   const volume = value(data, "volume", 35) || null;
   const issue = value(data, "issue", 35) || null;
   const pages = value(data, "pages", 60) || null;
+  const reviewRaw = value(data, "review_kind", 20);
+  if (!["", "editorial", "external"].includes(reviewRaw)) return null;
+  const reviewKind = (reviewRaw || null) as "editorial" | "external" | null;
+  const reviewDetails = value(data, "review_details", 2000) || null;
+
+  const disclosures = {
+    ethics_statement: value(data, "ethics_statement", 3500) || null,
+    consent_statement: value(data, "consent_statement", 3500) || null,
+    funding_statement: value(data, "funding_statement", 3500) || null,
+    competing_interests: value(data, "competing_interests", 3500) || null,
+    data_availability: value(data, "data_availability", 3500) || null,
+    author_contributions: value(data, "author_contributions", 3500) || null,
+    ai_disclosure: value(data, "ai_disclosure", 3500) || null,
+  };
 
   if (!/^[a-z0-9-]{3,100}$/.test(slug) ||
       title.length < 5 || abstract.length < 20 ||
@@ -78,7 +92,8 @@ function parseArticle(data: FormData): Omit<ArticleRow, "id" | "status" | "pdf_p
       authors.some(a => !a.name || (a.orcid && !/^\d{4}-\d{4}-\d{4}-[\dX]{4}$/.test(a.orcid))) ||
       keywords.length === 0 ||
       (translationPresent && !translationComplete) ||
-      rawReferences.length > 150 || (doi !== null && !/^10[.]\d{4,9}\/\S+$/.test(doi))) return null;
+      rawReferences.length > 150 || (doi !== null && !/^10[.]\d{4,9}\/\S+$/.test(doi)) ||
+      (reviewKind === "external" && (!reviewDetails || reviewDetails.length < 20))) return null;
 
   return {
     slug, title, abstract, type, language, authors, keywords,
@@ -90,6 +105,9 @@ function parseArticle(data: FormData): Omit<ArticleRow, "id" | "status" | "pdf_p
     keywords_en: translatedLanguage === "en" && translationPresent ? translatedKeywords : [],
     references_list: rawReferences,
     doi, volume, issue, pages,
+    review_kind: reviewKind,
+    review_details: reviewDetails,
+    ...disclosures,
   };
 }
 
@@ -150,6 +168,11 @@ export async function publishAction(data: FormData) {
   if (!article || article.status !== "draft" ||
       !article.title || !article.abstract || !article.authors?.length || !article.keywords?.length) {
     redirect("/admin?error=locked");
+  }
+
+  if (!article.review_kind ||
+      (article.review_kind === "external" && (article.review_details?.trim().length ?? 0) < 20)) {
+    redirect(`/admin/articles/${id}?error=review`);
   }
 
   const publishedAt = new Date().toISOString().slice(0, 10);

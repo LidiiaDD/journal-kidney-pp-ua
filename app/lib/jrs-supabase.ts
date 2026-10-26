@@ -26,6 +26,15 @@ export type ArticleRow = {
   volume?: string | null;
   issue?: string | null;
   pages?: string | null;
+  review_kind?: "editorial" | "external" | null;
+  review_details?: string | null;
+  ethics_statement?: string | null;
+  consent_statement?: string | null;
+  funding_statement?: string | null;
+  competing_interests?: string | null;
+  data_availability?: string | null;
+  author_contributions?: string | null;
+  ai_disclosure?: string | null;
   status: "draft" | "published";
   published_at: string | null;
   pdf_path: string | null;
@@ -169,6 +178,17 @@ export function rowToPublication(row: ArticleRow): Publication {
         : {}),
     },
     references: row.references_list ?? [],
+    transparency: {
+      ...(row.review_kind ? { reviewKind: row.review_kind } : {}),
+      ...(row.review_details ? { reviewDetails: row.review_details } : {}),
+      ...(row.ethics_statement ? { ethicsStatement: row.ethics_statement } : {}),
+      ...(row.consent_statement ? { consentStatement: row.consent_statement } : {}),
+      ...(row.funding_statement ? { fundingStatement: row.funding_statement } : {}),
+      ...(row.competing_interests ? { competingInterests: row.competing_interests } : {}),
+      ...(row.data_availability ? { dataAvailability: row.data_availability } : {}),
+      ...(row.author_contributions ? { authorContributions: row.author_contributions } : {}),
+      ...(row.ai_disclosure ? { aiDisclosure: row.ai_disclosure } : {}),
+    },
     ...(row.doi ? { doi: row.doi } : {}),
     ...(row.volume ? { volume: row.volume } : {}),
     ...(row.issue ? { issue: row.issue } : {}),

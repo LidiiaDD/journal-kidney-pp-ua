@@ -17,8 +17,9 @@ export default function ArticleForm({ article, error, saved, created, published 
   return (
     <div className="jrs-admin-editor">
       {error && <div className="jrs-admin-notice error" role="alert">
-        {error === "fields" ? "Перевірте назву, анотацію, авторів, ключові слова, повноту перекладу та формат DOI."
+        {error === "fields" ? "Перевірте назву, анотацію, авторів, ключові слова, повноту перекладу, формат DOI та відомості про рецензування."
           : error === "checks" ? "Перед публікацією обов’язково підтвердьте всі чотири редакційні перевірки."
+          : error === "review" ? "Перед публікацією виберіть фактичний тип редакційного розгляду. Для незалежного рецензування заповніть його опис."
           : error === "publish" ? "Не вдалося опублікувати. Перевірте, чи заповнені всі поля і чи збережено PDF."
           : error === "pdf" ? "PDF не завантажено. Потрібен коректний PDF-файл до 3,5 МБ."
           : "Зберегти не вдалося. Перевірте унікальність slug і доступ до бази."}
@@ -87,6 +88,65 @@ export default function ArticleForm({ article, error, saved, created, published 
               <textarea name="references_list" rows={8} defaultValue={article?.references_list?.join("\n") || ""} placeholder={"Один перевірений бібліографічний запис на рядок\nНаступне джерело з нового рядка"} />
               <small>Один запис на рядок, до 150 джерел. Посилання не генеруються автоматично.</small>
             </label>
+            <section className="jrs-transparency-editor" aria-labelledby="jrs-transparency-title">
+              <div className="jrs-transparency-intro">
+                <span>JRS / RESEARCH INTEGRITY</span>
+                <h3 id="jrs-transparency-title">Паспорт наукової прозорості</h3>
+                <p>Ці відомості читач побачить біля статті. Вносіть лише документально перевірені заяви авторів і фактичні редакційні рішення. Відсутність інформації буде прямо позначена як «Не зазначено».</p>
+              </div>
+              <label>Фактичний тип редакційного розгляду (обов’язково перед публікацією)
+                <select name="review_kind" defaultValue={article?.review_kind || ""}>
+                  <option value="">Ще не визначено — тільки для чернетки</option>
+                  <option value="editorial">Редакційний розгляд (без заяви про незалежне рецензування)</option>
+                  <option value="external">Незалежне зовнішнє рецензування — фактично проведене</option>
+                </select>
+                <small>Не позначайте «зовнішнє рецензування» лише за перевірку самим редактором або програмою.</small>
+              </label>
+              <label>Що фактично відбувалося під час розгляду
+                <textarea name="review_details" rows={3} maxLength={2000}
+                  defaultValue={article?.review_details || ""}
+                  placeholder="Наприклад, опис редакційного розгляду або підтвердженого зовнішнього рецензування" />
+                <small>Для незалежного зовнішнього рецензування потрібен опис від 20 символів. Не вказуйте конфіденційні персональні дані рецензентів без дозволу.</small>
+              </label>
+              <div className="jrs-transparency-grid">
+                <label>Етичне схвалення або обґрунтування незастосовності
+                  <textarea name="ethics_statement" rows={4} maxLength={3500}
+                    defaultValue={article?.ethics_statement || ""}
+                    placeholder="Назва комісії, рішення й дата — лише якщо достовірно відомі. Для інших робіт поясніть незастосовність." />
+                </label>
+                <label>Інформована згода та згода на публікацію
+                  <textarea name="consent_statement" rows={4} maxLength={3500}
+                    defaultValue={article?.consent_statement || ""}
+                    placeholder="Фактична інформація про згоду, коли це застосовно." />
+                </label>
+                <label>Фінансування
+                  <textarea name="funding_statement" rows={3} maxLength={3500}
+                    defaultValue={article?.funding_statement || ""}
+                    placeholder="Вкажіть реального фінансувальника або підтверджену відсутність зовнішнього фінансування." />
+                </label>
+                <label>Конфлікти інтересів
+                  <textarea name="competing_interests" rows={3} maxLength={3500}
+                    defaultValue={article?.competing_interests || ""}
+                    placeholder="Фактично надана декларація авторів." />
+                </label>
+                <label>Доступність дослідницьких даних
+                  <textarea name="data_availability" rows={3} maxLength={3500}
+                    defaultValue={article?.data_availability || ""}
+                    placeholder="Де й на яких умовах доступні дані; не обіцяйте відкритого доступу до персональних даних." />
+                </label>
+                <label>Внесок авторів
+                  <textarea name="author_contributions" rows={3} maxLength={3500}
+                    defaultValue={article?.author_contributions || ""}
+                    placeholder="Наприклад, концепція, аналіз, збір даних, написання — лише реальний внесок." />
+                </label>
+                <label>Використання ШІ
+                  <textarea name="ai_disclosure" rows={3} maxLength={3500}
+                    defaultValue={article?.ai_disclosure || ""}
+                    placeholder="Інструменти та їх роль або підтверджена авторами відсутність використання." />
+                </label>
+              </div>
+              <p className="jrs-transparency-reminder">Усі зміни потрібно зберегти в чернетці до натискання «Опублікувати». Цей блок не виконує автоматичної етичної експертизи чи перевірки фактів.</p>
+            </section>
           </div>
         </fieldset>
         {!isPublished && (
@@ -128,7 +188,7 @@ export default function ArticleForm({ article, error, saved, created, published 
       {article && !isPublished && (
         <section className="jrs-admin-publish">
           <h2>Оприлюднення</h2>
-          <p>Перед публікацією перевірте всі наведені умови. Ваші підтвердження будуть записані разом із датою публікації; читачі побачать матеріал лише після окремої команди.</p>
+          <p>Перед публікацією збережіть паспорт прозорості, виберіть фактичний тип розгляду та перевірте всі наведені умови. Ваші підтвердження будуть записані разом із датою публікації; читачі побачать матеріал лише після окремої команди.</p>
           <form action={publishAction} className="jrs-publish-checklist">
             <input type="hidden" name="id" value={article.id} />
             <label><input type="checkbox" name="check_authors" value="yes" required /> Усі автори погодили фінальний текст і його оприлюднення.</label>

@@ -29,6 +29,19 @@ export type TranslatedMetadata = {
   keywords: string[];
 };
 
+export type ArticleTransparency = {
+  /** Claim from the actual editorial workflow; independent review must be documented. */
+  reviewKind?: "editorial" | "external";
+  reviewDetails?: string;
+  ethicsStatement?: string;
+  consentStatement?: string;
+  fundingStatement?: string;
+  competingInterests?: string;
+  dataAvailability?: string;
+  authorContributions?: string;
+  aiDisclosure?: string;
+};
+
 export type Publication = {
   /** Permanent URL part: lowercase latin letters, numbers, hyphens. */
   slug: string;
@@ -44,6 +57,7 @@ export type Publication = {
   translations?: Partial<Record<"uk" | "en", TranslatedMetadata>>;
   /** Numbered references provided and checked by the editor. */
   references?: string[];
+  transparency?: ArticleTransparency;
   /** Optional, e.g. /publications/example-study.pdf */
   pdfUrl?: string;
   /** Only include if a DOI has actually been registered. */

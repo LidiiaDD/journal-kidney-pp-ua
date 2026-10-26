@@ -3,6 +3,7 @@ import { formatPublicationDate, publicationTypeLabels } from "@/app/lib/publicat
 import ArticleLanguageView from "@/app/components/ArticleLanguageView";
 import CitationTools from "@/app/components/CitationTools";
 import BookmarkButton from "@/app/components/BookmarkButton";
+import IntegrityPassport from "@/app/components/IntegrityPassport";
 
 type Props = { article: Publication; draft?: boolean; pdfUrl?: string };
 
@@ -10,6 +11,7 @@ export const articleSectionLinks = (hasPdf: boolean, draft = false, hasReference
   { href: "#abstract", label: "Анотація / Abstract" },
   { href: "#keywords", label: "Ключові слова" },
   { href: "#authors", label: "Автори" },
+  { href: "#transparency", label: "Прозорість" },
   ...(!draft ? [{ href: "#citation", label: "Цитування" }] : []),
   ...(hasReferences ? [{ href: "#references", label: "Література" }] : []),
   ...(hasPdf ? [{ href: "#pdf", label: "Повний текст PDF" }] : []),
@@ -46,6 +48,7 @@ export default function ArticleContent({ article, draft = false, pdfUrl }: Props
           ))}
         </ul>
       </section>
+      <IntegrityPassport record={article.transparency} draft={draft} />
       {!draft && (
         <section id="citation">
           <h2>Як цитувати статтю</h2>
