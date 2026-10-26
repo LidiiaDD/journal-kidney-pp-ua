@@ -52,6 +52,10 @@ export default async function EnglishHome() {
             <h2>Four perspectives on kidney science.</h2>
             <p>From everyday clinical decisions to biomarker research.</p>
           </div>
+          <div className="jrs-en-fields-link">
+            <span>Explore all eight indexed research fields, linked to the current article catalogue.</span>
+            <a href="/en/topics">Explore the Research Atlas ↗</a>
+          </div>
           <div className="jrs-en-field-grid">
             {areas.map(area => (
               <article key={area.num} className="jrs-en-field-card">

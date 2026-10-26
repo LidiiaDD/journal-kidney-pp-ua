@@ -17,7 +17,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Атлас нефрологічних досліджень | Journal of Renal Science",
   description: "Орієнтуйтеся у наукових напрямах Journal of Renal Science: ХХН, гостре пошкодження нирок, діаліз, трансплантація, біомаркери, візуалізація та клінічні випадки.",
-  alternates: { canonical: "/topics" },
+  alternates: { canonical: "/topics", languages: { uk: "/topics", en: "/en/topics" } },
 };
 
 export default async function TopicsPage() {
@@ -32,6 +32,7 @@ export default async function TopicsPage() {
       sections={[]}
       wide
     >
+      <a className="jrs-en-article-uk-switch" href="/en/topics" hrefLang="en">Research Atlas in English ↗</a>
       <div className="atlas-preamble">
         <div className="atlas-preamble-copy">
           <p className="atlas-kicker"><span aria-hidden="true" /> Research atlas · JRS</p>

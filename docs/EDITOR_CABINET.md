@@ -282,3 +282,13 @@
 - Це лише запити `GET`: перевіряється ідентичність `/api/release`, публічні сторінки (укр./англ., повідомлення, sitemap, robots) та **недоступність без авторизації** `/admin`, приватного перегляду запису, PDF і JSON-експорту. Немає публікації, входу, записів у базу, таємних ключів, cookie або даних пацієнтів. Якщо Production відстає, сценарій повідомляє **FAIL**, не маскує ситуацію.
 - Це перевірка доступності й контролю доступу з анонімної сесії; вона **не** підміняє вхід редактора, наскрізний E2E редакційної роботи або перевірку фактичного вмісту PDF. Для оцінки налаштування RLS слід окремо перевіряти правила в Supabase.
 - На GitHub Actions є окрема автоматична `Verify JRS` для тестів коду та **ручна** `Verify live JRS production` для вже опублікованого релізу. Ручна не запускає нові Vercel-деплої та не споживає ліміт збірок.
+
+## English Research Atlas (October 2026)
+
+- `/en/topics` displays eight research fields in English using the **same classification logic and live counts** as the Ukrainian research atlas `/topics`. No duplicated editorial categories, published records, or new DB objects.
+- Topic cards link to `/en/publications?topic=<slug>`; the English catalogue recognizes and validates the slug and initializes the public client-side topic filter. Existing filters (query, article type, English-language metadata) work in combination.
+- Unknown slugs silently fall back to the complete published catalogue. A paper may belong to multiple fields; unmatched work is classified under `other`, not excluded. Topic counts may sum above total article count.
+- The English catalogue uses the existing `englishArticleView` metadata helper so **partial translations cannot be presented as approved English abstracts**. It never modifies manuscript metadata.
+- Index counts represent only published articles. Empty topics display zero; no demonstration data. The map is metadata-based discovery, not an assessment of scientific quality or external peer-review status.
+- Bidirectional UK/EN atlas navigation and a direct link from International Desk are included. The English sitemap registers `/en/topics`. No changes to editor permissions or publication controls.
+- `tests/jrs-english-atlas.test.mjs` covers empty archive counts, multi-topic matches, case-report routing, fallback classification, and consistency of valid topic slugs.

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import InternationalLayout from "@/app/components/InternationalLayout";
 import EnglishPublicationExplorer from "@/app/components/EnglishPublicationExplorer";
 import { allPublications } from "@/app/lib/jrs-catalogue";
+import { isTopicSlug } from "@/app/lib/research-topics";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -10,7 +11,11 @@ export const metadata: Metadata = {
   alternates: { canonical: "/en/publications", languages: { en: "/en/publications", uk: "/publications" } },
 };
 
-export default async function EnglishPublicationsPage() {
+type Props = { searchParams: Promise<{ topic?: string }> };
+
+export default async function EnglishPublicationsPage({ searchParams }: Props) {
+  const { topic } = await searchParams;
+  const selectedTopic = topic && isTopicSlug(topic) ? topic : "all";
   const articles = await allPublications();
   return (
     <InternationalLayout
@@ -23,7 +28,14 @@ export default async function EnglishPublicationsPage() {
           <div><span className="jrs-en-eyebrow">THE PUBLIC RESEARCH CATALOGUE</span><h2>Evidence begins with the published record.</h2><p>English titles, abstracts and keywords appear only if they were supplied for the publication. If they are unavailable, the original text is shown and clearly marked.</p></div>
           <div className="jrs-en-publications-count"><strong>{articles.length}</strong><span>released articles</span></div>
         </div>
-        <EnglishPublicationExplorer items={articles}/>
+        <div className="jrs-en-atlas-bridge">
+          <div>
+            <span className="jrs-en-eyebrow">EXPLORE BY FIELD</span>
+            <p>Prefer to browse by clinical interest? Open the eight-field Research Atlas.</p>
+          </div>
+          <a href="/en/topics">Open Research Atlas ↗</a>
+        </div>
+        <EnglishPublicationExplorer key={selectedTopic} items={articles} initialTopic={selectedTopic}/>
         <div className="jrs-en-catalogue-note">
           <span aria-hidden="true">✳</span>
           <div>

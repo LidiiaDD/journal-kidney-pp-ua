@@ -1,0 +1,72 @@
+/* JRS International Research Atlas. Shared taxonomy, published data only. */
+.jrs-en-atlas-page{padding:58px 0 88px}
+.jrs-en-atlas-intro{display:grid;grid-template-columns:minmax(0,1fr) 205px;align-items:end;gap:52px;margin-bottom:38px}
+.jrs-en-atlas-intro h2{font:400 clamp(38px,4.4vw,62px)/1.09 Georgia,serif;letter-spacing:-.05em;color:var(--navy);margin:13px 0 23px}
+.jrs-en-atlas-intro p{font:16px/1.8 Georgia,serif;color:var(--muted);margin:0;max-width:750px}
+.jrs-en-atlas-overview{display:flex;flex-direction:column;padding:22px;background:#eaf1eb;border-top:3px solid var(--teal)}
+.jrs-en-atlas-overview strong{color:var(--navy);font:400 52px/1.05 Georgia,serif}
+.jrs-en-atlas-overview span{color:var(--muted);font:11px/1.6 Arial,Helvetica,sans-serif}
+.jrs-en-atlas-overview i{width:100%;height:1px;background:#c9d8cf;margin:13px 0}
+.jrs-en-atlas-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+.jrs-en-atlas-card{position:relative;isolation:isolate;display:flex;flex-direction:column;min-width:0;min-height:427px;overflow:hidden;padding:22px;background:linear-gradient(145deg,#f9f8f2,#eef2ec);border:1px solid #c7d8ce;transition:transform .2s,box-shadow .2s}
+.jrs-en-atlas-card:hover{transform:translateY(-5px);box-shadow:0 18px 33px rgba(8,42,45,.13)}
+.jrs-en-atlas-card:focus-visible{outline:3px solid var(--teal);outline-offset:3px}
+.jrs-en-atlas-card--ckd{color:#fff;background:linear-gradient(130deg,#092b39,#0c4b56);border-color:#0d515d}
+.jrs-en-atlas-card--transplant{background:linear-gradient(145deg,#dceae1,#f5f2e9)}
+.jrs-en-atlas-card--biomarkers{background:linear-gradient(130deg,#edf4e8,#dfece9)}
+.jrs-en-atlas-card--other{background:linear-gradient(125deg,#e3ede7,#f6f2e8)}
+.jrs-en-atlas-card-top{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:3;gap:12px;color:var(--teal)}
+.jrs-en-atlas-card--ckd .jrs-en-atlas-card-top{color:var(--mint)}
+.jrs-en-atlas-card-top span:first-child{font:700 10px Arial,Helvetica,sans-serif;letter-spacing:.12em}
+.jrs-en-atlas-card-top span:last-child{font:400 23px Georgia,serif}
+.jrs-en-atlas-card-art{position:relative;pointer-events:none;min-height:120px;flex:1}
+.jrs-en-atlas-card-art .orbit{position:absolute;right:-54px;top:10px;width:170px;height:170px;border:1px solid rgba(12,98,99,.24);border-radius:50%}
+.jrs-en-atlas-card-art .orbit.second{right:-23px;top:44px;width:108px;height:108px}
+.jrs-en-atlas-card-art .core{position:absolute;right:49px;top:86px;width:20px;height:20px;border:1px solid var(--teal);border-radius:50%;background:rgba(141,187,181,.14)}
+.jrs-en-atlas-card--ckd .jrs-en-atlas-card-art .orbit,.jrs-en-atlas-card--ckd .jrs-en-atlas-card-art .core{border-color:rgba(169,218,202,.5)}
+.jrs-en-atlas-card--aki .jrs-en-atlas-card-art{transform:rotate(29deg)}
+.jrs-en-atlas-card--dialysis .jrs-en-atlas-card-art{transform:rotate(-26deg)}
+.jrs-en-atlas-card--transplant .jrs-en-atlas-card-art{transform:rotate(70deg)}
+.jrs-en-atlas-card--biomarkers .jrs-en-atlas-card-art{transform:rotate(-58deg)}
+.jrs-en-atlas-card--imaging .jrs-en-atlas-card-art{transform:rotate(13deg)}
+.jrs-en-atlas-card--cases .jrs-en-atlas-card-art{transform:rotate(-75deg)}
+.jrs-en-atlas-card--other .jrs-en-atlas-card-art{transform:rotate(52deg)}
+.jrs-en-atlas-card-content{position:relative;z-index:2;margin-top:auto}
+.jrs-en-atlas-card-kicker{font:700 10px/1.6 Arial,Helvetica,sans-serif;letter-spacing:.13em;color:var(--teal)}
+.jrs-en-atlas-card--ckd .jrs-en-atlas-card-kicker{color:var(--mint)}
+.jrs-en-atlas-card h3{font:400 clamp(24px,2.2vw,33px)/1.13 Georgia,serif;letter-spacing:-.03em;color:var(--navy);overflow-wrap:anywhere;margin:9px 0 14px}
+.jrs-en-atlas-card--ckd h3{color:#fff}
+.jrs-en-atlas-card-content p{font:12px/1.78 Arial,Helvetica,sans-serif;color:#52686a;margin:0 0 20px}
+.jrs-en-atlas-card--ckd .jrs-en-atlas-card-content p{color:rgba(255,255,255,.74)}
+.jrs-en-atlas-card-bottom{display:flex;justify-content:space-between;gap:9px;flex-wrap:wrap;align-items:baseline;border-top:1px solid rgba(12,98,99,.2);padding-top:14px}
+.jrs-en-atlas-card--ckd .jrs-en-atlas-card-bottom{border-color:rgba(255,255,255,.25)}
+.jrs-en-atlas-card-bottom>span{font:700 9px/1.6 Arial,Helvetica,sans-serif;color:#71847d}
+.jrs-en-atlas-card--ckd .jrs-en-atlas-card-bottom>span{color:rgba(255,255,255,.67)}
+.jrs-en-atlas-card-bottom strong{font:700 11px Arial,Helvetica,sans-serif;color:var(--teal);white-space:nowrap}
+.jrs-en-atlas-card--ckd .jrs-en-atlas-card-bottom strong{color:var(--mint)}
+.jrs-en-atlas-note{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:18px;align-items:start;padding:25px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:42px 0}
+.jrs-en-atlas-note>span{font:32px Georgia,serif;color:var(--teal)}
+.jrs-en-atlas-note strong{font:400 23px Georgia,serif;color:var(--navy)}
+.jrs-en-atlas-note p{font:12px/1.8 Arial,Helvetica,sans-serif;color:var(--muted);margin:10px 0 0}
+.jrs-en-atlas-note>a{font:700 12px Arial,Helvetica,sans-serif;color:var(--teal);white-space:nowrap;margin-top:9px}
+.jrs-en-atlas-contribute{text-align:center;background:var(--navy);color:#fff;padding:55px 25px 61px}
+.jrs-en-atlas-contribute .jrs-en-eyebrow{color:var(--mint)}
+.jrs-en-atlas-contribute h2{max-width:760px;margin:15px auto;color:#fff;font:400 clamp(29px,3.7vw,47px)/1.15 Georgia,serif}
+.jrs-en-atlas-contribute p{max-width:740px;margin:0 auto;color:rgba(255,255,255,.76);font:14px/1.8 Georgia,serif}
+.jrs-en-atlas-contribute>a{display:inline-flex;margin-top:24px;padding:14px 20px;background:var(--mint);color:var(--navy);font:700 12px Arial,Helvetica,sans-serif}
+.jrs-en-atlas-bridge,.jrs-en-topic-selection{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px 22px;background:#e9f1eb;border-left:3px solid var(--teal);padding:18px 22px;margin-bottom:23px}
+.jrs-en-atlas-bridge p{font:13px/1.7 Georgia,serif;color:#52686a;margin:5px 0 0}
+.jrs-en-atlas-bridge a,.jrs-en-topic-selection a{font:700 12px Arial,Helvetica,sans-serif;color:var(--teal)}
+.jrs-en-topic-selection{margin:18px 0 4px}
+.jrs-en-topic-selection span{color:var(--teal);font:700 10px Arial,Helvetica,sans-serif;letter-spacing:.1em}
+.jrs-en-topic-selection strong{color:var(--navy);font:400 22px Georgia,serif}
+.jrs-en-fields-link{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;background:#f4f7f1;border-left:3px solid var(--teal);padding:16px 21px;margin:-15px 0 28px}
+.jrs-en-fields-link span{font:13px/1.7 Georgia,serif;color:#53696a}
+.jrs-en-fields-link>a{font:700 12px Arial,Helvetica,sans-serif;color:var(--teal)}
+.jrs-en-explorer-tools{grid-template-columns:minmax(0,1.2fr) repeat(3,minmax(0,.75fr))}
+.jrs-en-explorer-empty-actions{display:flex;gap:10px;flex-wrap:wrap}
+.jrs-en-explorer-empty-actions>a{padding:13px 19px;color:#fff;background:var(--teal);font:700 12px Arial,Helvetica,sans-serif}
+.jrs-en-explorer-empty-actions>a:nth-child(2){color:var(--teal);background:transparent;border:1px solid var(--teal)}
+@media(max-width:1100px){.jrs-en-atlas-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.jrs-en-atlas-card{min-height:360px}.jrs-en-atlas-card h3{font-size:31px}.jrs-en-explorer-tools{grid-template-columns:repeat(2,minmax(0,1fr))}.jrs-en-explorer-tools label:first-child{grid-column:1/-1}}
+@media(max-width:690px){.jrs-en-atlas-page{padding:35px 0 55px}.jrs-en-atlas-intro{grid-template-columns:1fr;gap:21px}.jrs-en-atlas-overview{display:grid;grid-template-columns:auto 1fr;gap:7px 14px;align-items:baseline}.jrs-en-atlas-overview strong{font-size:38px}.jrs-en-atlas-overview i{grid-column:1/-1;margin:5px 0}.jrs-en-atlas-grid{grid-template-columns:1fr}.jrs-en-atlas-card{min-height:340px}.jrs-en-atlas-card h3{font-size:31px}.jrs-en-atlas-card-art{min-height:98px}.jrs-en-atlas-note{grid-template-columns:30px minmax(0,1fr)}.jrs-en-atlas-note>a{grid-column:2;margin-top:0}.jrs-en-explorer-tools{grid-template-columns:1fr}.jrs-en-explorer-tools label:first-child{grid-column:1}.jrs-en-topic-selection{align-items:flex-start;flex-direction:column}}
+@media(prefers-reduced-motion:reduce){.jrs-en-atlas-card{transition:none}.jrs-en-atlas-card:hover{transform:none}}

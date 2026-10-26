@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from "react";
 import type { Publication, PublicationType } from "@/app/lib/publications";
+import { englishArticleView } from "@/app/lib/jrs-english-article";
+import { researchTopics, topicsForPublication, type TopicSlug } from "@/app/lib/research-topics";
 
 const types: { value: PublicationType | "all"; label: string }[] = [
   { value: "all", label: "All article types" },
@@ -19,25 +21,29 @@ const labels: Record<PublicationType, string> = {
   perspective: "Perspective",
 };
 
-export default function EnglishPublicationExplorer({ items }: { items: Publication[] }) {
+export default function EnglishPublicationExplorer({
+  items, initialTopic = "all",
+}: { items: Publication[]; initialTopic?: TopicSlug | "all" }) {
   const [query, setQuery] = useState("");
   const [type, setType] = useState<PublicationType | "all">("all");
   const [language, setLanguage] = useState<"all" | "en" | "uk">("all");
+  const [topic, setTopic] = useState<TopicSlug | "all">(initialTopic);
+  const activeTopic = researchTopics.find(item => item.slug === topic);
 
   const filtered = useMemo(() => {
     const normalized = query.trim().toLocaleLowerCase("en");
     return items.filter(item => {
       if (type !== "all" && item.type !== type) return false;
-      const translated = item.translations?.en;
-      const readableEnglish = item.language === "en" || Boolean(translated?.title);
-      if (language === "en" && !readableEnglish) return false;
-      if (language === "uk" && readableEnglish) return false;
+      if (topic !== "all" && !topicsForPublication(item).includes(topic)) return false;
+      const display = englishArticleView(item);
+      if (language === "en" && !display.englishAvailable) return false;
+      if (language === "uk" && display.englishAvailable) return false;
       if (!normalized) return true;
       return [item.title, item.abstract, ...item.keywords,
-        translated?.title || "", translated?.abstract || "", ...(translated?.keywords || []),
+        display.metadata.title, display.metadata.abstract, ...display.metadata.keywords,
         ...item.authors.map(author => author.name)].join(" ").toLocaleLowerCase("en").includes(normalized);
     });
-  }, [items, query, type, language]);
+  }, [items, query, type, language, topic]);
 
   return (
     <div className="jrs-en-explorer">
@@ -45,6 +51,14 @@ export default function EnglishPublicationExplorer({ items }: { items: Publicati
         <label>Search title, author or keywords
           <input type="search" value={query} onChange={event => setQuery(event.target.value)}
             placeholder="Try a research topic or surname…" />
+        </label>
+        <label>Research area
+          <select value={topic} onChange={event => setTopic(event.target.value as TopicSlug | "all")}>
+            <option value="all">All research areas</option>
+            {researchTopics.map(area => (
+              <option key={area.slug} value={area.slug}>{area.english}</option>
+            ))}
+          </select>
         </label>
         <label>Article type
           <select value={type} onChange={event => setType(event.target.value as PublicationType | "all")}>
@@ -55,24 +69,29 @@ export default function EnglishPublicationExplorer({ items }: { items: Publicati
           <select value={language} onChange={event => setLanguage(event.target.value as "all" | "en" | "uk")}>
             <option value="all">All published articles</option>
             <option value="en">English title available</option>
-            <option value="uk">Original language only</option>
+            <option value="uk">No English metadata</option>
           </select>
         </label>
       </div>
+      {activeTopic && (
+        <div className="jrs-en-topic-selection">
+          <span>RESEARCH ATLAS / {activeTopic.code}</span>
+          <strong>{activeTopic.english}</strong>
+          <a href="/en/topics">View all research fields ↗</a>
+        </div>
+      )}
       <div className="jrs-en-explorer-result">
         <span role="status" aria-live="polite">Showing {filtered.length} of {items.length} published articles</span>
-        {(query || type !== "all" || language !== "all") &&
-          <button type="button" onClick={() => { setQuery(""); setType("all"); setLanguage("all"); }}>Clear filters</button>}
+        {(query || type !== "all" || language !== "all" || topic !== "all") &&
+          <button type="button" onClick={() => { setQuery(""); setType("all"); setLanguage("all"); setTopic("all"); }}>Clear filters</button>}
       </div>
       {filtered.length ? (
         <div className="jrs-en-publication-list">
           {filtered.map((article, index) => {
-            const translated = article.translations?.en;
-            const hasEnglish = article.language === "en" || Boolean(translated?.title);
-            const title = article.language === "en" ? article.title : translated?.title || article.title;
-            const abstract = article.language === "en" ? article.abstract : translated?.abstract || article.abstract;
-            const lang = hasEnglish ? "en" : article.language;
-            const keywords = article.language === "en" ? article.keywords : translated?.keywords || article.keywords;
+            const display = englishArticleView(article);
+            const { title, abstract, keywords } = display.metadata;
+            const hasEnglish = display.englishAvailable;
+            const lang = display.language;
             return (
               <article className="jrs-en-publication-entry" key={article.slug}>
                 <div className="jrs-en-publication-index">{String(index + 1).padStart(2, "0")}</div>
@@ -104,8 +123,11 @@ export default function EnglishPublicationExplorer({ items }: { items: Publicati
           <p>{items.length
             ? "Try a different topic, article type or language filter. No unpublished manuscripts are included."
             : "The catalogue currently contains no publicly released studies. Published research will appear here automatically, with English metadata only where it has actually been provided."}</p>
-          {items.length ? <button type="button" onClick={() => { setQuery(""); setType("all"); setLanguage("all"); }}>Show all articles</button>
-            : <a href="/en/authors">Explore author guidance ↗</a>}
+          {items.length ? <button type="button" onClick={() => { setQuery(""); setType("all"); setLanguage("all"); setTopic("all"); }}>Show all articles</button>
+            : <div className="jrs-en-explorer-empty-actions">
+                <a href="/en/topics">Return to research atlas ↗</a>
+                <a href="/en/authors">Explore author guidance ↗</a>
+              </div>}
         </div>
       )}
     </div>
