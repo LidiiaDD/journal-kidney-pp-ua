@@ -28,10 +28,10 @@ export function publicationBlockers(article: ArticleRow): PublicationBlocker[] {
   if (!/^[a-z0-9-]{3,100}$/.test(article.slug || "")) {
     add("slug", "Постійна адреса", "Потрібна коректна унікальна адреса латиницею.");
   }
-  if ((article.title?.trim().length ?? 0) < 5 || article.title.length > 500) {
+  if ((article.title?.trim().length ?? 0) < 5 || (article.title?.length ?? 0) > 500) {
     add("title", "Назва", "Назва повинна містити від 5 до 500 символів.");
   }
-  if ((article.abstract?.trim().length ?? 0) < 20 || article.abstract.length > 15000) {
+  if ((article.abstract?.trim().length ?? 0) < 20 || (article.abstract?.length ?? 0) > 15000) {
     add("abstract", "Анотація", "Анотація повинна містити від 20 до 15 000 символів.");
   }
   if (!allowedTypes.has(article.type)) {
