@@ -292,3 +292,15 @@
 - Index counts represent only published articles. Empty topics display zero; no demonstration data. The map is metadata-based discovery, not an assessment of scientific quality or external peer-review status.
 - Bidirectional UK/EN atlas navigation and a direct link from International Desk are included. The English sitemap registers `/en/topics`. No changes to editor permissions or publication controls.
 - `tests/jrs-english-atlas.test.mjs` covers empty archive counts, multi-topic matches, case-report routing, fallback classification, and consistency of valid topic slugs.
+
+
+## Оптимізація ліміту Vercel Hobby без платного тарифу (26.10.2026)
+
+**Причина:** надмірна кількість автоматичних preview-деплоїв на кожен проміжний коміт у `feature/...` спричинила `402 api-deployments-free-per-day` та затримала розгортання Production.
+
+- Новий кореневий `vercel.json` використовує офіційну Git-конфігурацію `git.deploymentEnabled`: шаблон `feature/**: false` вимикає **автоматичні** деплої для гілок з префіксом `feature/`; `main: true` залишає **автоматичні Production-деплої** після злиття змін в `main`. Інші гілки не вимикаються.
+- Для перевірки pull request як і раніше працює незалежний GitHub Actions `Verify JRS` (регресійні тести + `next build`). Це **не** замінює браузерний preview або постдеплойну перевірку. Якщо потрібен інтерактивний preview конкретного feature-коміту, створіть його вручну через Vercel → Deployments → Create Deployment, але врахуйте денну квоту.
+- Навмисно не використовується Vercel `Ignored Build Step`: скасовані через нього збірки теж зараховуються до ліміту деплоїв. Фільтрація Git-подій має запобігати зайвому створенню деплоїв, а не скасовувати їх після запуску.
+- Після переходу у `main` перевірити у Vercel, що нові коміти `feature/...` не створюють автоматичних preview, а Production як і раніше розгортається; злиття саме по собі **не доказ**, що налаштування вже ефективне.
+- Для відновлення автоматичних preview видаліть правило `feature/**` із `vercel.json` (або увімкніть його). Тарифи, секрети, Supabase/RLS, наукові дані й права користувачів не змінюються.
+- Перевірка політики `npm run test:vercel-deploy-policy` додається до `npm run build`.
