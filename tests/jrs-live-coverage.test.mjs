@@ -7,7 +7,7 @@ const script = readFileSync(new URL("../scripts/verify-jrs-live.mjs", import.met
 function list(name) {
   const match = new RegExp("const " + name + " = \\[([\\s\\S]*?)\\];").exec(script);
   assert.ok(match, name + " must exist");
-  return [...match[1].matchAll(/"\/(?:[a-z0-9-]+\/?)*"/g)].map(item => JSON.parse(item[0]));
+  return [...match[1].matchAll(/"\/[^"]*"/g)].map(item => JSON.parse(item[0]));
 }
 
 test("live audit enumerates all primary Ukrainian editorial routes", () => {
