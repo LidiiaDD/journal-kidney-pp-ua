@@ -40,7 +40,7 @@ export default function JournalInfoLayout({
             <a href="/publications">Публікації</a>
             <a href="/authors">Для авторів</a>
             <a href="/editorial-policy">Редакційна політика</a>
-            <a href="/#board">Редакція</a>
+            <a href="/issues">Випуски</a>
           </nav>
           <a className="submit" href="mailto:editor@kidney.pp.ua?subject=JRS%20%E2%80%94%20%D0%BF%D0%BE%D0%B4%D0%B0%D0%BD%D0%BD%D1%8F%20%D1%80%D1%83%D0%BA%D0%BE%D0%BF%D0%B8%D1%81%D1%83">
             Подати рукопис
@@ -64,6 +64,7 @@ export default function JournalInfoLayout({
             <nav className="info-switch-links" aria-label="Інформація про публікації">
               <a href="/topics">Атлас</a>
               <a href="/publications">Публікації</a>
+              <a href="/issues">Випуски</a>
               <a href="/reading-list">Моя бібліотека</a>
               <a href="/authors">Правила для авторів</a>
               <a href="/manuscript-checklist">Навігатор рукопису</a>
@@ -110,6 +111,7 @@ export default function JournalInfoLayout({
             <a href="/">Головна</a>
             <a href="/topics">Атлас</a>
             <a href="/publications">Публікації</a>
+            <a href="/issues">Випуски</a>
             <a href="/reading-list">Моя бібліотека</a>
             <a href="/authors">Для авторів</a>
             <a href="/manuscript-checklist">Навігатор рукопису</a>

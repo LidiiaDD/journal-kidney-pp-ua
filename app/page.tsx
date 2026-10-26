@@ -1,5 +1,6 @@
 import { formatPublicationDate, publicationTypeLabels } from "@/app/lib/publications";
 import { allPublications } from "@/app/lib/jrs-catalogue";
+import { groupPublishedIssues, issueHref } from "@/app/lib/jrs-issues";
 
 const directions = [
   ["01", "Клінічна нефрологія", "Діагностика, профілактика й лікування гострих та хронічних захворювань нирок."],
@@ -18,7 +19,9 @@ const Arrow = () => <span aria-hidden="true">↗</span>;
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const latestPublications = (await allPublications()).slice(0, 3);
+  const publications = await allPublications();
+  const latestPublications = publications.slice(0, 3);
+  const latestIssue = groupPublishedIssues(publications)[0];
   return (
     <main>
       <div className="topline">
@@ -40,7 +43,7 @@ export default async function Home() {
             <a href="/publications">Публікації</a>
             <a href="/authors">Авторам</a>
             <a href="/editorial-policy">Політика</a>
-            <a href="#board">Редакція</a>
+            <a href="/issues">Випуски</a>
           </nav>
           <a className="submit" href="mailto:editor@kidney.pp.ua?subject=Подання рукопису до Journal of Renal Science">
             Подати рукопис
@@ -70,12 +73,17 @@ export default async function Home() {
           <div className="cover-stage">
             <div className="orbit large" /><div className="orbit small" />
             <article className="cover">
-              <div className="cover-meta"><span>Journal of</span><span>2026</span></div>
+              <div className="cover-meta"><span>Journal of</span><span>{latestIssue ? latestIssue.latestArticleDate.slice(0,4) : new Date().getFullYear()}</span></div>
               <div className="cover-name"><strong>RENAL</strong><strong>SCIENCE</strong></div>
               <div className="renal-art" aria-hidden="true"><i /><i /></div>
               <div className="cover-meta"><span>Nephrology · Dialysis</span><span>Transplantation</span></div>
             </article>
-            <div className="issue-status"><i /><span><small>Перший випуск</small><strong>У підготовці</strong></span></div>
+            <a className="issue-status" href={latestIssue ? issueHref(latestIssue.key) : "/issues"}>
+              <i />
+              {latestIssue
+                ? <span><small>Архів випусків JRS</small><strong>Том {latestIssue.volume} · № {latestIssue.number} ↗</strong></span>
+                : <span><small>Перший випуск</small><strong>У підготовці ↗</strong></span>}
+            </a>
           </div>
         </div>
       </section>
@@ -172,6 +180,25 @@ export default async function Home() {
         </div>
       </section>
 
+      <section className="section jrs-home-issues">
+        <div className="wrap jrs-home-issues-inner">
+          <div className="jrs-home-issues-glyph" aria-hidden="true">
+            <span className="jrs-home-issues-symbol">JRS</span>
+            <span className="jrs-home-issues-orbit a"/>
+            <span className="jrs-home-issues-orbit b"/>
+          </div>
+          <div className="jrs-home-issues-copy">
+            <p className="jrs-home-issues-overline">JRS · ISSUE ARCHIVE</p>
+            <h2>Випуски, які хочеться <em>зберігати.</em></h2>
+            <p>{latestIssue
+              ? `Архів вже містить публікації, віднесені до тому ${latestIssue.volume}, випуску ${latestIssue.number}. Перегляньте зміст і добірку досліджень.`
+              : "Перший випуск ще готується. Обкладинки й зміст з’являться тільки разом із фактично опублікованими роботами."}</p>
+            <a href="/issues">Відкрити архів випусків ↗</a>
+          </div>
+          <span className="jrs-home-issues-index">VOL. / NO.</span>
+        </div>
+      </section>
+
       <section className="section authors" id="authors">
         <div className="wrap">
           <div className="split">
@@ -233,7 +260,7 @@ export default async function Home() {
       <footer>
         <div className="wrap footer-top">
           <div className="brand footer-brand"><span className="logo"><b>J</b><b>R</b><b>S</b></span><span><strong>Journal of Renal Science</strong></span></div>
-          <nav><a href="#about">Про журнал</a><a href="/topics">Атлас</a><a href="/publications">Публікації</a><a href="/reading-list">Моя бібліотека</a><a href="/submission-studio">Подання статті</a><a href="/authors">Для авторів</a><a href="/editorial-policy">Редакційна політика</a><a href="#board">Редакція</a></nav>
+          <nav><a href="#about">Про журнал</a><a href="/topics">Атлас</a><a href="/publications">Публікації</a><a href="/issues">Випуски</a><a href="/reading-list">Моя бібліотека</a><a href="/submission-studio">Подання статті</a><a href="/authors">Для авторів</a><a href="/editorial-policy">Редакційна політика</a><a href="#board">Редакція</a></nav>
         </div>
         <div className="wrap footer-bottom"><span>© {new Date().getFullYear()} Journal of Renal Science</span><span>Nephrology · Dialysis · Transplantation</span></div>
       </footer>

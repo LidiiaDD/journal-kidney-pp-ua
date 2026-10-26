@@ -5,6 +5,7 @@ import JournalInfoLayout from "@/app/components/JournalInfoLayout";
 import ArticleContent, { articleSectionLinks } from "@/app/components/ArticleContent";
 import { formatPublicationDate, publicationTypeLabels } from "@/app/lib/publications";
 import { articleUrl } from "@/app/lib/citations";
+import { issueHref, makeIssueKey } from "@/app/lib/jrs-issues";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -61,6 +62,14 @@ export default async function PublicationPage({ params }: Props) {
           ? { alternativeHeadline: article.translations.uk.title } : {}),
       }).replace(/</g, "\\u003c") }} />
       <p className="pub-back"><a href="/publications">← Усі публікації</a></p>
+      {article.volume && article.issue && (
+        <a className="jrs-article-issue-reference"
+          href={issueHref(makeIssueKey(article.volume, article.issue))}>
+          <span>Матеріал випуску</span>
+          <strong>Том {article.volume} · № {article.issue}</strong>
+          <b aria-hidden="true">↗</b>
+        </a>
+      )}
       <ArticleContent article={article} />
     </JournalInfoLayout>
   );
