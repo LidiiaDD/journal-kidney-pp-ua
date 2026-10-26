@@ -35,6 +35,7 @@ export default async function NoticeDetailPage({ params }: Props) {
       ]}
     >
       <p className="pub-back"><a href="/notices">← Усі редакційні повідомлення</a></p>
+      <a className="jrs-en-article-uk-switch" href={`/en/notices/${notice.id}`} hrefLang="en">English reading interface ↗</a>
       <article className={`jrs-notice-detail is-${notice.kind}`} id="editorial-notice">
         <div className="jrs-notice-detail-top">
           <span>JRS / OFFICIAL EDITORIAL NOTICE</span>

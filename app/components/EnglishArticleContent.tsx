@@ -1,6 +1,7 @@
 import type { ArticleTransparency, Publication } from "@/app/lib/publications";
 import type { JrsNotice } from "@/app/lib/jrs-notices";
-import { strongestNotice, noticeUrl } from "@/app/lib/jrs-notices";
+import { englishNoticeHref } from "@/app/lib/jrs-english-notices";
+import { strongestNotice } from "@/app/lib/jrs-notices";
 import { articleUrl } from "@/app/lib/citations";
 import { englishArticleView } from "@/app/lib/jrs-english-article";
 import EnglishCitationTools from "@/app/components/EnglishCitationTools";
@@ -73,11 +74,11 @@ export default function EnglishArticleContent({ article, notices }: { article: P
                 <li key={notice.id}>
                   <strong>{englishNoticeLabels[notice.kind]}</strong>
                   <time dateTime={notice.issued_at}>{englishDate(notice.issued_at)}</time>
-                  <a href={noticeUrl(notice.id)}>Read official notice ↗</a>
+                  <a href={englishNoticeHref(notice.id)}>Read notice with English navigation ↗</a>
                 </li>
               ))}
             </ol>
-            <small>Official notices retain their original published language and are linked to their dated records.</small>
+            <small>Official notices retain their original published language and are linked to their dated records. <a href="/en/notices">Browse all editorial decisions ↗</a></small>
           </div>
         </section>
       )}

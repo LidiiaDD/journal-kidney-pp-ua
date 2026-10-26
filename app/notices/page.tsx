@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Офіційні редакційні повідомлення | Journal of Renal Science",
   description: "Публічний реєстр виправлень, повідомлень про занепокоєння та відкликань статей Journal of Renal Science.",
-  alternates: { canonical: "/notices" },
+  alternates: { canonical: "/notices", languages: { uk: "/notices", en: "/en/notices" } },
 };
 
 export default async function NoticesRegistryPage() {
@@ -23,6 +23,7 @@ export default async function NoticesRegistryPage() {
       sections={[]}
       wide
     >
+      <a className="jrs-en-article-uk-switch" href="/en/notices" hrefLang="en">English editorial notices ↗</a>
       <div className="jrs-notices-register-intro">
         <div>
           <span>JRS / PUBLIC EDITORIAL RECORD</span>

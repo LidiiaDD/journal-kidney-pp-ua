@@ -5,6 +5,7 @@ const menu = [
   { href: "/en/publications", label: "Research" },
   { href: "/en/authors", label: "For authors" },
   { href: "/en/policy", label: "Editorial policy" },
+  { href: "/en/notices", label: "Corrections & retractions" },
 ];
 
 type Props = {

@@ -10,7 +10,7 @@ const origin = "https://journal.kidney.pp.ua";
 export const dynamic = "force-dynamic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const core = ["/", "/topics", "/publications", "/contributors", "/issues", "/notices", "/follow", "/en", "/en/publications", "/en/authors", "/en/policy", "/authors", "/manuscript-checklist", "/submission-studio", "/editorial-policy"].map(
+  const core = ["/", "/topics", "/publications", "/contributors", "/issues", "/notices", "/follow", "/en", "/en/publications", "/en/authors", "/en/policy", "/en/notices", "/authors", "/manuscript-checklist", "/submission-studio", "/editorial-policy"].map(
     (path) => ({ url: origin + path })
   );
 

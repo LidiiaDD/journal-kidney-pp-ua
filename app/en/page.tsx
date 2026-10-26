@@ -105,6 +105,18 @@ export default async function EnglishHome() {
         <a href="/en/policy">Editorial principles and publication status ↗</a>
       </section>
 
+      <section className="jrs-en-notice-homeband">
+        <div className="wrap jrs-en-notice-homeband-inner">
+          <div aria-hidden="true" className="jrs-en-notice-homeband-mark">!</div>
+          <div>
+            <span className="jrs-en-eyebrow">PUBLICATION INTEGRITY / OFFICIAL RECORD</span>
+            <h2>Corrections belong in plain sight.</h2>
+            <p>The public notice register is where editors document genuine corrections, expressions of concern and retractions. Official statements are linked to the related article, with their wording preserved.</p>
+          </div>
+          <a href="/en/notices">Explore editorial notices ↗</a>
+        </div>
+      </section>
+
       <section className="jrs-en-author-invitation">
         <div className="wrap jrs-en-author-invitation-inner">
           <span className="jrs-en-eyebrow">CONTRIBUTE TO JRS</span>

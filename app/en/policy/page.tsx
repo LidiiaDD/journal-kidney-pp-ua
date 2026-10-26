@@ -83,7 +83,7 @@ export default function EnglishPolicyPage() {
             <section key={section.index} className="jrs-en-policy-section">
               <div><span>{section.index} / JRS PRINCIPLES</span><h2>{section.title}</h2></div>
               <div>{section.text.map(text => <p key={text}>{text}</p>)}
-                {section.index === "07" && <p>Read the <a href="/notices" lang="uk">public record of corrections and retractions ↗</a>. Its current interface is in Ukrainian.</p>}
+                {section.index === "07" && <p>Read the <a href="/en/notices">public register of corrections and retractions ↗</a>. The English interface identifies each decision while preserving the official notice text in its original language.</p>}
                 {section.index === "08" && <p>For current author guidance, see <a href="/en/authors">Information for authors ↗</a>, or contact <a href="mailto:editor@kidney.pp.ua">editor@kidney.pp.ua</a>.</p>}
               </div>
             </section>

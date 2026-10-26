@@ -257,3 +257,12 @@
 - Обробники реєструються на подію `submit` у фазі capture та очищуються при демонтажі компонента. Незмінена форма не блокує PDF; сама дія «Зберегти чернетку» не блокується цим захистом.
 - Жодні дані чернетки не записуються у `localStorage`, `sessionStorage` або сторонні сервіси. Це **додатковий захист від помилки редактора**, а не автоматичне збереження, тест браузерної взаємодії чи заміна серверної перевірки прав/розміру/формату PDF.
 - Збереження через сервер і попередні вимоги до PDF не змінені. Регресійні перевірки `npm run test:unsaved-pdf-guard` контролюють зв'язок форм, перехоплення submit, попередження й очищення обробників, але не замінюють ручний браузерний E2E-тест на справжній приватній чернетці.
+
+## English-language editorial notices (October 2026)
+
+- `/en/notices` is an English-language catalogue of public post-publication editorial notices. Only RLS-authorized records for **published** scientific articles are shown. Counters reflect actual database results; no demonstration entries.
+- `/en/notices/[id]` gives each existing official notice an English interface, date, notice type and article navigation, while the **original title and explanation are reproduced verbatim without machine translation**.
+- The English notice page is marked `noindex` with its original `/notices/[id]` as canonical, avoiding duplicate indexing of the untranslated source record. The English overview has its own canonical address and reciprocal alternates with the Ukrainian register.
+- Retractions, expressions of concern and corrections remain visibly distinct. Every English article's existing warning now links to its corresponding `/en/notices/[id]` route and the English public register.
+- No mutation or translation of editor-issued decisions. Backend read failures must not be silently converted into an empty registry; official notices remain the responsibility of the editorial office.
+- New English navigation links are present in the International Desk, the English editorial policy, and the Ukrainian primary notice register. Publicity and editor permissions remain unchanged.
