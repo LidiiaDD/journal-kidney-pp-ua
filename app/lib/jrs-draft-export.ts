@@ -29,7 +29,12 @@ export function makeDraftMetadataExport(article: ArticleRow, exportedAt: string)
       abstract: article.abstract,
       type: article.type,
       language: article.language,
-      authors: article.authors,
+      // Explicitly sanitize author objects as well as top-level row keys.
+      authors: Array.isArray(article.authors) ? article.authors.map(author => ({
+        name: author.name,
+        ...(author.affiliation ? { affiliation: author.affiliation } : {}),
+        ...(author.orcid ? { orcid: author.orcid } : {}),
+      })) : [],
       keywords: article.keywords,
       title_uk: article.title_uk ?? null,
       abstract_uk: article.abstract_uk ?? null,
