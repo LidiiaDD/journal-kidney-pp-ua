@@ -268,6 +268,20 @@ export default async function Home() {
         </div>
       </section>
 
+      <section className="jrs-home-follow">
+        <div className="wrap jrs-home-follow-inner">
+          <div className="jrs-home-follow-logo" aria-hidden="true">
+            <span className="jrs-home-follow-waves"><i/><i/><i/></span>
+          </div>
+          <div className="jrs-home-follow-copy">
+            <span>JRS / STAY INFORMED</span>
+            <h2>Наукові відкриття — <em>без зайвого шуму.</em></h2>
+            <p>Стежте за новими дослідженнями та редакційними оновленнями через RSS. Жодних облікових записів і поштових розсилок.</p>
+          </div>
+          <a href="/follow">Стежити за JRS ↗</a>
+        </div>
+      </section>
+
       <section className="contact">
         <div className="wrap contact-grid">
           <div><p className="eyebrow pale"><i /> Редакція журналу</p><h2>Поговорімо про вашу роботу.</h2></div>
@@ -280,7 +294,7 @@ export default async function Home() {
       <footer>
         <div className="wrap footer-top">
           <div className="brand footer-brand"><span className="logo"><b>J</b><b>R</b><b>S</b></span><span><strong>Journal of Renal Science</strong></span></div>
-          <nav><a href="#about">Про журнал</a><a href="/topics">Атлас</a><a href="/publications">Публікації</a><a href="/contributors">Дослідники</a><a href="/issues">Випуски</a><a href="/reading-list">Моя бібліотека</a><a href="/submission-studio">Подання статті</a><a href="/authors">Для авторів</a><a href="/editorial-policy">Редакційна політика</a><a href="/notices">Виправлення</a><a href="/feed.xml" type="application/rss+xml">RSS</a><a href="#board">Редакція</a></nav>
+          <nav><a href="#about">Про журнал</a><a href="/topics">Атлас</a><a href="/publications">Публікації</a><a href="/contributors">Дослідники</a><a href="/issues">Випуски</a><a href="/reading-list">Моя бібліотека</a><a href="/submission-studio">Подання статті</a><a href="/authors">Для авторів</a><a href="/editorial-policy">Редакційна політика</a><a href="/notices">Виправлення</a><a href="/follow">Стежити за JRS</a><a href="/feed.xml" type="application/rss+xml">RSS</a><a href="#board">Редакція</a></nav>
         </div>
         <div className="wrap footer-bottom"><span>© {new Date().getFullYear()} Journal of Renal Science</span><span>Nephrology · Dialysis · Transplantation</span></div>
       </footer>

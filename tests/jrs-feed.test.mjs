@@ -70,3 +70,28 @@ test("URL paths stay encoded instead of permitting injected XML", () => {
   assert.match(rss, /\/publications\/test%22%26%3Cslug/);
   assert.doesNotMatch(rss, /<slug/);
 });
+
+test("article-only feed excludes notices and advertises its own self URL", () => {
+  const rss = buildJrsRss([article], [correction], "articles");
+  assert.equal((rss.match(/<item>/g) || []).length, 1);
+  assert.match(rss, /<link>https:\/\/journal\.kidney\.pp\.ua\/publications\/ckd-safe-article<\/link>/);
+  assert.doesNotMatch(rss, /<category>Виправлення<\/category>/);
+  assert.match(rss, /https:\/\/journal\.kidney\.pp\.ua\/feeds\/articles\.xml/);
+});
+
+test("editorial-notice feed excludes articles and includes only real notices", () => {
+  const rss = buildJrsRss([article], [correction], "notices");
+  assert.equal((rss.match(/<item>/g) || []).length, 1);
+  assert.match(rss, /<category>Виправлення<\/category>/);
+  assert.doesNotMatch(rss, /<category>Наукова публікація<\/category>/);
+  assert.match(rss, /https:\/\/journal\.kidney\.pp\.ua\/feeds\/notices\.xml/);
+});
+
+test("each specialist channel is valid when its type has no published records", () => {
+  const articles = buildJrsRss([], [correction], "articles");
+  const notices = buildJrsRss([article], [], "notices");
+  assert.match(articles, /<channel>/);
+  assert.match(notices, /<channel>/);
+  assert.doesNotMatch(articles, /<item>/);
+  assert.doesNotMatch(notices, /<item>/);
+});

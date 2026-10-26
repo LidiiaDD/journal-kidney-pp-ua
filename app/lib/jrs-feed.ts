@@ -3,6 +3,25 @@ import type { NoticeWithArticle } from "./jrs-notices";
 
 const ORIGIN = "https://journal.kidney.pp.ua";
 const MAX_ITEMS = 100;
+export type FeedSelection = "all" | "articles" | "notices";
+
+const feedMetadata: Record<FeedSelection, { title: string; description: string; path: string }> = {
+  all: {
+    title: "Journal of Renal Science — наукові публікації та редакційні повідомлення",
+    description: "Оприлюднені дослідження, виправлення та відкликання Journal of Renal Science. Чернетки не публікуються.",
+    path: "/feed.xml",
+  },
+  articles: {
+    title: "Journal of Renal Science — нові наукові публікації",
+    description: "Нові опубліковані наукові статті JRS. Редакторські чернетки та приватні матеріали не включаються.",
+    path: "/feeds/articles.xml",
+  },
+  notices: {
+    title: "Journal of Renal Science — офіційні редакційні повідомлення",
+    description: "Офіційні виправлення, повідомлення про занепокоєння та відкликання опублікованих статей JRS.",
+    path: "/feeds/notices.xml",
+  },
+};
 
 type FeedEntry = {
   title: string;
@@ -64,9 +83,11 @@ function itemXml(item: FeedEntry): string {
  */
 export function buildJrsRss(
   articles: readonly Publication[],
-  notices: readonly NoticeWithArticle[]
+  notices: readonly NoticeWithArticle[],
+  selection: FeedSelection = "all"
 ): string {
-  const articleEntries: FeedEntry[] = articles.map(article => ({
+  const metadata = feedMetadata[selection];
+  const articleEntries: FeedEntry[] = (selection === "notices" ? [] : articles).map(article => ({
     title: article.title,
     description: article.abstract,
     permalink: ORIGIN + "/publications/" + encodeURIComponent(article.slug),
@@ -74,7 +95,7 @@ export function buildJrsRss(
     publishedAt: parseArticleDate(article.publishedAt),
   }));
 
-  const noticeEntries: FeedEntry[] = notices.map(notice => ({
+  const noticeEntries: FeedEntry[] = (selection === "articles" ? [] : notices).map(notice => ({
     title: noticeCategories[notice.kind] + ": " + notice.title,
     description: notice.explanation +
       " Стаття: " + notice.jrs_articles.title + ".",
@@ -95,11 +116,11 @@ export function buildJrsRss(
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">',
     "  <channel>",
-    "    <title>Journal of Renal Science — наукові публікації та редакційні повідомлення</title>",
+    "    <title>" + escapeRssText(metadata.title) + "</title>",
     "    <link>" + ORIGIN + "</link>",
-    "    <description>Оприлюднені дослідження, виправлення та відкликання Journal of Renal Science. Чернетки не публікуються.</description>",
+    "    <description>" + escapeRssText(metadata.description) + "</description>",
     "    <language>uk-UA</language>",
-    '    <atom:link href="' + ORIGIN + '/feed.xml" rel="self" type="application/rss+xml" />',
+    '    <atom:link href="' + ORIGIN + metadata.path + '" rel="self" type="application/rss+xml" />',
     ...(lastDate ? ["    <lastBuildDate>" + lastDate.toUTCString() + "</lastBuildDate>"] : []),
     ...entries.map(itemXml),
     "  </channel>",

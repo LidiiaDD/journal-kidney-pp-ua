@@ -73,6 +73,7 @@ export default function JournalInfoLayout({
               <a href="/submission-studio">Майстер подання</a>
               <a href="/editorial-policy">Редакційна політика</a>
               <a href="/notices">Редакційні повідомлення</a>
+              <a href="/follow">Стежити за JRS</a>
             </nav>
           </div>
         </section>
@@ -122,6 +123,7 @@ export default function JournalInfoLayout({
             <a href="/submission-studio">Майстер подання</a>
             <a href="/editorial-policy">Редакційна політика</a>
             <a href="/notices">Історія публікацій</a>
+            <a href="/follow">RSS-підписка</a>
             <a href="/feed.xml" type="application/rss+xml">RSS — оновлення</a>
             <a href="/#board">Редакційна рада</a>
           </nav>
