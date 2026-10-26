@@ -1,0 +1,83 @@
+/* JRS International Issues Archive — editorial magazine edition */
+.jrs-en-issues-page,.jrs-en-issue-detail-page{padding-top:52px;padding-bottom:86px}
+.jrs-en-issues-intro{display:grid;grid-template-columns:minmax(0,1fr) 215px;gap:52px;align-items:end;margin-bottom:37px}
+.jrs-en-issues-intro h2{max-width:780px;color:var(--navy);font:400 clamp(36px,4.3vw,57px)/1.11 Georgia,serif;letter-spacing:-.045em;margin:15px 0 21px}
+.jrs-en-issues-intro>div:first-child>p{max-width:735px;color:var(--muted);font:15px/1.82 Georgia,serif;margin:0}
+.jrs-en-issues-summary{display:flex;flex-direction:column;padding:20px 25px;background:#eaf1eb;border-top:3px solid var(--teal)}
+.jrs-en-issues-summary strong{font:400 52px/1.1 Georgia,serif;color:var(--navy)}
+.jrs-en-issues-summary>span{font:11px/1.5 Arial,Helvetica,sans-serif;color:var(--muted)}
+.jrs-en-issues-summary i{height:1px;background:#cbdbcf;margin:13px 0}
+.jrs-en-issues-featured{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:56px;align-items:center;padding:39px 54px 48px;background:radial-gradient(circle at 22% 45%,rgba(141,187,181,.22),transparent 40%),#e7eee9;margin-bottom:63px}
+.jrs-en-issues-featured-cover{display:flex;justify-content:center;padding:18px}
+.jrs-en-issues-featured-cover>a{display:inline-flex;transition:transform .2s}
+.jrs-en-issues-featured-cover>a:hover{transform:translateY(-5px)}
+.jrs-en-issues-featured-copy h2{font:400 clamp(39px,4.8vw,61px)/1.08 Georgia,serif;letter-spacing:-.05em;color:var(--navy);margin:14px 0 22px}
+.jrs-en-issues-featured-copy h2 em{color:var(--teal);font-weight:400}
+.jrs-en-issues-featured-copy>p{max-width:590px;font:16px/1.78 Georgia,serif;color:#50666a}
+.jrs-en-issues-featured-facts{display:flex;gap:15px 27px;flex-wrap:wrap;padding:21px 0;margin:12px 0;border-top:1px solid #bfd3c8;border-bottom:1px solid #bfd3c8}
+.jrs-en-issues-featured-facts>div{display:flex;flex-direction:column;gap:6px}
+.jrs-en-issues-featured-facts strong{font:400 23px Georgia,serif;color:var(--navy)}
+.jrs-en-issues-featured-facts span{font:11px Arial,Helvetica,sans-serif;color:var(--muted)}
+.jrs-en-issues-primary-action{display:inline-flex;padding:14px 20px;background:var(--teal);color:#fff;font:700 12px Arial,Helvetica,sans-serif;margin-top:12px}
+.jrs-en-issues-primary-action:hover{background:var(--navy);color:#fff}
+.jrs-en-issues-all{margin:0 0 51px}
+.jrs-en-issues-all-heading{padding:0 0 21px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.jrs-en-issues-all-heading h2{font:400 clamp(32px,4vw,48px)/1.13 Georgia,serif;letter-spacing:-.035em;color:var(--navy);margin:14px 0 0}
+.jrs-en-issues-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:19px}
+.jrs-en-issues-card{display:flex;flex-direction:column;align-items:center;gap:19px;padding:24px 21px 22px;border:1px solid var(--line);background:#f5f7f1;transition:border-color .18s,transform .18s}
+.jrs-en-issues-card:hover{border-color:var(--teal);transform:translateY(-4px)}
+.jrs-en-issues-card>span{display:flex;align-items:flex-start;flex-direction:column;gap:9px;align-self:stretch;border-top:1px solid var(--line);padding-top:17px}
+.jrs-en-issues-card>span strong{font:400 23px Georgia,serif;color:var(--navy)}
+.jrs-en-issues-card>span small{font:12px Arial,Helvetica,sans-serif;color:var(--teal)}
+.jrs-en-issues-upcoming{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:60px;align-items:center;background:radial-gradient(circle at 20% 44%,rgba(141,187,181,.25),transparent 42%),#e8f0eb;padding:41px 48px;margin:0 0 43px}
+.jrs-en-issues-upcoming-art{display:flex;justify-content:center}
+.jrs-en-issues-upcoming h2{font:400 clamp(35px,4.5vw,58px)/1.12 Georgia,serif;color:var(--navy);letter-spacing:-.046em;margin:14px 0 22px}
+.jrs-en-issues-upcoming h2 em{font-weight:400;color:var(--teal)}
+.jrs-en-issues-upcoming p{max-width:650px;font:15px/1.85 Georgia,serif;color:#51686a;margin:0 0 17px}
+.jrs-en-issues-unassigned{display:flex;justify-content:space-between;gap:20px;align-items:center;padding:25px 26px;background:#f2f5ef;border-left:3px solid var(--teal);margin:0 0 34px}
+.jrs-en-issues-unassigned strong{font:400 25px Georgia,serif;color:var(--navy)}
+.jrs-en-issues-unassigned p{max-width:750px;font:13px/1.8 Arial,Helvetica,sans-serif;color:var(--muted);margin:10px 0 0}
+.jrs-en-issues-unassigned a{font:700 12px Arial,Helvetica,sans-serif;color:var(--teal);white-space:nowrap}
+.jrs-en-issues-integrity{display:flex;align-items:flex-start;gap:17px;padding:25px 0;border-top:1px solid var(--line);margin-top:20px}
+.jrs-en-issues-integrity>span{font:33px Georgia,serif;color:var(--teal)}
+.jrs-en-issues-integrity strong{font:400 24px Georgia,serif;color:var(--navy)}
+.jrs-en-issues-integrity p{font:12px/1.85 Arial,Helvetica,sans-serif;color:var(--muted);margin:9px 0}
+.jrs-en-issues-integrity a{color:var(--teal);font-weight:700}
+.jrs-en-issue-detail-feature{display:grid;grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);align-items:center;gap:55px;background:radial-gradient(circle at 20% 50%,rgba(141,187,181,.16),transparent 42%),#eaf1eb;padding:35px 48px;margin:22px 0 58px}
+.jrs-en-issue-detail-cover{display:flex;justify-content:center;padding:18px}
+.jrs-en-issue-detail-feature h2{font:400 clamp(35px,4vw,52px)/1.12 Georgia,serif;color:var(--navy);letter-spacing:-.044em;margin:13px 0 20px}
+.jrs-en-issue-detail-feature p{font:15px/1.85 Georgia,serif;color:#52676b;max-width:670px}
+.jrs-en-issue-detail-facts{display:flex;gap:19px 29px;flex-wrap:wrap;padding-top:18px;margin-top:22px;border-top:1px solid #bfd2c7}
+.jrs-en-issue-detail-facts>div{display:flex;flex-direction:column;gap:7px}
+.jrs-en-issue-detail-facts strong{font:400 26px Georgia,serif;color:var(--navy)}
+.jrs-en-issue-detail-facts span{font:11px Arial,Helvetica,sans-serif;color:var(--muted)}
+.jrs-en-issue-contents-heading{border-bottom:1px solid var(--line);padding-bottom:22px}
+.jrs-en-issue-contents-heading h2{font:400 clamp(34px,4.2vw,52px)/1.1 Georgia,serif;color:var(--navy);margin:13px 0 0}
+.jrs-en-issue-contents-list{list-style:none;padding:0;margin:0 0 50px}
+.jrs-en-issue-content-entry{display:grid;grid-template-columns:65px minmax(0,1fr);gap:21px;padding:29px 8px;border-bottom:1px solid var(--line)}
+.jrs-en-issue-content-number{font:400 32px Georgia,serif;color:#93b1a5}
+.jrs-en-issue-content-meta{display:flex;gap:8px 17px;flex-wrap:wrap;color:var(--teal);font:700 10px/1.5 Arial,Helvetica,sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.jrs-en-issue-content-meta time{font-weight:400;color:var(--muted)}
+.jrs-en-issue-content-entry h3{font:400 clamp(26px,3.2vw,38px)/1.17 Georgia,serif;letter-spacing:-.035em;color:var(--navy);margin:14px 0;max-width:960px;overflow-wrap:anywhere}
+.jrs-en-issue-content-entry h3 a:hover{color:var(--teal)}
+.jrs-en-issue-content-entry p{font:13px/1.8 Arial,Helvetica,sans-serif;color:var(--muted);margin:0 0 18px}
+.jrs-en-issue-content-actions{display:flex;gap:12px 21px;align-items:center;flex-wrap:wrap}
+.jrs-en-issue-content-actions>a{font:700 12px Arial,Helvetica,sans-serif;color:var(--teal)}
+.jrs-en-issue-catalogue-bridge{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px 20px;padding:21px 24px;margin:33px 0 0;background:#e9f1eb;border-left:3px solid var(--teal)}
+.jrs-en-issue-catalogue-bridge p{font:13px/1.7 Georgia,serif;color:#536969;max-width:770px;margin:0}
+.jrs-en-issue-catalogue-bridge>a{font:700 12px Arial,Helvetica,sans-serif;color:var(--teal)}
+.jrs-en-home-issues{background:#ecf1e9;padding:70px 0}
+.jrs-en-home-issues-inner{display:grid;grid-template-columns:115px minmax(0,1fr) 130px;gap:30px;align-items:center}
+.jrs-en-home-issues-mark{position:relative;isolation:isolate;display:grid;place-items:center;width:110px;height:145px;border:1px solid #9cbbad;background:linear-gradient(135deg,#093744,#0d515a);overflow:hidden}
+.jrs-en-home-issues-mark>span{position:relative;z-index:1;color:#fff;font:400 36px Georgia,serif;letter-spacing:.035em}
+.jrs-en-home-issues-mark i{position:absolute;inset:12px;border:1px solid rgba(170,215,200,.4);border-radius:50%;transform:rotate(33deg)}
+.jrs-en-home-issues-mark i.two{transform:rotate(-33deg)}
+.jrs-en-home-issues h2{font:400 clamp(32px,3.7vw,49px)/1.14 Georgia,serif;color:var(--navy);letter-spacing:-.04em;margin:10px 0 17px}
+.jrs-en-home-issues p{max-width:720px;font:14px/1.75 Georgia,serif;color:#4f6667;margin:0}
+.jrs-en-home-issues a{display:inline-flex;padding:13px 18px;background:var(--teal);color:#fff;font:700 12px Arial,Helvetica,sans-serif;margin-top:19px}
+.jrs-en-home-issues-number{display:flex;flex-direction:column;align-items:center;gap:8px;border-top:2px solid var(--teal);padding-top:18px}
+.jrs-en-home-issues-number strong{font:400 57px Georgia,serif;color:var(--navy)}
+.jrs-en-home-issues-number span{font:11px/1.5 Arial,Helvetica,sans-serif;color:var(--muted);text-align:center}
+@media(max-width:1050px){.jrs-en-issues-cards{grid-template-columns:repeat(2,minmax(0,1fr))}.jrs-en-home-issues-inner{grid-template-columns:100px 1fr}.jrs-en-home-issues-mark{width:96px;height:128px}.jrs-en-home-issues-number{grid-column:2;align-items:flex-start}.jrs-en-issues-featured,.jrs-en-issues-upcoming,.jrs-en-issue-detail-feature{gap:25px;padding:28px}}
+@media(max-width:740px){.jrs-en-issues-page,.jrs-en-issue-detail-page{padding:37px 0 53px}.jrs-en-issues-intro{grid-template-columns:1fr;gap:22px}.jrs-en-issues-summary{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:6px 16px}.jrs-en-issues-summary strong{font-size:40px}.jrs-en-issues-summary i{grid-column:1/-1;margin:5px 0}.jrs-en-issues-featured,.jrs-en-issues-upcoming,.jrs-en-issue-detail-feature{grid-template-columns:1fr;gap:21px;padding:24px 18px}.jrs-en-issues-featured-cover,.jrs-en-issues-upcoming-art,.jrs-en-issue-detail-cover{padding:7px}.jrs-en-issues-cards{grid-template-columns:1fr}.jrs-en-issues-unassigned{flex-direction:column;align-items:flex-start}.jrs-en-issue-content-entry{grid-template-columns:40px minmax(0,1fr);gap:12px}.jrs-en-issue-content-number{font-size:26px}.jrs-en-home-issues-inner{grid-template-columns:1fr}.jrs-en-home-issues-number{grid-column:1}.jrs-en-home-issues{padding:45px 0}.jrs-en-home-issues-mark{width:80px;height:108px}}
+@media(prefers-reduced-motion:reduce){.jrs-en-issues-card,.jrs-en-issues-featured-cover>a{transition:none}.jrs-en-issues-card:hover,.jrs-en-issues-featured-cover>a:hover{transform:none}}

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import InternationalLayout from "@/app/components/InternationalLayout";
 import { allPublications } from "@/app/lib/jrs-catalogue";
 import { authorEntries } from "@/app/lib/jrs-contributors";
+import { groupPublishedIssues } from "@/app/lib/jrs-issues";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -22,6 +23,7 @@ export default async function EnglishHome() {
   const publications = await allPublications();
   const recent = publications.slice(0, 3);
   const contributorCount = authorEntries(publications).length;
+  const latestIssue = groupPublishedIssues(publications)[0];
 
   return (
     <InternationalLayout
@@ -109,6 +111,21 @@ export default async function EnglishHome() {
           <div><span>03</span><strong>After publication</strong><p>Corrections, expressions of concern and retractions, if issued, remain linked to the scientific record through dated public notices.</p></div>
         </div>
         <a href="/en/policy">Editorial principles and publication status ↗</a>
+      </section>
+
+      <section className="jrs-en-home-issues">
+        <div className="wrap jrs-en-home-issues-inner">
+          <div className="jrs-en-home-issues-mark" aria-hidden="true"><span>JRS</span><i className="one"/><i className="two"/></div>
+          <div>
+            <span className="jrs-en-eyebrow">THE ISSUE ARCHIVE / VOLUMES & CONTENTS</span>
+            <h2>Research, collected into issues.</h2>
+            <p>{latestIssue
+              ? `Latest represented collection: volume ${latestIssue.volume}, issue ${latestIssue.number}, with ${latestIssue.articles.length} public articles.`
+              : "The issue archive is being prepared. Numbered issues appear only after articles with genuine volume and issue metadata are released."}</p>
+            <a href="/en/issues">Explore the Issues Archive ↗</a>
+          </div>
+          <div className="jrs-en-home-issues-number"><strong>{latestIssue ? latestIssue.articles.length : 0}</strong><span>articles in latest issue</span></div>
+        </div>
       </section>
 
       <section className="jrs-en-home-contributors">

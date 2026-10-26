@@ -37,6 +37,7 @@ export default async function IssueDetailPage({ params }: Props) {
       wide
     >
       <p className="pub-back"><a href="/issues">← До архіву випусків</a></p>
+      <a className="jrs-en-article-uk-switch" href={`/en/issues/${issue.key}`} hrefLang="en">English table of contents ↗</a>
       <div className="jrs-issue-detail-intro">
         <div className="jrs-issue-detail-cover">
           <IssueCover volume={issue.volume} number={issue.number}

@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Архів випусків | Journal of Renal Science",
   description: "Візуальний архів випусків Journal of Renal Science: обкладинки, томи й номери, зміст і реальні наукові статті.",
-  alternates: { canonical: "/issues" },
+  alternates: { canonical: "/issues", languages: { uk: "/issues", en: "/en/issues" } },
 };
 
 export default async function IssuesPage() {
@@ -27,6 +27,7 @@ export default async function IssuesPage() {
       sections={[]}
       wide
     >
+      <a className="jrs-en-article-uk-switch" href="/en/issues" hrefLang="en">English issues archive ↗</a>
       <div className="jrs-issues-intro">
         <div>
           <p className="jrs-issues-eyebrow">JRS / THE ISSUE ARCHIVE</p>

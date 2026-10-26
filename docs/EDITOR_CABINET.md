@@ -322,3 +322,14 @@
 - **robots.txt не є механізмом контролю доступу.** Приватні чернетки, файли та експорт додатково захищаються серверною перевіркою редактора й RLS Supabase; заборона індексування лише радить пошуковим ботам не обходити службові URL.
 - Розширено сценарій `scripts/verify-jrs-live.mjs`: після фактичного Production-деплою він додатково перевірить, що `robots.txt` містить потрібне посилання на sitemap і `Disallow: /admin`, а `sitemap.xml` є XML-колекцією та не публікує шляхи `/admin`.
 - П'ять регресійних тестів конфігурації `npm run test:robots` входять до повної збірки `npm run build`. Після деплою окремо потрібна перевірка реального маршруту HTTP 200, адже успішний тест вихідного тексту не означає, що Vercel уже оновився.
+
+## International Issues Archive (October 2026)
+
+- `/en/issues` is the English issue index, and `/en/issues/[key]` is a detailed English table of contents. Both use `allPublications()` and the exact same grouping and canonical Base64URL keys as the Ukrainian `/issues` archive.
+- An issue exists publicly **only when an actually published article has both valid volume and issue metadata**. Neither draft assignments nor unnumbered articles create fake issue pages. Unassigned released articles remain in the research catalogue.
+- The live overview shows number of issues and number of publicly released articles. The cover for an upcoming unannounced issue is clearly marked **ISSUE NOT ANNOUNCED**, not depicted as a real issue.
+- The most recent article date in the represented issue **must not be interpreted as the release date of the entire issue**.
+- Tables of contents use editor-provided complete English article metadata only when available; otherwise original-language titles are marked with appropriate `lang`. They link to the English reading interface, preserving PDF language and browser-only bookmarks.
+- English index has its own canonical and reciprocal language alternatives to the Ukrainian index. English issue detail pages are `noindex` with canonical URLs pointing to original `/issues/[key]`, avoiding duplicate indexing of identical research collections.
+- The pure issue grouping code resides in `app/lib/jrs-issue-index.ts` to enable direct Node regression tests, while `app/lib/jrs-issues.ts` retains the original `server-only` public server import path unchanged.
+- The module changes no publication statuses, editor permissions, database content, identifiers or fee settings.

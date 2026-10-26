@@ -10,7 +10,7 @@ const origin = "https://journal.kidney.pp.ua";
 export const dynamic = "force-dynamic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const core = ["/", "/topics", "/publications", "/contributors", "/issues", "/notices", "/follow", "/en", "/en/publications", "/en/topics", "/en/contributors", "/en/authors", "/en/policy", "/en/notices", "/authors", "/manuscript-checklist", "/submission-studio", "/editorial-policy"].map(
+  const core = ["/", "/topics", "/publications", "/contributors", "/issues", "/notices", "/follow", "/en", "/en/publications", "/en/topics", "/en/contributors", "/en/issues", "/en/authors", "/en/policy", "/en/notices", "/authors", "/manuscript-checklist", "/submission-studio", "/editorial-policy"].map(
     (path) => ({ url: origin + path })
   );
 
@@ -30,6 +30,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date(issue.latestArticleDate + "T00:00:00Z"),
   }));
 
+  // Detailed English issue pages reproduce original issue membership;
+  // preserve the Ukrainian canonical in search results.
   const notices = (await allPublicNotices()).map(item => ({
     url: origin + noticeUrl(item.id),
     lastModified: new Date(item.issued_at),

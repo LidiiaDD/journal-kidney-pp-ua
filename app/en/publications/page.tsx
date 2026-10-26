@@ -36,6 +36,11 @@ export default async function EnglishPublicationsPage({ searchParams }: Props) {
           <a href="/en/topics">Open Research Atlas ↗</a>
         </div>
         <EnglishPublicationExplorer key={selectedTopic} items={articles} initialTopic={selectedTopic}/>
+        <div className="jrs-en-issue-catalogue-bridge">
+          <span className="jrs-en-eyebrow">BROWSE BY VOLUME</span>
+          <p>Looking for a complete research collection rather than an individual article? Browse the issue archive.</p>
+          <a href="/en/issues">Open issues archive ↗</a>
+        </div>
         <div className="jrs-en-catalogue-note">
           <span aria-hidden="true">✳</span>
           <div>
