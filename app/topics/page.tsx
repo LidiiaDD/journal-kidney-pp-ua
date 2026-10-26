@@ -3,6 +3,15 @@ import JournalInfoLayout from "@/app/components/JournalInfoLayout";
 import { allPublications } from "@/app/lib/jrs-catalogue";
 import { researchTopics, topicCounts } from "@/app/lib/research-topics";
 
+function publicationWord(count: number): string {
+  const lastTwo = count % 100;
+  if (lastTwo >= 11 && lastTwo <= 14) return "публікацій";
+  const last = count % 10;
+  if (last === 1) return "публікація";
+  if (last >= 2 && last <= 4) return "публікації";
+  return "публікацій";
+}
+
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
@@ -56,7 +65,7 @@ export default async function TopicsPage() {
             </div>
             <div className="atlas-card-bottom">
               <span>{topic.keywords}</span>
-              <strong>{counts[topic.slug]} {counts[topic.slug] === 1 ? "публікація" : "публікацій"}</strong>
+              <strong>{counts[topic.slug]} {publicationWord(counts[topic.slug])}</strong>
             </div>
           </a>
         ))}
