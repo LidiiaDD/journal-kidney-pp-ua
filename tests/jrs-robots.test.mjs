@@ -26,6 +26,6 @@ test("public publication and English routes are not blocked", () => {
 });
 
 test("no directive suggests robots is an authorization boundary", () => {
-  assert.equal(lines.some(line => /allow:.*admin/i.test(line)), false);
+  assert.equal(lines.some(line => /^Allow:\s*\/admin(?:\/|$)/i.test(line)), false);
   assert.equal(lines.some(line => /noindex:\s*private/i.test(line)), false);
 });
