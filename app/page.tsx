@@ -183,6 +183,7 @@ export default async function Home() {
           <div className="resources">
             <div><small>Перед поданням</small><h3>Підготуйте рукопис відповідно до стандартів журналу</h3></div>
             <div>
+              <a href="/manuscript-checklist">Навігатор рукопису <Arrow /></a>
               <a href="/authors#format">Правила оформлення <Arrow /></a>
               <a href="/editorial-policy#research-ethics">Етичні вимоги <Arrow /></a>
               <a href="/editorial-policy#review">Редакційний розгляд <Arrow /></a>

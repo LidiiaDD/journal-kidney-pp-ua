@@ -65,6 +65,7 @@ export default function JournalInfoLayout({
               <a href="/topics">Атлас</a>
               <a href="/publications">Публікації</a>
               <a href="/authors">Правила для авторів</a>
+              <a href="/manuscript-checklist">Навігатор рукопису</a>
               <a href="/editorial-policy">Редакційна політика</a>
             </nav>
           </div>
@@ -108,6 +109,7 @@ export default function JournalInfoLayout({
             <a href="/topics">Атлас</a>
             <a href="/publications">Публікації</a>
             <a href="/authors">Для авторів</a>
+            <a href="/manuscript-checklist">Навігатор рукопису</a>
             <a href="/editorial-policy">Редакційна політика</a>
             <a href="/#board">Редакційна рада</a>
           </nav>
