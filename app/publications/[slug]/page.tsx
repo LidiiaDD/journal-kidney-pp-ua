@@ -21,7 +21,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${article.title} | Journal of Renal Science`,
     description: article.abstract.slice(0, 175),
-    alternates: { canonical: `/publications/${article.slug}` },
+    alternates: {
+      canonical: `/publications/${article.slug}`,
+      ...(article.language === "uk" && article.translations?.en?.title
+        && article.translations.en.abstract && article.translations.en.keywords.length
+        ? { languages: { uk: `/publications/${article.slug}`, en: `/en/publications/${article.slug}` } }
+        : {}),
+    },
     openGraph: {
       title: article.title,
       description: article.abstract.slice(0, 175),
@@ -70,6 +76,9 @@ export default async function PublicationPage({ params }: Props) {
           ? { alternativeHeadline: article.translations.uk.title } : {}),
       }).replace(/</g, "\\u003c") }} />
       <p className="pub-back"><a href="/publications">← Усі публікації</a></p>
+      <a className="jrs-en-article-uk-switch" href={`/en/publications/${article.slug}`} hrefLang="en">
+        English reading interface ↗
+      </a>
       {article.volume && article.issue && (
         <a className="jrs-article-issue-reference"
           href={issueHref(makeIssueKey(article.volume, article.issue))}>

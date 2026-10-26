@@ -207,3 +207,12 @@
 Перевірка Supabase Security Advisors виявила попередження `auth_leaked_password_protection`: захист від використання скомпрометованих паролів **вимкнено**. Це конфігураційна настройка Supabase Auth, а не поле чи перемикач на сайті JRS. Редактору необхідно перевірити доступність функції на своєму тарифі й увімкнути її в Dashboard → Authentication → Settings / Security, якщо це підтримується. Документація: https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection.
 
 Перевірка безпеки та існування авторизованого редактора **не дозволяють** автоматично створювати чи публікувати тестові статті від його імені.
+
+## English-language article pages (October 2026)
+
+- Each publicly released work can be opened at `/en/publications/[slug]` via the English home page or English research catalogue; there is a reciprocal navigation link on the original publication page.
+- English title, abstract and keywords are used **only when the original was English or complete, editor-approved translated metadata exists**. Otherwise, the page explicitly labels original-language content; automated translation is prohibited.
+- The article page has an English interface for authors, integrity statements, source-language disclosures, verified bibliographic data, references, PDF availability, and simplified Vancouver/APA citation copy plus RIS/BibTeX export. The PDF itself remains in its published language.
+- For every article the English reader sees **all existing official correction, concern or retraction notices, above the abstract**; alerts remain linked to the original dated notice. Do not swallow backend failures that could hide a retraction.
+- English pages with complete alternate English metadata and Ukrainian originals use own canonical and language alternatives; pages that repeat original-language metadata are marked `noindex` and canonically linked to the primary article. The public sitemap includes English article pages only when a genuine translated metadata set exists.
+- Data is read from the same published-only catalogue and existing public-notice table; no editor permissions, articles, reviewer records, identifiers or Supabase schema change.

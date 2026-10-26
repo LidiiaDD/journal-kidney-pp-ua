@@ -3,6 +3,7 @@ import { allPublications } from "@/app/lib/jrs-catalogue";
 import { allPublicNotices, noticeUrl } from "@/app/lib/jrs-notices";
 import { groupPublishedIssues, issueHref } from "@/app/lib/jrs-issues";
 import { authorEntries } from "@/app/lib/jrs-contributors";
+import { englishArticleView } from "@/app/lib/jrs-english-article";
 
 const origin = "https://journal.kidney.pp.ua";
 
@@ -18,6 +19,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${origin}/publications/${item.slug}`,
     lastModified: new Date(item.publishedAt + "T00:00:00Z"),
   }));
+  const translatedArticles = publications
+    .filter(item => englishArticleView(item).indexable)
+    .map(item => ({
+      url: `${origin}/en/publications/${item.slug}`,
+      lastModified: new Date(item.publishedAt + "T00:00:00Z"),
+    }));
   const issues = groupPublishedIssues(publications).map(issue => ({
     url: origin + issueHref(issue.key),
     lastModified: new Date(issue.latestArticleDate + "T00:00:00Z"),
@@ -32,5 +39,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${origin}/contributors/${author.key}`,
   }));
 
-  return [...core, ...issues, ...articles, ...contributors, ...notices];
+  return [...core, ...issues, ...articles, ...translatedArticles, ...contributors, ...notices];
 }

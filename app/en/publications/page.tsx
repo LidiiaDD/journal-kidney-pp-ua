@@ -28,7 +28,7 @@ export default async function EnglishPublicationsPage() {
           <span aria-hidden="true">✳</span>
           <div>
             <strong>Read beyond the language label.</strong>
-            <p>Article pages may also contain Ukrainian-language interface elements. Individual publications display their genuine bibliographic metadata and declared review status. A link to an article is not an endorsement or a claim that external peer review was completed.</p>
+            <p>Individual articles now have an English-language reading interface with source-language notices and declarations clearly identified. English abstracts appear only when approved metadata exists; the full PDF may remain in the original language. A link does not imply that independent peer review was completed.</p>
             <a href="/en/policy">Our editorial approach ↗</a>
           </div>
         </div>

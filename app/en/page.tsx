@@ -78,7 +78,7 @@ export default async function EnglishHome() {
               const title = article.language === "en" ? article.title : en?.title || article.title;
               const isEnglish = article.language === "en" || Boolean(en?.title);
               return (
-                <a key={article.slug} href={`/publications/${article.slug}`} className="jrs-en-recent-entry">
+                <a key={article.slug} href={`/en/publications/${article.slug}`} className="jrs-en-recent-entry">
                   <span>{String(index + 1).padStart(2, "0")}</span>
                   <div><small>{isEnglish ? "English title available" : "Original-language title"} · {article.publishedAt}</small><h3 lang={isEnglish ? "en" : article.language}>{title}</h3><p>{article.authors.map(a => a.name).join(", ")}</p></div>
                   <b aria-hidden="true">↗</b>

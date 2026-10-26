@@ -82,14 +82,14 @@ export default function EnglishPublicationExplorer({ items }: { items: Publicati
                     <time dateTime={article.publishedAt}>{article.publishedAt}</time>
                     <span>{hasEnglish ? "English metadata available" : "Original-language metadata"}</span>
                   </div>
-                  <h2 lang={lang}><a href={`/publications/${article.slug}`}>{title}</a></h2>
+                  <h2 lang={lang}><a href={`/en/publications/${article.slug}`}>{title}</a></h2>
                   <p className="jrs-en-publication-authors">{article.authors.map(a => a.name).join(", ")}</p>
                   <p lang={lang} className="jrs-en-publication-abstract">{abstract.length > 420 ? abstract.slice(0, 420).trimEnd() + "…" : abstract}</p>
                   {keywords.length > 0 && <div className="jrs-en-publication-tags">
                     {keywords.slice(0, 5).map(keyword => <span lang={lang} key={keyword}>{keyword}</span>)}
                   </div>}
                   <div className="jrs-en-publication-actions">
-                    <a href={`/publications/${article.slug}`}>Read article ↗</a>
+                    <a href={`/en/publications/${article.slug}`}>Read article ↗</a>
                     {article.pdfUrl && <a href={article.pdfUrl} target="_blank" rel="noopener noreferrer">Open PDF ↗</a>}
                   </div>
                 </div>
