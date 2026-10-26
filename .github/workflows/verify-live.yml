@@ -1,0 +1,29 @@
+name: Verify live JRS production
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_sha:
+        description: "Exact 40-character Git SHA deployed to Production (not the latest un-deployed main)"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  verify-live:
+    name: Check public site, protected editor routes, and release SHA
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Check out release verification
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Set up Node.js 22
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "22"
+      - name: Verify deployed release and anonymous access limits
+        env:
+          EXPECTED_RELEASE_SHA: ${{ inputs.expected_sha }}
+        run: node scripts/verify-jrs-live.mjs "$EXPECTED_RELEASE_SHA"
