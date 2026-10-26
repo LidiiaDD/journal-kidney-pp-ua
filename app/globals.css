@@ -1469,3 +1469,25 @@ footer{background:var(--deep);color:rgba(255,255,255,.62)}.footer-top{min-height
 .jrs-publish-gate-list p{margin:7px 0 0;font:12px/1.7 Arial,Helvetica,sans-serif;color:#665341}
 .jrs-publish-gate-clear{padding:15px 19px;border-left:3px solid var(--teal);background:#edf3f0;color:#3d5b60;font:13px/1.75 Arial,Helvetica,sans-serif}
 @media(max-width:700px){.jrs-publish-gate-list{grid-template-columns:1fr}.jrs-publish-gate{padding:21px 0}}
+
+/* Private editorial triage: saved manuscript metadata, never public */
+.jrs-editor-triage{padding:28px 30px;margin:0 0 33px;background:#f6faf8;border:1px solid #bcd3cb}
+.jrs-editor-triage-head{display:flex;justify-content:space-between;gap:24px;align-items:flex-start;margin-bottom:22px}
+.jrs-editor-triage-head h2{font:400 clamp(26px,3.2vw,37px)/1.2 Georgia,serif;color:var(--navy);margin:8px 0 10px}
+.jrs-editor-triage-head p:not(.jrs-admin-kicker){margin:0;max-width:700px;font:13px/1.7 Arial,Helvetica,sans-serif;color:var(--muted)}
+.jrs-editor-triage-head>a{flex:none;padding:10px 13px;border:1px solid var(--teal);color:var(--teal);text-decoration:none;font:700 12px Arial,Helvetica,sans-serif}
+.jrs-editor-triage-head>a:hover{background:var(--teal);color:#fff}
+.jrs-editor-triage-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));background:#fff;border:1px solid var(--line)}
+.jrs-editor-triage-stats>div{display:flex;flex-direction:column;gap:9px;min-width:0;padding:20px 17px;border-right:1px solid var(--line)}
+.jrs-editor-triage-stats>div:last-child{border-right:0}
+.jrs-editor-triage-stats strong{font:400 42px/1 Georgia,serif;color:var(--navy)}
+.jrs-editor-triage-stats span{font:12px/1.5 Arial,Helvetica,sans-serif;color:var(--muted)}
+.jrs-editor-triage-common{margin-top:19px;padding:14px 0 0;border-top:1px solid var(--line)}
+.jrs-editor-triage-common strong{font:700 12px Arial,Helvetica,sans-serif;color:var(--navy)}
+.jrs-editor-triage-common p{margin:8px 0 0;color:var(--muted);font:12px/1.7 Arial,Helvetica,sans-serif}
+.jrs-editor-triage-limit{font:12px/1.7 Arial,Helvetica,sans-serif;color:#7a4b29;padding:12px;margin:18px 0 0;background:#fff1d8}
+.jrs-admin-item .jrs-editor-triage-inline{margin:9px 0 0;color:#63747a;font:12px/1.5 Arial,Helvetica,sans-serif}
+.jrs-editor-triage-actions{display:flex;align-items:center;flex-wrap:wrap;gap:15px}
+.jrs-editor-triage-actions a{font:700 12px Arial,Helvetica,sans-serif;color:var(--teal);white-space:nowrap}
+@media(max-width:950px){.jrs-editor-triage-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.jrs-editor-triage-stats>div:nth-child(2){border-right:0}.jrs-editor-triage-stats>div:nth-child(-n+2){border-bottom:1px solid var(--line)}}
+@media(max-width:620px){.jrs-editor-triage{padding:21px 18px}.jrs-editor-triage-head{flex-direction:column;gap:15px}.jrs-editor-triage-stats strong{font-size:34px}.jrs-admin-item .jrs-editor-triage-inline{margin-top:7px}.jrs-editor-triage-actions{gap:12px;margin-top:10px}}
