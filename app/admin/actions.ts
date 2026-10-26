@@ -7,6 +7,7 @@ import {
   signInEditor,
 } from "@/app/lib/jrs-supabase";
 import type { ArticleRow } from "@/app/lib/jrs-supabase";
+import { publicationBlockers } from "@/app/lib/jrs-publication-gate";
 import type { PublicationAuthor, PublicationType } from "@/app/lib/publications";
 
 const ALLOWED_TYPES: PublicationType[] = [
@@ -165,14 +166,16 @@ export async function publishAction(data: FormData) {
   }
 
   const article = await getEditorArticle(id, token);
-  if (!article || article.status !== "draft" ||
-      !article.title || !article.abstract || !article.authors?.length || !article.keywords?.length) {
+  if (!article || article.status !== "draft") {
     redirect("/admin?error=locked");
   }
 
-  if (!article.review_kind ||
-      (article.review_kind === "external" && (article.review_details?.trim().length ?? 0) < 20)) {
-    redirect(`/admin/articles/${id}?error=review`);
+  // Use the exact same technical validation as the private prepublication
+  // audit; four human attestations above and database RLS remain separate.
+  const blockers = publicationBlockers(article);
+  if (blockers.length) {
+    const reviewProblem = blockers.some(item => item.code === "review" || item.code === "review-details");
+    redirect(`/admin/articles/${id}?error=${reviewProblem ? "review" : "fields"}`);
   }
 
   const publishedAt = new Date().toISOString().slice(0, 10);
