@@ -102,9 +102,21 @@ export async function saveDraftAction(data: FormData) {
 }
 
 export async function publishAction(data: FormData) {
-  const { token } = await requireEditor();
+  const { token, editor } = await requireEditor();
   const id = value(data, "id", 36);
   if (!/^[0-9a-f-]{36}$/i.test(id)) redirect("/admin");
+
+  // HTML "required" is just a convenience. Every declaration is verified on the server.
+  const checks = {
+    authors: data.get("check_authors") === "yes",
+    ethics: data.get("check_ethics") === "yes",
+    privacy: data.get("check_privacy") === "yes",
+    accuracy: data.get("check_accuracy") === "yes",
+  };
+  if (!Object.values(checks).every(Boolean)) {
+    redirect(`/admin/articles/${id}?error=checks`);
+  }
+
   const article = await getEditorArticle(id, token);
   if (!article || article.status !== "draft" ||
       !article.title || !article.abstract || !article.authors?.length || !article.keywords?.length) {
@@ -114,8 +126,17 @@ export async function publishAction(data: FormData) {
   const publishedAt = new Date().toISOString().slice(0, 10);
   const response = await jrsFetch(
     `/rest/v1/jrs_articles?id=eq.${id}&status=eq.draft`,
-    { method: "PATCH", headers: { "Content-Type": "application/json", Prefer: "return=representation" },
-      body: JSON.stringify({ status: "published", published_at: publishedAt, updated_at: new Date().toISOString() }) },
+    {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", Prefer: "return=representation" },
+      body: JSON.stringify({
+        status: "published",
+        published_at: publishedAt,
+        published_by: editor.id,
+        publication_checks: checks,
+        updated_at: new Date().toISOString(),
+      }),
+    },
     token
   );
   if (!response.ok) redirect(`/admin/articles/${id}?error=publish`);

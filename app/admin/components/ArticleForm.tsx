@@ -17,6 +17,8 @@ export default function ArticleForm({ article, error, saved, created, published 
     <div className="jrs-admin-editor">
       {error && <div className="jrs-admin-notice error" role="alert">
         {error === "fields" ? "Перевірте обов’язкові поля: назву, slug, анотацію, авторів і ключові слова."
+          : error === "checks" ? "Перед публікацією обов’язково підтвердьте всі чотири редакційні перевірки."
+          : error === "publish" ? "Не вдалося опублікувати. Перевірте, чи заповнені всі поля і чи збережено PDF."
           : error === "pdf" ? "PDF не завантажено. Потрібен коректний PDF-файл до 3,5 МБ."
           : "Зберегти не вдалося. Перевірте унікальність slug і доступ до бази."}
       </div>}
@@ -76,6 +78,16 @@ export default function ArticleForm({ article, error, saved, created, published 
       </form>
 
       {article && (
+        <div className="jrs-admin-preview-link">
+          <div>
+            <strong>Перегляд статті перед публікацією</strong>
+            <p>Відкривається лише для редактора. Якщо ви щойно змінили текст — спочатку збережіть чернетку.</p>
+          </div>
+          <a href={`/admin/articles/${article.id}/preview`} target="_blank" rel="noopener noreferrer">Переглянути оформлення ↗</a>
+        </div>
+      )}
+
+      {article && (
         <section className="jrs-admin-pdf">
           <h2>Повний текст PDF</h2>
           {article.pdf_path ? (
@@ -88,7 +100,7 @@ export default function ArticleForm({ article, error, saved, created, published 
               <label>Виберіть перевірений, знеособлений PDF (до 3,5 МБ)
                 <input type="file" name="pdf" accept="application/pdf,.pdf" required />
               </label>
-              <button type="submit">Завантажити PDF</button>
+              <button type="submit">{article.pdf_path ? "Замінити PDF у чернетці" : "Завантажити PDF"}</button>
             </form>
           )}
         </section>
@@ -97,10 +109,14 @@ export default function ArticleForm({ article, error, saved, created, published 
       {article && !isPublished && (
         <section className="jrs-admin-publish">
           <h2>Оприлюднення</h2>
-          <p>Перш ніж публікувати, перевірте згоду авторів, біоетику, відсутність персональних даних у PDF, а також відповідність анотації фактичним результатам. Після натискання кнопки матеріал стане доступним читачам.</p>
-          <form action={publishAction}>
+          <p>Перед публікацією перевірте всі наведені умови. Ваші підтвердження будуть записані разом із датою публікації; читачі побачать матеріал лише після окремої команди.</p>
+          <form action={publishAction} className="jrs-publish-checklist">
             <input type="hidden" name="id" value={article.id} />
-            <button type="submit" className="jrs-admin-publish-button">Опублікувати статтю</button>
+            <label><input type="checkbox" name="check_authors" value="yes" required /> Усі автори погодили фінальний текст і його оприлюднення.</label>
+            <label><input type="checkbox" name="check_ethics" value="yes" required /> Етичні дозволи та інформована згода перевірені настільки, наскільки це застосовно до цього типу роботи.</label>
+            <label><input type="checkbox" name="check_privacy" value="yes" required /> У статті й PDF немає персональних даних пацієнтів без належної правової підстави.</label>
+            <label><input type="checkbox" name="check_accuracy" value="yes" required /> Назва, автори, анотація, результати, ключові слова та прикріплений PDF перевірені.</label>
+            <button type="submit" className="jrs-admin-publish-button">Підтвердити та опублікувати</button>
           </form>
         </section>
       )}

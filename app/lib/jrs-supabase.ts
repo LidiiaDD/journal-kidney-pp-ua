@@ -18,6 +18,14 @@ export type ArticleRow = {
   status: "draft" | "published";
   published_at: string | null;
   pdf_path: string | null;
+  /** Set only when a draft becomes a published article. */
+  published_by?: string | null;
+  publication_checks?: {
+    authors: boolean;
+    ethics: boolean;
+    privacy: boolean;
+    accuracy: boolean;
+  };
   created_at: string;
   updated_at: string;
 };

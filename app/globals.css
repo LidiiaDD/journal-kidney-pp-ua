@@ -295,3 +295,25 @@ footer{background:var(--deep);color:rgba(255,255,255,.62)}.footer-top{min-height
 .jrs-admin-publish-button:hover{background:var(--navy)}
 @media(max-width:850px){.jrs-admin-nav{flex-wrap:wrap;padding:16px 0}.jrs-admin-nav nav{order:3;flex-basis:100%;overflow-x:auto;gap:22px;padding:10px 0}.jrs-admin-nav nav a{white-space:nowrap}.jrs-admin-main{padding:44px 0 80px}}
 @media(max-width:600px){.jrs-admin-item{flex-direction:column;align-items:flex-start;padding:23px}.jrs-admin-field-row{grid-template-columns:1fr}.jrs-login{padding:30px 22px}.jrs-admin-pdf,.jrs-admin-publish{padding:24px 20px}.jrs-admin-heading{gap:20px}.jrs-admin-heading h1{font-size:39px}}
+
+/* JRS edition 2 — article presentation and publication safety */
+.pub-preview-banner{background:#f5efe0;border-left:4px solid #a6884a;padding:22px 26px;margin:0 0 36px;color:#34434b}
+.pub-preview-banner strong{font:400 22px/1.25 Georgia,serif}
+.pub-preview-banner p{font-size:13px;line-height:1.7;margin:8px 0 0}
+.pub-citation-example{margin:14px 0 22px!important;padding:20px 24px;background:#f4f5f2;border:1px solid var(--line);overflow-wrap:anywhere;font:15px/1.8 Georgia,serif}
+.pub-citation-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:0 0 25px}
+.pub-citation-actions button{cursor:pointer;padding:12px 15px;border:1px solid var(--teal);background:var(--teal);color:#fff;font:700 12px Arial,Helvetica,sans-serif}
+.pub-citation-actions button:nth-child(2){background:transparent;color:var(--teal)}
+.pub-citation-actions button:hover{background:var(--navy);border-color:var(--navy);color:#fff}
+.pub-citation-actions span{min-width:100%;font-size:12px;min-height:18px;color:var(--teal)}
+.pub-source-note{color:var(--muted);font-size:12px!important;line-height:1.7}
+.jrs-admin-preview-link{display:flex;align-items:center;justify-content:space-between;gap:25px;background:var(--light);border:1px solid var(--line);padding:22px 26px;margin:30px 0}
+.jrs-admin-preview-link strong{font:400 22px/1.3 Georgia,serif}
+.jrs-admin-preview-link p{margin:8px 0 0;color:var(--muted);font-size:12px;line-height:1.7}
+.jrs-admin-preview-link>a{white-space:nowrap;flex-shrink:0;padding:12px 0;color:var(--teal);font-size:12px;font-weight:700;border-bottom:1px solid var(--teal)}
+.jrs-publish-checklist{display:flex;flex-direction:column;align-items:flex-start;gap:16px;margin-top:24px}
+.jrs-publish-checklist label{display:flex;align-items:flex-start;gap:13px;font-size:14px;line-height:1.7;color:var(--ink);cursor:pointer}
+.jrs-publish-checklist label input{appearance:auto;flex-shrink:0;width:20px;height:20px;margin:3px 0 0;accent-color:var(--teal);cursor:pointer}
+.jrs-publish-checklist button{margin-top:10px}
+.jrs-article-body{min-width:0}
+@media(max-width:720px){.jrs-admin-preview-link{flex-direction:column;align-items:flex-start}.jrs-admin-preview-link>a{white-space:normal}.pub-preview-banner{padding:18px 21px}.pub-citation-example{padding:17px}}
