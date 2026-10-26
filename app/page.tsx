@@ -183,6 +183,7 @@ export default async function Home() {
           <div className="resources">
             <div><small>Перед поданням</small><h3>Підготуйте рукопис відповідно до стандартів журналу</h3></div>
             <div>
+              <a href="/submission-studio">Майстер подання статті <Arrow /></a>
               <a href="/manuscript-checklist">Навігатор рукопису <Arrow /></a>
               <a href="/authors#format">Правила оформлення <Arrow /></a>
               <a href="/editorial-policy#research-ethics">Етичні вимоги <Arrow /></a>
@@ -227,7 +228,7 @@ export default async function Home() {
       <footer>
         <div className="wrap footer-top">
           <div className="brand footer-brand"><span className="logo"><b>J</b><b>R</b><b>S</b></span><span><strong>Journal of Renal Science</strong></span></div>
-          <nav><a href="#about">Про журнал</a><a href="/topics">Атлас</a><a href="/publications">Публікації</a><a href="/authors">Для авторів</a><a href="/editorial-policy">Редакційна політика</a><a href="#board">Редакція</a></nav>
+          <nav><a href="#about">Про журнал</a><a href="/topics">Атлас</a><a href="/publications">Публікації</a><a href="/submission-studio">Подання статті</a><a href="/authors">Для авторів</a><a href="/editorial-policy">Редакційна політика</a><a href="#board">Редакція</a></nav>
         </div>
         <div className="wrap footer-bottom"><span>© {new Date().getFullYear()} Journal of Renal Science</span><span>Nephrology · Dialysis · Transplantation</span></div>
       </footer>
