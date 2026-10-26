@@ -314,3 +314,11 @@
 - Author records are **not verified personal identities, biographies, CVs or manually created profiles**. The ORCID checksum does not verify the actual owner, and exact name+affiliation matching cannot resolve all homonyms.
 - Each English contributor detail page uses a primary Ukrainian canonical and `noindex` because the underlying personal bibliographic record is the same source. The English directory has its own canonical and reciprocal alternate with the Ukrainian index.
 - New route-level and grouping regression checks are in `tests/jrs-international-contributors.test.mjs`; these do not create or mutate Supabase records.
+
+## Виправлення robots.txt та перевірка пошукової доступності (26.10.2026)
+
+- Реальна перевірка Production на `https://journal.kidney.pp.ua` виявила `404` для `/robots.txt`, тоді як `/sitemap.xml` уже працює. Це **перевірена помилка**, а не припущення.
+- Створено статичний `app/robots.txt` згідно з офіційним механізмом Next.js App Router: `User-agent: *`, `Allow: /`, `Disallow: /admin`, `Disallow: /api/`, `Sitemap: https://journal.kidney.pp.ua/sitemap.xml`. Інші відкриті маршрути, включно з публікаціями, каталогом, темами й англомовним розділом, не закриті для індексування.
+- **robots.txt не є механізмом контролю доступу.** Приватні чернетки, файли та експорт додатково захищаються серверною перевіркою редактора й RLS Supabase; заборона індексування лише радить пошуковим ботам не обходити службові URL.
+- Розширено сценарій `scripts/verify-jrs-live.mjs`: після фактичного Production-деплою він додатково перевірить, що `robots.txt` містить потрібне посилання на sitemap і `Disallow: /admin`, а `sitemap.xml` є XML-колекцією та не публікує шляхи `/admin`.
+- П'ять регресійних тестів конфігурації `npm run test:robots` входять до повної збірки `npm run build`. Після деплою окремо потрібна перевірка реального маршруту HTTP 200, адже успішний тест вихідного тексту не означає, що Vercel уже оновився.
