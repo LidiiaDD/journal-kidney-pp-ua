@@ -60,6 +60,25 @@ test("internal database identity, editor details and storage paths never escape"
   }
 });
 
+test("unexpected nested author fields are excluded from the archive", () => {
+  const entry = source({
+    authors: [{
+      name: "Research Author",
+      affiliation: "Research Institute",
+      orcid: "0000-0002-1825-0097",
+      private_notes: "sensitive editor-only author note",
+      access_token: "do-not-copy-token",
+    }],
+  });
+  const backup = makeDraftMetadataExport(entry, instant);
+  assert.deepEqual(backup.article.authors, [{
+    name: "Research Author",
+    affiliation: "Research Institute",
+    orcid: "0000-0002-1825-0097",
+  }]);
+  assert.equal(JSON.stringify(backup).includes("do-not-copy-token"), false);
+});
+
 test("attachment flag is truthful: PDF bytes are never included", () => {
   const withPdf = makeDraftMetadataExport(source(), instant);
   const withoutPdf = makeDraftMetadataExport(source({ pdf_path: null }), instant);
