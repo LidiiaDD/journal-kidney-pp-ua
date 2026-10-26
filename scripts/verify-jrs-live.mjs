@@ -49,7 +49,19 @@ for (const path of ["/", "/publications", "/notices", "/en", "/en/publications",
   try {
     const response = await request(path);
     check(`public ${path}`, response.status === 200, `HTTP ${response.status}`);
-    await response.body?.cancel();
+    if (response.ok && path === "/robots.txt") {
+      const body = await response.text();
+      check("robots declares production sitemap",
+        /^Sitemap:\s*https:\/\/journal\.kidney\.pp\.ua\/sitemap\.xml\s*$/im.test(body));
+      check("robots excludes editor cabinet crawlers",
+        /^Disallow:\s*\/admin\s*$/im.test(body));
+    } else if (response.ok && path === "/sitemap.xml") {
+      const body = await response.text();
+      check("sitemap is a real URL collection", /<urlset[\s>]/i.test(body));
+      check("sitemap excludes private editor routes", !body.includes("/admin"));
+    } else {
+      await response.body?.cancel();
+    }
   } catch (error) {
     check(`public ${path}`, false, error instanceof Error ? error.message : "network failure");
   }
