@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Покажчик авторів | Journal of Renal Science",
   description: "Бібліографічний покажчик дослідників, зазначених як автори опублікованих статей Journal of Renal Science.",
-  alternates: { canonical: "/contributors" },
+  alternates: { canonical: "/contributors", languages: { uk: "/contributors", en: "/en/contributors" } },
 };
 
 export default async function ContributorsPage() {
@@ -33,6 +33,7 @@ export default async function ContributorsPage() {
       sections={[]}
       wide
     >
+      <a className="jrs-en-article-uk-switch" href="/en/contributors" hrefLang="en" lang="en">International contributor index ↗</a>
       <div className="contributors-overview">
         <div className="contributors-overview-text">
           <span className="contributors-eyebrow">JRS / SCHOLARLY CONTRIBUTORS</span>

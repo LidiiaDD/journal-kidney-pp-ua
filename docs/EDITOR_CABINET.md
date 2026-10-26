@@ -304,3 +304,13 @@
 - Після переходу у `main` перевірити у Vercel, що нові коміти `feature/...` не створюють автоматичних preview, а Production як і раніше розгортається; злиття саме по собі **не доказ**, що налаштування вже ефективне.
 - Для відновлення автоматичних preview видаліть правило `feature/**` із `vercel.json` (або увімкніть його). Тарифи, секрети, Supabase/RLS, наукові дані й права користувачів не змінюються.
 - Перевірка політики `npm run test:vercel-deploy-policy` додається до `npm run build`.
+
+## International Contributors (October 2026)
+
+- `/en/contributors` is an English-language bibliographic directory created from the **same published-only article catalogue** as `/contributors`.
+- Search by name, affiliation or ORCID; filter by first letter; sort by name or number of articles. The initial catalogue is truthfully empty until the first paper is published.
+- `/en/contributors/[key]` uses the same stable deterministic author-record keys and grouping as the Ukrainian directory. It shows supplied names, affiliations, checksum-valid ORCID when supplied, and links to English-interface article pages. Full-text PDFs retain the originally published language.
+- English article author names link directly to the corresponding contributor record. English bookmark controls preserve local reading-list semantics without duplicating article records.
+- Author records are **not verified personal identities, biographies, CVs or manually created profiles**. The ORCID checksum does not verify the actual owner, and exact name+affiliation matching cannot resolve all homonyms.
+- Each English contributor detail page uses a primary Ukrainian canonical and `noindex` because the underlying personal bibliographic record is the same source. The English directory has its own canonical and reciprocal alternate with the Ukrainian index.
+- New route-level and grouping regression checks are in `tests/jrs-international-contributors.test.mjs`; these do not create or mutate Supabase records.

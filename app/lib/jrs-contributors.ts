@@ -13,7 +13,7 @@ export type AuthorEntry = {
 const clean = (s: string): string => s.normalize("NFKC").replace(/\s+/g, " ").trim();
 const folded = (s: string): string => clean(s).toLocaleLowerCase("uk-UA");
 
-function verifiedOrcidShape(raw?: string): string | undefined {
+export function verifiedOrcidShape(raw?: string): string | undefined {
   if (!raw) return undefined;
   const orcid = clean(raw).replace(/^https?:\/\/(?:www\.)?orcid\.org\//i, "").toUpperCase();
   if (!/^(?:\d{4}-){3}\d{3}[\dX]$/.test(orcid)) return undefined;
@@ -41,6 +41,11 @@ export function authorKey(author: PublicationAuthor): string {
 
 export function authorHref(author: PublicationAuthor): string {
   return `/contributors/${authorKey(author)}`;
+}
+
+/** Same bibliographic identity and grouping as the original-language index. */
+export function internationalAuthorHref(author: PublicationAuthor): string {
+  return `/en/contributors/${authorKey(author)}`;
 }
 
 export function authorEntries(articles: readonly Publication[]): AuthorEntry[] {

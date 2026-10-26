@@ -6,6 +6,7 @@ import { articleUrl } from "@/app/lib/citations";
 import { englishArticleView } from "@/app/lib/jrs-english-article";
 import EnglishCitationTools from "@/app/components/EnglishCitationTools";
 import BookmarkButton from "@/app/components/BookmarkButton";
+import { internationalAuthorHref, verifiedOrcidShape } from "@/app/lib/jrs-contributors";
 
 const kindLabels: Record<Publication["type"], string> = {
   "original-research": "Original research",
@@ -122,13 +123,12 @@ export default function EnglishArticleContent({ article, notices }: { article: P
             <h2>Authors and affiliations</h2>
             <ul className="jrs-en-article-author-list">
               {article.authors.map((author,index) => {
-                const orcid = author.orcid?.replace(/^https?:\/\/orcid\.org\//i, "");
-                const hasOrcid = orcid && /^(?:\d{4}-){3}\d{3}[\dX]$/.test(orcid);
+                const orcid = verifiedOrcidShape(author.orcid);
                 return (
                   <li key={`${author.name}-${index}`}>
-                    <strong>{author.name}</strong>
+                    <strong><a className="jrs-en-author-contributor-link" href={internationalAuthorHref(author)}>{author.name} ↗</a></strong>
                     {author.affiliation && <span>{author.affiliation}</span>}
-                    {hasOrcid && <a href={`https://orcid.org/${orcid}`} target="_blank" rel="noopener noreferrer">ORCID: {orcid} ↗</a>}
+                    {orcid && <a href={`https://orcid.org/${orcid}`} target="_blank" rel="noopener noreferrer">ORCID: {orcid} ↗</a>}
                   </li>
                 );
               })}

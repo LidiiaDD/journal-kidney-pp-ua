@@ -36,6 +36,7 @@ export default async function ContributorDetailPage({ params }: Props) {
       wide
     >
       <p className="pub-back"><a href="/contributors">← До покажчика авторів</a></p>
+      <a className="jrs-en-article-uk-switch" href={`/en/contributors/${author.key}`} hrefLang="en" lang="en">English reading interface ↗</a>
       <div className="contributor-profile-head">
         <div className="contributor-profile-avatar" aria-hidden="true">{author.initial}</div>
         <div className="contributor-profile-copy">

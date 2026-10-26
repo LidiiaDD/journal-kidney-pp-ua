@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import InternationalLayout from "@/app/components/InternationalLayout";
 import { allPublications } from "@/app/lib/jrs-catalogue";
+import { authorEntries } from "@/app/lib/jrs-contributors";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -20,6 +21,7 @@ const areas = [
 export default async function EnglishHome() {
   const publications = await allPublications();
   const recent = publications.slice(0, 3);
+  const contributorCount = authorEntries(publications).length;
 
   return (
     <InternationalLayout
@@ -107,6 +109,19 @@ export default async function EnglishHome() {
           <div><span>03</span><strong>After publication</strong><p>Corrections, expressions of concern and retractions, if issued, remain linked to the scientific record through dated public notices.</p></div>
         </div>
         <a href="/en/policy">Editorial principles and publication status ↗</a>
+      </section>
+
+      <section className="jrs-en-home-contributors">
+        <div className="wrap jrs-en-home-contributors-inner">
+          <div className="jrs-en-home-contributors-art" aria-hidden="true"><span>C</span><span className="orbit one" /><span className="orbit two" /></div>
+          <div>
+            <span className="jrs-en-eyebrow">RESEARCH COMMUNITY / CONTRIBUTORS</span>
+            <h2>Find the people behind the papers.</h2>
+            <p>A live bibliographic directory of researcher names, institutions and articles. Built from publicly released work, never invented profiles.</p>
+            <a href="/en/contributors">Explore contributor index ↗</a>
+          </div>
+          <div className="jrs-en-home-contributors-total"><strong>{contributorCount}</strong><span>contributor records</span></div>
+        </div>
       </section>
 
       <section className="jrs-en-notice-homeband">
