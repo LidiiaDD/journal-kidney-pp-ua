@@ -18,6 +18,7 @@ export const metadata: Metadata = {
   description:
     "Незалежний науково-інформаційний онлайн-журнал з нефрології, діалізу, трансплантації нирки та клінічних досліджень.",
   keywords: ["nephrology", "renal science", "dialysis", "kidney transplantation", "нефрологія"],
+  alternates: { types: { "application/rss+xml": "/feed.xml" } },
   openGraph: {
     title: "Journal of Renal Science",
     description: "Науковий журнал з нефрології, діалізу та трансплантації нирки.",
