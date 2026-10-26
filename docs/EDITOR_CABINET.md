@@ -216,3 +216,12 @@
 - For every article the English reader sees **all existing official correction, concern or retraction notices, above the abstract**; alerts remain linked to the original dated notice. Do not swallow backend failures that could hide a retraction.
 - English pages with complete alternate English metadata and Ukrainian originals use own canonical and language alternatives; pages that repeat original-language metadata are marked `noindex` and canonically linked to the primary article. The public sitemap includes English article pages only when a genuine translated metadata set exists.
 - Data is read from the same published-only catalogue and existing public-notice table; no editor permissions, articles, reviewer records, identifiers or Supabase schema change.
+
+## Єдина технічна перевірка можливості оприлюднення (26.10.2026)
+
+- Новий **технічний бар'єр публікації** використовується одночасно приватною сторінкою `/admin/articles/<id>/preflight` і серверною дією `publishAction`. Це запобігає розбіжності між підказками аудиту і правилами кнопки «Опублікувати».
+- Перевіряється стан «чернетка», допустимий slug, назва, анотація, тип матеріалу, мова, автори, ключові слова, фактичний тип розгляду і необхідний опис незалежного зовнішнього рецензування. Частковий переклад або некоректний формат DOI також блокують оприлюднення до виправлення запису.
+- PDF, том, номер випуску та DOI самі собою необов'язкові: система **не створює** ні фіктивної обкладинки, ні реєстрації DOI. Технічне проходження не підтверджує якість PDF, відповідність дослідження чи зареєстрованість DOI.
+- Навіть якщо технічних блокерів немає, редактор повинен **окремо підтвердити чотири фактичні перевірки**: згода авторів, етичні дозволи та згода пацієнтів, захист персональних даних і достовірність відомостей/файлу. Сервер і база продовжують захищати дію; жодного автоматичного рішення про опублікування немає.
+- Аудит є тільки читанням **збереженого** запису; чернетки не індексуються та не відкриваються без авторизації редактора.
+- Регресійні тести `npm run test:publication-gate` виконуються перед production-build разом із наявними тестами.
