@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm run test:preflight && npm run test:contributors && npm run test:feed && npm run test:issues && npm run test:english-articles && npm run test:publication-gate && npm run test:editor-triage && next build",
+    "build": "npm run test:preflight && npm run test:contributors && npm run test:feed && npm run test:issues && npm run test:english-articles && npm run test:publication-gate && npm run test:editor-triage && npm run test:draft-export && next build",
     "start": "next start",
     "lint": "eslint",
     "test:preflight": "node --experimental-strip-types --test tests/jrs-preflight.test.mjs",
@@ -13,7 +13,8 @@
     "test:issues": "node --experimental-strip-types --test tests/jrs-issue-preparation.test.mjs",
     "test:english-articles": "node --experimental-strip-types --test tests/jrs-english-articles.test.mjs",
     "test:publication-gate": "node --experimental-strip-types --test tests/jrs-publication-gate.test.mjs",
-    "test:editor-triage": "node --experimental-strip-types --test tests/jrs-editor-triage.test.mjs"
+    "test:editor-triage": "node --experimental-strip-types --test tests/jrs-editor-triage.test.mjs",
+    "test:draft-export": "node --experimental-strip-types --test tests/jrs-draft-export.test.mjs"
   },
   "dependencies": {
     "next": "16.2.7",
