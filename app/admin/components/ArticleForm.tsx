@@ -40,7 +40,8 @@ export default function ArticleForm({ article, error, saved, created, published 
       <form id="jrs-manuscript-form" action={saveDraftAction} className="jrs-admin-form">
         {!isPublished && (
           <UnsavedDraftGuard editorFormId="jrs-manuscript-form"
-            publishFormId={article ? "jrs-publish-form" : undefined} />
+            publishFormId={article ? "jrs-publish-form" : undefined}
+            pdfUploadFormId={article ? "jrs-pdf-upload-form" : undefined} />
         )}
         {article && <input type="hidden" name="id" value={article.id} />}
         <fieldset disabled={isPublished}>
@@ -201,7 +202,7 @@ export default function ArticleForm({ article, error, saved, created, published 
             <p>Файл ще не додано. Публікація без PDF можлива, але рекомендовано надати повний текст.</p>
           )}
           {!isPublished && (
-            <form method="post" action={`/admin/articles/${article.id}/pdf`} encType="multipart/form-data">
+            <form id="jrs-pdf-upload-form" method="post" action={`/admin/articles/${article.id}/pdf`} encType="multipart/form-data">
               <label>Виберіть перевірений, знеособлений PDF (до 3,5 МБ)
                 <input type="file" name="pdf" accept="application/pdf,.pdf" required />
               </label>
