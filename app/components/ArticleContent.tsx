@@ -2,6 +2,7 @@ import type { Publication } from "@/app/lib/publications";
 import { formatPublicationDate, publicationTypeLabels } from "@/app/lib/publications";
 import ArticleLanguageView from "@/app/components/ArticleLanguageView";
 import CitationTools from "@/app/components/CitationTools";
+import BookmarkButton from "@/app/components/BookmarkButton";
 
 type Props = { article: Publication; draft?: boolean; pdfUrl?: string };
 
@@ -24,7 +25,10 @@ export default function ArticleContent({ article, draft = false, pdfUrl }: Props
           <p>Чернетка ще недоступна читачам. Переклад і список джерел доступні лише у збереженому вигляді.</p>
         </div>
       )}
-      <p className="pub-article-type">{publicationTypeLabels[article.type]}</p>
+      <div className="jrs-article-actions">
+        <p className="pub-article-type">{publicationTypeLabels[article.type]}</p>
+        {!draft && <BookmarkButton slug={article.slug} />}
+      </div>
       <ArticleLanguageView article={article} />
       <section id="authors">
         <h2>Автори</h2>

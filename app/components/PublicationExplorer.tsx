@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import type { Publication, PublicationType } from "@/app/lib/publications";
+import BookmarkButton from "@/app/components/BookmarkButton";
 import { researchTopics, topicsForPublication, type TopicSlug } from "@/app/lib/research-topics";
 import {
   formatPublicationDate,
@@ -66,7 +67,10 @@ export default function PublicationExplorer({ items, initialTopic = "all" }: Pro
     <div className="pub-explorer">
       <div className="pub-topic-context">
         <span>Наукова навігація</span>
-        <a href="/topics">Переглянути всі 8 напрямів ↗</a>
+        <div className="pub-discovery-links">
+          <a href="/topics">Усі 8 напрямів ↗</a>
+          <a href="/reading-list">Моя бібліотека ↗</a>
+        </div>
       </div>
       <div className="pub-controls">
         <label className="pub-search">
@@ -133,6 +137,7 @@ export default function PublicationExplorer({ items, initialTopic = "all" }: Pro
                     PDF ↗
                   </a>
                 )}
+                <BookmarkButton slug={item.slug} compact />
               </div>
             </article>
           ))}
