@@ -38,6 +38,7 @@ export default function JournalInfoLayout({
             <a href="/">Головна</a>
             <a href="/topics">Атлас</a>
             <a href="/publications">Публікації</a>
+            <a href="/contributors">Покажчик авторів</a>
             <a href="/authors">Для авторів</a>
             <a href="/editorial-policy">Редакційна політика</a>
             <a href="/issues">Випуски</a>
@@ -64,6 +65,7 @@ export default function JournalInfoLayout({
             <nav className="info-switch-links" aria-label="Інформація про публікації">
               <a href="/topics">Атлас</a>
               <a href="/publications">Публікації</a>
+              <a href="/contributors">Покажчик авторів</a>
               <a href="/issues">Випуски</a>
               <a href="/reading-list">Моя бібліотека</a>
               <a href="/authors">Правила для авторів</a>
@@ -112,6 +114,7 @@ export default function JournalInfoLayout({
             <a href="/">Головна</a>
             <a href="/topics">Атлас</a>
             <a href="/publications">Публікації</a>
+            <a href="/contributors">Покажчик авторів</a>
             <a href="/issues">Випуски</a>
             <a href="/reading-list">Моя бібліотека</a>
             <a href="/authors">Для авторів</a>

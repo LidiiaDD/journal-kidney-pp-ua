@@ -1,6 +1,7 @@
 import { formatPublicationDate, publicationTypeLabels } from "@/app/lib/publications";
 import { allPublications } from "@/app/lib/jrs-catalogue";
 import { groupPublishedIssues, issueHref } from "@/app/lib/jrs-issues";
+import { authorEntries } from "@/app/lib/jrs-contributors";
 
 const directions = [
   ["01", "Клінічна нефрологія", "Діагностика, профілактика й лікування гострих та хронічних захворювань нирок."],
@@ -22,6 +23,7 @@ export default async function Home() {
   const publications = await allPublications();
   const latestPublications = publications.slice(0, 3);
   const latestIssue = groupPublishedIssues(publications)[0];
+  const contributorCount = authorEntries(publications).length;
   return (
     <main>
       <div className="topline">
@@ -41,6 +43,7 @@ export default async function Home() {
             <a href="#about">Про журнал</a>
             <a href="/topics">Атлас</a>
             <a href="/publications">Публікації</a>
+            <a href="/contributors">Дослідники</a>
             <a href="/authors">Авторам</a>
             <a href="/editorial-policy">Політика</a>
             <a href="/issues">Випуски</a>
@@ -180,6 +183,23 @@ export default async function Home() {
         </div>
       </section>
 
+      <section className="jrs-home-contributors">
+        <div className="wrap jrs-home-contributors-inner">
+          <div className="jrs-home-contributors-graphic" aria-hidden="true">
+            <span className="jrs-home-contributors-initial">A</span>
+            <span className="jrs-home-contributors-ring one"/>
+            <span className="jrs-home-contributors-ring two"/>
+          </div>
+          <div className="jrs-home-contributors-copy">
+            <p>JRS / RESEARCH COMMUNITY</p>
+            <h2>Імена, що стоять <em>за дослідженнями.</em></h2>
+            <span>Бібліографічний покажчик авторів і наукових робіт. З'являється разом із опублікованими статтями, без вигаданих персональних профілів.</span>
+            <a href="/contributors">Відкрити покажчик авторів ↗</a>
+          </div>
+          <div className="jrs-home-contributors-count"><strong>{contributorCount}</strong><span>авторських записів</span></div>
+        </div>
+      </section>
+
       <section className="section jrs-home-issues">
         <div className="wrap jrs-home-issues-inner">
           <div className="jrs-home-issues-glyph" aria-hidden="true">
@@ -260,7 +280,7 @@ export default async function Home() {
       <footer>
         <div className="wrap footer-top">
           <div className="brand footer-brand"><span className="logo"><b>J</b><b>R</b><b>S</b></span><span><strong>Journal of Renal Science</strong></span></div>
-          <nav><a href="#about">Про журнал</a><a href="/topics">Атлас</a><a href="/publications">Публікації</a><a href="/issues">Випуски</a><a href="/reading-list">Моя бібліотека</a><a href="/submission-studio">Подання статті</a><a href="/authors">Для авторів</a><a href="/editorial-policy">Редакційна політика</a><a href="/notices">Виправлення</a><a href="#board">Редакція</a></nav>
+          <nav><a href="#about">Про журнал</a><a href="/topics">Атлас</a><a href="/publications">Публікації</a><a href="/contributors">Дослідники</a><a href="/issues">Випуски</a><a href="/reading-list">Моя бібліотека</a><a href="/submission-studio">Подання статті</a><a href="/authors">Для авторів</a><a href="/editorial-policy">Редакційна політика</a><a href="/notices">Виправлення</a><a href="#board">Редакція</a></nav>
         </div>
         <div className="wrap footer-bottom"><span>© {new Date().getFullYear()} Journal of Renal Science</span><span>Nephrology · Dialysis · Transplantation</span></div>
       </footer>

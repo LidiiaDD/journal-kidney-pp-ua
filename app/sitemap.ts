@@ -2,13 +2,14 @@ import type { MetadataRoute } from "next";
 import { allPublications } from "@/app/lib/jrs-catalogue";
 import { allPublicNotices, noticeUrl } from "@/app/lib/jrs-notices";
 import { groupPublishedIssues, issueHref } from "@/app/lib/jrs-issues";
+import { authorEntries } from "@/app/lib/jrs-contributors";
 
 const origin = "https://journal.kidney.pp.ua";
 
 export const dynamic = "force-dynamic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const core = ["/", "/topics", "/publications", "/issues", "/notices", "/authors", "/manuscript-checklist", "/submission-studio", "/editorial-policy"].map(
+  const core = ["/", "/topics", "/publications", "/contributors", "/issues", "/notices", "/authors", "/manuscript-checklist", "/submission-studio", "/editorial-policy"].map(
     (path) => ({ url: origin + path })
   );
 
@@ -27,5 +28,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date(item.issued_at),
   }));
 
-  return [...core, ...issues, ...articles, ...notices];
+  const contributors = authorEntries(publications).map(author => ({
+    url: `${origin}/contributors/${author.key}`,
+  }));
+
+  return [...core, ...issues, ...articles, ...contributors, ...notices];
 }

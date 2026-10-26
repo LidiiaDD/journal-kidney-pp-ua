@@ -4,6 +4,7 @@ import ArticleLanguageView from "@/app/components/ArticleLanguageView";
 import CitationTools from "@/app/components/CitationTools";
 import BookmarkButton from "@/app/components/BookmarkButton";
 import IntegrityPassport from "@/app/components/IntegrityPassport";
+import { authorHref } from "@/app/lib/jrs-contributors";
 
 type Props = { article: Publication; draft?: boolean; pdfUrl?: string };
 
@@ -37,7 +38,8 @@ export default function ArticleContent({ article, draft = false, pdfUrl }: Props
         <ul className="pub-author-list">
           {article.authors.map((author, index) => (
             <li key={`${author.name}-${index}`}>
-              <strong>{author.name}</strong>
+              {draft ? <strong>{author.name}</strong> :
+                <strong><a className="jrs-author-internal-link" href={authorHref(author)}>{author.name} ↗</a></strong>}
               {author.affiliation && <span>{author.affiliation}</span>}
               {author.orcid && (
                 <a href={`https://orcid.org/${author.orcid}`} target="_blank" rel="noopener noreferrer">
