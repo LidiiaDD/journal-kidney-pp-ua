@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm run test:preflight && npm run test:contributors && npm run test:feed && npm run test:issues && npm run test:english-articles && npm run test:publication-gate && npm run test:editor-triage && npm run test:draft-export && npm run test:unsaved-pdf-guard && npm run test:english-notices && next build",
+    "build": "npm run test:preflight && npm run test:contributors && npm run test:feed && npm run test:issues && npm run test:english-articles && npm run test:publication-gate && npm run test:editor-triage && npm run test:draft-export && npm run test:unsaved-pdf-guard && npm run test:english-notices && npm run test:release-verification && next build",
     "start": "next start",
     "lint": "eslint",
     "test:preflight": "node --experimental-strip-types --test tests/jrs-preflight.test.mjs",
@@ -16,7 +16,9 @@
     "test:editor-triage": "node --experimental-strip-types --test tests/jrs-editor-triage.test.mjs",
     "test:draft-export": "node --experimental-strip-types --test tests/jrs-draft-export.test.mjs",
     "test:unsaved-pdf-guard": "node --test tests/jrs-unsaved-pdf-guard.test.mjs",
-    "test:english-notices": "node --experimental-strip-types --test tests/jrs-english-notices.test.mjs"
+    "test:english-notices": "node --experimental-strip-types --test tests/jrs-english-notices.test.mjs",
+    "test:release-verification": "node --experimental-strip-types --test tests/jrs-release-verification.test.mjs",
+    "verify:live": "node scripts/verify-jrs-live.mjs"
   },
   "dependencies": {
     "next": "16.2.7",
