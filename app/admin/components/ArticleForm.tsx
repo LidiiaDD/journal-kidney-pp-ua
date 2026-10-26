@@ -171,6 +171,27 @@ export default function ArticleForm({ article, error, saved, created, published 
         </div>
       )}
 
+      {article && !isPublished && (
+        <section className="jrs-draft-export" aria-labelledby="jrs-draft-export-title">
+          <div>
+            <p className="jrs-draft-export-kicker">PRIVATE DRAFT / LOCAL COPY</p>
+            <h2 id="jrs-draft-export-title">Копія метаданих чернетки</h2>
+            <p>Завантажте збережену версію назви, анотації, авторів, джерел
+              та декларацій у форматі JSON. Незбережені зміни форми до файлу
+              не потраплять. Це не оприлюднення і не автоматичне резервне
+              копіювання.</p>
+            <p className="jrs-draft-export-warning">PDF до JSON не входить.
+              {article.pdf_path
+                ? <> Файл PDF потрібно завантажити окремо за посиланням нижче.</>
+                : <> PDF до цієї чернетки не додано.</>}
+              {" "}У завантажених метаданих може бути конфіденційний текст:
+              зберігайте файл лише в захищеному місці. Автоматичний імпорт
+              JSON на сайт поки не підтримується.</p>
+          </div>
+          <a href={`/admin/articles/${article.id}/export`}>Завантажити JSON ↧</a>
+        </section>
+      )}
+
       {article && (
         <section className="jrs-admin-pdf">
           <h2>Повний текст PDF</h2>
