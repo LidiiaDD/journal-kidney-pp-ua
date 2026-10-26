@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm run test:preflight && next build",
+    "build": "npm run test:preflight && npm run test:feed && next build",
     "start": "next start",
     "lint": "eslint",
-    "test:preflight": "node --experimental-strip-types --test tests/jrs-preflight.test.mjs"
+    "test:preflight": "node --experimental-strip-types --test tests/jrs-preflight.test.mjs",
+    "test:feed": "node --experimental-strip-types --test tests/jrs-feed.test.mjs"
   },
   "dependencies": {
     "next": "16.2.7",
