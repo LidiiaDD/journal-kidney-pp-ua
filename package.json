@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm run test:preflight && npm run test:contributors && npm run test:feed && npm run test:issues && npm run test:english-articles && npm run test:publication-gate && npm run test:editor-triage && npm run test:draft-export && npm run test:unsaved-pdf-guard && npm run test:english-notices && npm run test:release-verification && npm run test:english-atlas && next build",
+    "build": "npm run test:preflight && npm run test:contributors && npm run test:feed && npm run test:issues && npm run test:english-articles && npm run test:publication-gate && npm run test:editor-triage && npm run test:draft-export && npm run test:unsaved-pdf-guard && npm run test:english-notices && npm run test:release-verification && npm run test:english-atlas && npm run test:vercel-deploy-policy && next build",
     "start": "next start",
     "lint": "eslint",
     "test:preflight": "node --experimental-strip-types --test tests/jrs-preflight.test.mjs",
@@ -19,7 +19,8 @@
     "test:english-notices": "node --experimental-strip-types --test tests/jrs-english-notices.test.mjs",
     "test:release-verification": "node --experimental-strip-types --test tests/jrs-release-verification.test.mjs",
     "verify:live": "node scripts/verify-jrs-live.mjs",
-    "test:english-atlas": "node --experimental-strip-types --test tests/jrs-english-atlas.test.mjs"
+    "test:english-atlas": "node --experimental-strip-types --test tests/jrs-english-atlas.test.mjs",
+    "test:vercel-deploy-policy": "node --test tests/jrs-vercel-deploy-policy.test.mjs"
   },
   "dependencies": {
     "next": "16.2.7",
