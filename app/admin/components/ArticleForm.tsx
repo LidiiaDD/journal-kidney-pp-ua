@@ -1,5 +1,6 @@
 import { publishAction, saveDraftAction } from "../actions";
 import LanguageTranslationFields from "./LanguageTranslationFields";
+import UnsavedDraftGuard from "./UnsavedDraftGuard";
 import { publicationTypeLabels } from "@/app/lib/publications";
 import type { PublicationType } from "@/app/lib/publications";
 import type { ArticleRow } from "@/app/lib/jrs-supabase";
@@ -36,7 +37,11 @@ export default function ArticleForm({ article, error, saved, created, published 
           <a href={`/publications/${article.slug}`}> Відкрити публікацію ↗</a>
         </div>
       )}
-      <form action={saveDraftAction} className="jrs-admin-form">
+      <form id="jrs-manuscript-form" action={saveDraftAction} className="jrs-admin-form">
+        {!isPublished && (
+          <UnsavedDraftGuard editorFormId="jrs-manuscript-form"
+            publishFormId={article ? "jrs-publish-form" : undefined} />
+        )}
         {article && <input type="hidden" name="id" value={article.id} />}
         <fieldset disabled={isPublished}>
           <div className="jrs-admin-fields">
@@ -189,7 +194,7 @@ export default function ArticleForm({ article, error, saved, created, published 
         <section className="jrs-admin-publish">
           <h2>Оприлюднення</h2>
           <p>Перед публікацією збережіть паспорт прозорості, виберіть фактичний тип розгляду та перевірте всі наведені умови. Ваші підтвердження будуть записані разом із датою публікації; читачі побачать матеріал лише після окремої команди.</p>
-          <form action={publishAction} className="jrs-publish-checklist">
+          <form id="jrs-publish-form" action={publishAction} className="jrs-publish-checklist">
             <input type="hidden" name="id" value={article.id} />
             <label><input type="checkbox" name="check_authors" value="yes" required /> Усі автори погодили фінальний текст і його оприлюднення.</label>
             <label><input type="checkbox" name="check_ethics" value="yes" required /> Етичні дозволи та інформована згода перевірені настільки, наскільки це застосовно до цього типу роботи.</label>
