@@ -23,6 +23,12 @@ export type PublicationAuthor = {
   orcid?: string;
 };
 
+export type TranslatedMetadata = {
+  title: string;
+  abstract: string;
+  keywords: string[];
+};
+
 export type Publication = {
   /** Permanent URL part: lowercase latin letters, numbers, hyphens. */
   slug: string;
@@ -34,6 +40,10 @@ export type Publication = {
   authors: PublicationAuthor[];
   abstract: string;
   keywords: string[];
+  /** Human-reviewed alternate-language metadata; never generated implicitly. */
+  translations?: Partial<Record<"uk" | "en", TranslatedMetadata>>;
+  /** Numbered references provided and checked by the editor. */
+  references?: string[];
   /** Optional, e.g. /publications/example-study.pdf */
   pdfUrl?: string;
   /** Only include if a DOI has actually been registered. */

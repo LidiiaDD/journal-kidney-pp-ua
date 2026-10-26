@@ -30,7 +30,7 @@ export default async function ArticlePreviewPage({ params }: Props) {
       description={draft
         ? `${publicationTypeLabels[article.type]} · чернетка, ще не опубліковано`
         : `${publicationTypeLabels[article.type]} · ${formatPublicationDate(article.publishedAt)}`}
-      sections={articleSectionLinks(Boolean(file), draft)}
+      sections={articleSectionLinks(Boolean(file), draft, Boolean(article.references?.length))}
     >
       <p className="pub-back"><a href={`/admin/articles/${id}`}>← Повернутися до редагування</a></p>
       <ArticleContent article={article} draft={draft} pdfUrl={file} />

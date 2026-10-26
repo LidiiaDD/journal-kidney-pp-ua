@@ -317,3 +317,35 @@ footer{background:var(--deep);color:rgba(255,255,255,.62)}.footer-top{min-height
 .jrs-publish-checklist button{margin-top:10px}
 .jrs-article-body{min-width:0}
 @media(max-width:720px){.jrs-admin-preview-link{flex-direction:column;align-items:flex-start}.jrs-admin-preview-link>a{white-space:normal}.pub-preview-banner{padding:18px 21px}.pub-citation-example{padding:17px}}
+
+
+/* JRS bilingual metadata and scholarly bibliographic tools */
+.jrs-translation-block{grid-column:1 / -1;border:1px solid var(--line);background:var(--light);padding:25px;display:flex;flex-direction:column;gap:18px}
+.jrs-translation-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.jrs-translation-head h3,.jrs-meta-editor-intro h3{font:400 26px/1.25 Georgia,serif;margin:0}
+.jrs-translation-head span{color:var(--teal);text-transform:uppercase;font-size:10px;letter-spacing:.1em}
+.jrs-translation-block>p,.jrs-meta-editor-intro p{font-size:13px;line-height:1.75;color:var(--muted);margin:0}
+.jrs-translation-block>label{width:100%}
+.jrs-meta-editor-intro{padding-top:18px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:12px}
+.jrs-language-tabs{display:flex;align-items:center;flex-wrap:wrap;gap:16px;justify-content:space-between;margin:0 0 20px;background:var(--light);border:1px solid var(--line);padding:17px 20px}
+.jrs-language-tabs strong{font-size:12px;color:var(--ink)}
+.jrs-language-tabs>div{display:flex;gap:6px}
+.jrs-language-tabs button{border:1px solid var(--teal);padding:9px 13px;background:transparent;color:var(--teal);cursor:pointer;font-size:12px}
+.jrs-language-tabs button[aria-pressed="true"]{background:var(--teal);color:#fff}
+.jrs-translation-caption{font-size:11px;letter-spacing:.06em;color:var(--teal);text-transform:uppercase}
+.jrs-alternate-title{font:400 clamp(26px,3.2vw,37px)/1.25 Georgia,serif!important;margin:10px 0 26px!important}
+.jrs-citation-controls{display:flex;flex-wrap:wrap;gap:14px;margin:12px 0 20px}
+.jrs-citation-controls label{display:flex;flex-direction:column;gap:7px;font-size:11px;font-weight:700;color:var(--muted)}
+.jrs-citation-controls select{border:1px solid var(--line);background:#fff;padding:11px 13px;min-height:44px;min-width:175px;color:var(--ink);font-size:13px}
+.jrs-citation-tools{margin:0 0 24px}
+.jrs-reference-list{counter-reset:none;padding-left:25px!important;list-style:decimal!important}
+.jrs-reference-list li{padding:9px 0 10px 5px;overflow-wrap:anywhere;border-bottom:1px solid var(--line);line-height:1.8}
+.jrs-article-languages{min-width:0}
+@media(max-width:620px){
+.jrs-translation-block{padding:20px 17px}
+.jrs-translation-head h3{font-size:24px}
+.jrs-language-tabs{align-items:flex-start}
+.jrs-citation-controls{flex-direction:column}
+.jrs-citation-controls select{width:100%}
+.pub-citation-actions button{flex:1 1 auto}
+}

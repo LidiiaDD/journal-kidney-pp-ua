@@ -29,6 +29,8 @@ export default function PublicationExplorer({ items }: Props) {
         item.abstract,
         ...item.authors.map((author) => author.name),
         ...item.keywords,
+        ...(item.translations?.uk ? [item.translations.uk.title, item.translations.uk.abstract, ...item.translations.uk.keywords] : []),
+        ...(item.translations?.en ? [item.translations.en.title, item.translations.en.abstract, ...item.translations.en.keywords] : []),
       ].join(" ").toLocaleLowerCase("uk-UA");
       return searchable.includes(needle);
     });

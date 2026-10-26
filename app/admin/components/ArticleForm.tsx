@@ -1,4 +1,5 @@
 import { publishAction, saveDraftAction } from "../actions";
+import LanguageTranslationFields from "./LanguageTranslationFields";
 import { publicationTypeLabels } from "@/app/lib/publications";
 import type { PublicationType } from "@/app/lib/publications";
 import type { ArticleRow } from "@/app/lib/jrs-supabase";
@@ -16,7 +17,7 @@ export default function ArticleForm({ article, error, saved, created, published 
   return (
     <div className="jrs-admin-editor">
       {error && <div className="jrs-admin-notice error" role="alert">
-        {error === "fields" ? "Перевірте обов’язкові поля: назву, slug, анотацію, авторів і ключові слова."
+        {error === "fields" ? "Перевірте назву, анотацію, авторів, ключові слова, повноту перекладу та формат DOI."
           : error === "checks" ? "Перед публікацією обов’язково підтвердьте всі чотири редакційні перевірки."
           : error === "publish" ? "Не вдалося опублікувати. Перевірте, чи заповнені всі поля і чи збережено PDF."
           : error === "pdf" ? "PDF не завантажено. Потрібен коректний PDF-файл до 3,5 МБ."
@@ -51,11 +52,7 @@ export default function ArticleForm({ article, error, saved, created, published 
                   {types.map(([key, label]) => <option value={key} key={key}>{label}</option>)}
                 </select>
               </label>
-              <label>Мова *
-                <select name="language" defaultValue={article?.language || "uk"}>
-                  <option value="uk">Українська</option><option value="en">Англійська</option>
-                </select>
-              </label>
+              <LanguageTranslationFields article={article} />
             </div>
             <label>Автори *
               <textarea name="authors" rows={5} required defaultValue={authors} placeholder={"ПІБ | Установа | ORCID\nНаступний автор | Установа | ORCID"} />
@@ -67,6 +64,28 @@ export default function ArticleForm({ article, error, saved, created, published 
             <label>Ключові слова *
               <textarea name="keywords" rows={3} required defaultValue={article?.keywords.join(", ") || ""} placeholder="Хронічна хвороба нирок, біомаркери, діаліз" />
               <small>Розділяйте комами або крапкою з комою.</small>
+            </label>
+            <div className="jrs-meta-editor-intro">
+              <h3>Бібліографічні відомості</h3>
+              <p>Заповнюйте лише фактично присвоєні значення. DOI має бути зареєстрований; журнал його не створює автоматично.</p>
+            </div>
+            <div className="jrs-admin-field-row">
+              <label>Том (якщо існує)
+                <input name="volume" maxLength={35} defaultValue={article?.volume || ""} placeholder="Наприклад, 1" />
+              </label>
+              <label>Випуск (якщо існує)
+                <input name="issue" maxLength={35} defaultValue={article?.issue || ""} placeholder="Наприклад, 1" />
+              </label>
+              <label>Сторінки або номер статті
+                <input name="pages" maxLength={60} defaultValue={article?.pages || ""} placeholder="Наприклад, 12–19" />
+              </label>
+              <label>Зареєстрований DOI
+                <input name="doi" maxLength={180} defaultValue={article?.doi || ""} placeholder="10.xxxx/xxxxx" />
+              </label>
+            </div>
+            <label>Список літератури
+              <textarea name="references_list" rows={8} defaultValue={article?.references_list?.join("\n") || ""} placeholder={"Один перевірений бібліографічний запис на рядок\nНаступне джерело з нового рядка"} />
+              <small>Один запис на рядок, до 150 джерел. Посилання не генеруються автоматично.</small>
             </label>
           </div>
         </fieldset>

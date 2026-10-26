@@ -15,6 +15,17 @@ export type ArticleRow = {
   language: "uk" | "en";
   authors: PublicationAuthor[];
   keywords: string[];
+  title_uk?: string | null;
+  abstract_uk?: string | null;
+  keywords_uk?: string[];
+  title_en?: string | null;
+  abstract_en?: string | null;
+  keywords_en?: string[];
+  references_list?: string[];
+  doi?: string | null;
+  volume?: string | null;
+  issue?: string | null;
+  pages?: string | null;
   status: "draft" | "published";
   published_at: string | null;
   pdf_path: string | null;
@@ -149,6 +160,19 @@ export function rowToPublication(row: ArticleRow): Publication {
     language: row.language,
     authors: row.authors,
     keywords: row.keywords,
+    translations: {
+      ...(row.title_uk && row.abstract_uk && row.keywords_uk?.length
+        ? { uk: { title: row.title_uk, abstract: row.abstract_uk, keywords: row.keywords_uk } }
+        : {}),
+      ...(row.title_en && row.abstract_en && row.keywords_en?.length
+        ? { en: { title: row.title_en, abstract: row.abstract_en, keywords: row.keywords_en } }
+        : {}),
+    },
+    references: row.references_list ?? [],
+    ...(row.doi ? { doi: row.doi } : {}),
+    ...(row.volume ? { volume: row.volume } : {}),
+    ...(row.issue ? { issue: row.issue } : {}),
+    ...(row.pages ? { pages: row.pages } : {}),
     publishedAt: row.published_at || row.created_at.slice(0, 10),
     ...(row.pdf_path ? { pdfUrl: `/publications/${row.slug}/pdf` } : {}),
   };

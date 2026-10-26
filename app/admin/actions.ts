@@ -54,14 +54,43 @@ function parseArticle(data: FormData): Omit<ArticleRow, "id" | "status" | "pdf_p
       ...(orcid ? { orcid } : {}) };
   });
   const keywords = value(data, "keywords", 2000).split(/[,;\n]/).map(x => x.trim()).filter(Boolean).slice(0, 20);
+  const translatedLanguage = language === "uk" ? "en" : "uk";
+  const titleTranslation = value(data, `title_${translatedLanguage}`, 500);
+  const abstractTranslation = value(data, `abstract_${translatedLanguage}`, 15000);
+  const translatedKeywords = value(data, `keywords_${translatedLanguage}`, 2000)
+    .split(/[,;\n]/).map(x => x.trim()).filter(Boolean).slice(0, 20);
+  const translationPresent = Boolean(titleTranslation || abstractTranslation || translatedKeywords.length);
+  const translationComplete = titleTranslation.length >= 5
+    && abstractTranslation.length >= 20
+    && translatedKeywords.length >= 1;
+
+  const rawReferences = value(data, "references_list", 30000)
+    .split(/\r?\n/).map(x => x.trim()).filter(Boolean);
+  const doi = value(data, "doi", 180) || null;
+  const volume = value(data, "volume", 35) || null;
+  const issue = value(data, "issue", 35) || null;
+  const pages = value(data, "pages", 60) || null;
 
   if (!/^[a-z0-9-]{3,100}$/.test(slug) ||
       title.length < 5 || abstract.length < 20 ||
       !ALLOWED_TYPES.includes(type) || !["uk","en"].includes(language) ||
       authors.length === 0 ||
       authors.some(a => !a.name || (a.orcid && !/^\d{4}-\d{4}-\d{4}-[\dX]{4}$/.test(a.orcid))) ||
-      keywords.length === 0) return null;
-  return { slug, title, abstract, type, language, authors, keywords };
+      keywords.length === 0 ||
+      (translationPresent && !translationComplete) ||
+      rawReferences.length > 150 || (doi !== null && !/^10[.]\d{4,9}\/\S+$/.test(doi))) return null;
+
+  return {
+    slug, title, abstract, type, language, authors, keywords,
+    title_uk: translatedLanguage === "uk" && translationPresent ? titleTranslation : null,
+    abstract_uk: translatedLanguage === "uk" && translationPresent ? abstractTranslation : null,
+    keywords_uk: translatedLanguage === "uk" && translationPresent ? translatedKeywords : [],
+    title_en: translatedLanguage === "en" && translationPresent ? titleTranslation : null,
+    abstract_en: translatedLanguage === "en" && translationPresent ? abstractTranslation : null,
+    keywords_en: translatedLanguage === "en" && translationPresent ? translatedKeywords : [],
+    references_list: rawReferences,
+    doi, volume, issue, pages,
+  };
 }
 
 export async function saveDraftAction(data: FormData) {

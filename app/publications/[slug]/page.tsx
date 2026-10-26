@@ -4,6 +4,7 @@ import { findPublicArticle } from "@/app/lib/jrs-catalogue";
 import JournalInfoLayout from "@/app/components/JournalInfoLayout";
 import ArticleContent, { articleSectionLinks } from "@/app/components/ArticleContent";
 import { formatPublicationDate, publicationTypeLabels } from "@/app/lib/publications";
+import { articleUrl } from "@/app/lib/citations";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -36,8 +37,29 @@ export default async function PublicationPage({ params }: Props) {
       eyebrow="Наукова публікація"
       title={article.title}
       description={`${publicationTypeLabels[article.type]} · ${formatPublicationDate(article.publishedAt)}`}
-      sections={articleSectionLinks(Boolean(article.pdfUrl))}
+      sections={articleSectionLinks(Boolean(article.pdfUrl), false, Boolean(article.references?.length))}
     >
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "ScholarlyArticle",
+        headline: article.title,
+        inLanguage: article.language,
+        datePublished: article.publishedAt,
+        author: article.authors.map(author => ({
+          "@type": "Person", name: author.name,
+          ...(author.affiliation ? { affiliation: { "@type": "Organization", name: author.affiliation } } : {}),
+          ...(author.orcid ? { identifier: `https://orcid.org/${author.orcid}` } : {}),
+        })),
+        abstract: article.abstract,
+        keywords: article.keywords,
+        isPartOf: { "@type": "Periodical", name: "Journal of Renal Science" },
+        mainEntityOfPage: articleUrl(article),
+        ...(article.doi ? { identifier: `https://doi.org/${article.doi}` } : {}),
+        ...(article.translations?.en?.title && article.language === "uk"
+          ? { alternativeHeadline: article.translations.en.title } : {}),
+        ...(article.translations?.uk?.title && article.language === "en"
+          ? { alternativeHeadline: article.translations.uk.title } : {}),
+      }).replace(/</g, "\\u003c") }} />
       <p className="pub-back"><a href="/publications">← Усі публікації</a></p>
       <ArticleContent article={article} />
     </JournalInfoLayout>
