@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { allPublications } from "@/app/lib/jrs-catalogue";
 import { allPublicNotices, noticeUrl } from "@/app/lib/jrs-notices";
 import { groupPublishedIssues, issueHref } from "@/app/lib/jrs-issues";
-import { authorEntries } from "@/app/lib/jrs-contributors";
+import { contributorSitemapPaths } from "@/app/lib/jrs-contributors";
 import { englishArticleView } from "@/app/lib/jrs-english-article";
 
 const origin = "https://journal.kidney.pp.ua";
@@ -37,8 +37,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date(item.issued_at),
   }));
 
-  const contributors = authorEntries(publications).map(author => ({
-    url: `${origin}/contributors/${author.key}`,
+  const contributors = contributorSitemapPaths(publications).map(path => ({
+    url: origin + path,
   }));
 
   return [...core, ...issues, ...articles, ...translatedArticles, ...contributors, ...notices];
