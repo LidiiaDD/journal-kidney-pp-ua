@@ -25,8 +25,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${contributor.name} — JRS research contributions`,
     description: `Published research listing for ${contributor.name}: ${contributor.articles.length} bibliographic ${contributor.articles.length === 1 ? "article" : "articles"} in the Journal of Renal Science.`,
-    alternates: { canonical: `/contributors/${contributor.key}` },
-    robots: { index: false, follow: true },
+    alternates: {
+      canonical: `/en/contributors/${contributor.key}`,
+      languages: {
+        en: `/en/contributors/${contributor.key}`,
+        uk: `/contributors/${contributor.key}`,
+      },
+    },
   };
 }
 

@@ -16,7 +16,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${author.name} — публікації у JRS`,
     description: `Бібліографічний покажчик робіт ${author.name} у Journal of Renal Science: ${author.articles.length} опублікованих матеріалів.`,
-    alternates: { canonical: `/contributors/${author.key}` },
+    alternates: {
+      canonical: `/contributors/${author.key}`,
+      languages: {
+        uk: `/contributors/${author.key}`,
+        en: `/en/contributors/${author.key}`,
+      },
+    },
   };
 }
 
