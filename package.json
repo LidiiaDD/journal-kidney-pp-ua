@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm run test:preflight && npm run test:contributors && npm run test:feed && npm run test:issues && npm run test:english-articles && npm run test:publication-gate && npm run test:editor-triage && npm run test:draft-export && npm run test:unsaved-pdf-guard && npm run test:english-notices && npm run test:release-verification && npm run test:english-atlas && npm run test:vercel-deploy-policy && npm run test:international-contributors && npm run test:robots && npm run test:international-issues && npm run test:live-coverage && next build",
+    "build": "npm run test:preflight && npm run test:contributors && npm run test:feed && npm run test:issues && npm run test:english-articles && npm run test:publication-gate && npm run test:editor-triage && npm run test:draft-export && npm run test:unsaved-pdf-guard && npm run test:english-notices && npm run test:release-verification && npm run test:english-atlas && npm run test:vercel-deploy-policy && npm run test:international-contributors && npm run test:robots && npm run test:international-issues && npm run test:live-coverage && npm run test:keyboard-navigation && next build",
     "start": "next start",
     "lint": "eslint",
     "test:preflight": "node --experimental-strip-types --test tests/jrs-preflight.test.mjs",
@@ -24,7 +24,8 @@
     "test:international-contributors": "node --experimental-strip-types --test tests/jrs-international-contributors.test.mjs",
     "test:robots": "node --test tests/jrs-robots.test.mjs",
     "test:international-issues": "node --experimental-strip-types --test tests/jrs-international-issues.test.mjs",
-    "test:live-coverage": "node --test tests/jrs-live-coverage.test.mjs"
+    "test:live-coverage": "node --test tests/jrs-live-coverage.test.mjs",
+    "test:keyboard-navigation": "node --test tests/jrs-keyboard-navigation.test.mjs"
   },
   "dependencies": {
     "next": "16.2.7",
