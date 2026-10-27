@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import {
   authorEntries, authorHref, internationalAuthorHref,
   authorKey, findAuthorEntry, verifiedOrcidShape, contributorSitemapPaths,
@@ -76,4 +77,16 @@ test("sitemap lists both language profiles only for genuine public contributors"
   const paths = contributorSitemapPaths([article("released-study", [person])]);
   assert.deepEqual(paths, [`/contributors/${key}`, `/en/contributors/${key}`]);
   assert.equal(new Set(paths).size, paths.length);
+});
+
+test("public contributor profiles have matching language-specific canonical and hreflang metadata", () => {
+  const english = readFileSync(new URL("../app/en/contributors/[key]/page.tsx", import.meta.url), "utf8");
+  const ukrainian = readFileSync(new URL("../app/contributors/[key]/page.tsx", import.meta.url), "utf8");
+  assert.match(english, /canonical: `\\/en\\/contributors\\/\\$\\{contributor\\.key\\}`/);
+  assert.match(english, /en: `\\/en\\/contributors\\/\\$\\{contributor\\.key\\}`/);
+  assert.match(english, /uk: `\\/contributors\\/\\$\\{contributor\\.key\\}`/);
+  assert.doesNotMatch(english, /robots: \\{ index: false, follow: true \\}/);
+  assert.match(ukrainian, /canonical: `\\/contributors\\/\\$\\{author\\.key\\}`/);
+  assert.match(ukrainian, /en: `\\/en\\/contributors\\/\\$\\{author\\.key\\}`/);
+  assert.match(ukrainian, /uk: `\\/contributors\\/\\$\\{author\\.key\\}`/);
 });
