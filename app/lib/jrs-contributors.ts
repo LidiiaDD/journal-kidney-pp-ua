@@ -75,3 +75,11 @@ export function findAuthorEntry(articles: readonly Publication[], key: string): 
   if (!/^[0-9a-f]{24}$/.test(key)) return undefined;
   return authorEntries(articles).find(entry => entry.key === key);
 }
+
+/** Public contributor profiles in both languages, derived only from released articles. */
+export function contributorSitemapPaths(articles: readonly Publication[]): string[] {
+  return authorEntries(articles).flatMap(entry => [
+    `/contributors/${entry.key}`,
+    `/en/contributors/${entry.key}`,
+  ]);
+}
