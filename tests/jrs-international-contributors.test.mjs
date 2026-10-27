@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   authorEntries, authorHref, internationalAuthorHref,
-  authorKey, findAuthorEntry, verifiedOrcidShape,
+  authorKey, findAuthorEntry, verifiedOrcidShape, contributorSitemapPaths,
 } from "../app/lib/jrs-contributors.ts";
 
 function article(slug, authors, date="2026-10-26") {
@@ -67,4 +67,13 @@ test("invalid profile keys do not resolve arbitrary records", () => {
   const records=[article("paper-1",[{name:"Nadia Koval"}])];
   assert.equal(findAuthorEntry(records,"../../private"),undefined);
   assert.equal(findAuthorEntry(records,"1234"),undefined);
+});
+
+test("sitemap lists both language profiles only for genuine public contributors", () => {
+  assert.deepEqual(contributorSitemapPaths([]), []);
+  const person = { name: "Nadia Koval", affiliation: "Research Institute" };
+  const key = authorKey(person);
+  const paths = contributorSitemapPaths([article("released-study", [person])]);
+  assert.deepEqual(paths, [`/contributors/${key}`, `/en/contributors/${key}`]);
+  assert.equal(new Set(paths).size, paths.length);
 });
