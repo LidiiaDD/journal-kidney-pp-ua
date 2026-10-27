@@ -82,11 +82,11 @@ test("sitemap lists both language profiles only for genuine public contributors"
 test("public contributor profiles have matching language-specific canonical and hreflang metadata", () => {
   const english = readFileSync(new URL("../app/en/contributors/[key]/page.tsx", import.meta.url), "utf8");
   const ukrainian = readFileSync(new URL("../app/contributors/[key]/page.tsx", import.meta.url), "utf8");
-  assert.match(english, /canonical: `\\/en\\/contributors\\/\\$\\{contributor\\.key\\}`/);
-  assert.match(english, /en: `\\/en\\/contributors\\/\\$\\{contributor\\.key\\}`/);
-  assert.match(english, /uk: `\\/contributors\\/\\$\\{contributor\\.key\\}`/);
-  assert.doesNotMatch(english, /robots: \\{ index: false, follow: true \\}/);
-  assert.match(ukrainian, /canonical: `\\/contributors\\/\\$\\{author\\.key\\}`/);
-  assert.match(ukrainian, /en: `\\/en\\/contributors\\/\\$\\{author\\.key\\}`/);
-  assert.match(ukrainian, /uk: `\\/contributors\\/\\$\\{author\\.key\\}`/);
+  assert.ok(english.includes("canonical: `/en/contributors/${contributor.key}`"));
+  assert.ok(english.includes("en: `/en/contributors/${contributor.key}`"));
+  assert.ok(english.includes("uk: `/contributors/${contributor.key}`"));
+  assert.ok(!english.includes("robots: { index: false, follow: true }"));
+  assert.ok(ukrainian.includes("canonical: `/contributors/${author.key}`"));
+  assert.ok(ukrainian.includes("en: `/en/contributors/${author.key}`"));
+  assert.ok(ukrainian.includes("uk: `/contributors/${author.key}`"));
 });
