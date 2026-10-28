@@ -64,7 +64,8 @@ export default function ReadingLibrary({ articles }: { articles: Publication[] }
     document.body.appendChild(anchor);
     anchor.click();
     anchor.remove();
-    URL.revokeObjectURL(url);
+    // Allow browsers that start downloads asynchronously to resolve the blob URL.
+    window.setTimeout(() => URL.revokeObjectURL(url), 30_000);
     setNotice(format === "ris" ? "Файл RIS підготовлено." : "Файл BibTeX підготовлено.");
   }
 

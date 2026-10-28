@@ -10,3 +10,10 @@ test("RIS and BibTeX exports keep their blob URL alive until downloads can begin
   assert.match(citationTools, /link\.click\(\);\s*link\.remove\(\);\s*\/\/[^\n]*\n\s*\/\/[^\n]*\n\s*window\.setTimeout\(\(\) => URL\.revokeObjectURL\(url\), 30_000\)/);
   assert.doesNotMatch(citationTools, /link\.click\(\);\s*link\.remove\(\);\s*URL\.revokeObjectURL\(url\)/);
 });
+
+const readingLibrary = readFileSync(new URL("../app/components/ReadingLibrary.tsx", import.meta.url), "utf8");
+
+test("reading-library RIS/BibTeX exports defer blob URL cleanup", () => {
+  assert.match(readingLibrary, /anchor\.click\(\);\s*anchor\.remove\(\);\s*\/\/[^\n]*\n\s*window\.setTimeout\(\(\) => URL\.revokeObjectURL\(url\), 30_000\)/);
+  assert.doesNotMatch(readingLibrary, /anchor\.click\(\);\s*anchor\.remove\(\);\s*URL\.revokeObjectURL\(url\)/);
+});
