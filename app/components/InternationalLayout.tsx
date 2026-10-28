@@ -49,7 +49,7 @@ export default function InternationalLayout({ eyebrow, title, lead, children, ho
         </div>
       </header>
 
-      <main id="top">
+      <main id="top" tabIndex={-1}>
         {home ? (
           <section className="jrs-en-home-hero">
             <div className="wrap jrs-en-home-hero-inner">

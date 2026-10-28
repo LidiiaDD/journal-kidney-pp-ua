@@ -6,6 +6,6 @@ const layout = readFileSync(new URL("../app/components/InternationalLayout.tsx",
 
 test("English pages provide a keyboard-visible skip link to their main landmark", () => {
   assert.match(layout, /<a href="#top" className="sr-only focus:not-sr-only[^"]*focus:z-50[^"]*">\s*Skip to main content\s*<\/a>/);
-  assert.match(layout, /<main id="top">/);
+  assert.match(layout, /<main id="top" tabIndex=\{-1\}>/, "skip target must be programmatically focusable");
   assert.ok(layout.indexOf('href="#top"') < layout.indexOf('<header'), "skip link must precede navigation");
 });
