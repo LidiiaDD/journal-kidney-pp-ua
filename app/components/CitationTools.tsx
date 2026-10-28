@@ -32,7 +32,9 @@ export default function CitationTools({ article }: { article: Publication }) {
     document.body.appendChild(link);
     link.click();
     link.remove();
-    URL.revokeObjectURL(url);
+    // Some browsers start a download asynchronously after click(). Keep the
+    // blob URL alive briefly so Safari/mobile downloads can still resolve it.
+    window.setTimeout(() => URL.revokeObjectURL(url), 30_000);
     setNotice(extension === "ris" ? "Файл RIS підготовлено." : "Файл BibTeX підготовлено.");
   }
 
