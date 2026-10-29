@@ -14,6 +14,7 @@ const SLUG_PATTERN = /^[a-z0-9-]{3,100}$/;
 
 let cachedRaw: string | null | undefined;
 let cachedItems: readonly string[] = EMPTY;
+let lastReadFailed = false;
 
 function validSlugs(value: unknown): string[] {
   if (!Array.isArray(value)) return [];
@@ -28,10 +29,12 @@ function read(): readonly string[] {
   try {
     raw = window.localStorage.getItem(STORAGE_KEY);
   } catch {
+    lastReadFailed = true;
     // Preserve the last known bookmarks if storage becomes temporarily unreadable.
     // A failed read must not make an already-open library appear empty.
     return cachedItems;
   }
+  lastReadFailed = false;
   if (raw === cachedRaw) return cachedItems;
   cachedRaw = raw;
   try {
@@ -78,6 +81,8 @@ export function saveReadingList(items: readonly string[]): boolean {
 export function toggleReadingItem(slug: string): boolean {
   if (!SLUG_PATTERN.test(slug)) return false;
   const existing = read();
+  // Never overwrite newer cross-tab bookmarks with a stale cached snapshot.
+  if (lastReadFailed) return false;
   const next = existing.includes(slug)
     ? existing.filter(item => item !== slug)
     : [slug, ...existing];
