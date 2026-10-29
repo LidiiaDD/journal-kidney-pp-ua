@@ -7,7 +7,9 @@ const source = readFileSync(new URL("../app/lib/reading-list.ts", import.meta.ur
 const start = source.indexOf("function read(): readonly string[] {");
 const end = source.indexOf("\nfunction subscribe(", start);
 assert.ok(start >= 0 && end > start, "test must execute the real reading-list reader");
-const reader = source.slice(start, end).replace("function read(): readonly string[]", "function read");
+const reader = source.slice(start, end)
+  .replace("function read(): readonly string[]", "function read")
+  .replace("let raw: string | null = null;", "let raw = null;");
 
 function sandbox(getItem) {
   const empty = Object.freeze([]);
