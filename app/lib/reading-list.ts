@@ -28,7 +28,9 @@ function read(): readonly string[] {
   try {
     raw = window.localStorage.getItem(STORAGE_KEY);
   } catch {
-    return EMPTY;
+    // Preserve the last known bookmarks if storage becomes temporarily unreadable.
+    // A failed read must not make an already-open library appear empty.
+    return cachedItems;
   }
   if (raw === cachedRaw) return cachedItems;
   cachedRaw = raw;
