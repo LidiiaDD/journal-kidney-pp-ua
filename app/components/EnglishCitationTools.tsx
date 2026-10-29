@@ -36,7 +36,9 @@ export default function EnglishCitationTools({ article }: { article: Publication
     document.body.appendChild(element);
     element.click();
     element.remove();
-    window.setTimeout(() => URL.revokeObjectURL(url), 800);
+    // Safari/mobile browsers may start a download asynchronously after click().
+    // Match the Ukrainian citation widget's delayed cleanup.
+    window.setTimeout(() => URL.revokeObjectURL(url), 30_000);
     setMessage(extension === "ris" ? "RIS file prepared." : "BibTeX file prepared.");
   }
 
