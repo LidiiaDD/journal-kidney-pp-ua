@@ -46,3 +46,26 @@ test("a successful later read still replaces stale cached bookmarks", () => {
   state.window.localStorage.getItem = () => '["second-paper"]';
   assert.deepEqual(Array.from(runInNewContext("read()", state)), ["second-paper"]);
 });
+
+test("bookmark toggle refuses stale writes after a blocked read and resumes after recovery", () => {
+  const writes = [];
+  const state = sandbox(() => '["saved-paper"]');
+  state.SLUG_PATTERN = /^[a-z0-9-]{3,100}$/;
+  state.lastReadFailed = false;
+  state.saveReadingList = items => { writes.push(Array.from(items)); return true; };
+  const start = source.indexOf("export function toggleReadingItem(slug: string): boolean {");
+  assert.ok(start >= 0, "execute the actual bookmark toggle");
+  const toggle = source.slice(start).replace(
+    "export function toggleReadingItem(slug: string): boolean",
+    "function toggleReadingItem(slug)",
+  );
+  runInNewContext(reader + "\n" + toggle + "\nread()", state);
+  state.window.localStorage.getItem = () => { throw new Error("SecurityError"); };
+  assert.equal(runInNewContext("toggleReadingItem('new-paper')", state), false);
+  assert.deepEqual(writes, [], "failed reads must never overwrite another tab's bookmarks");
+  assert.deepEqual(Array.from(state.cachedItems), ["saved-paper"]);
+
+  state.window.localStorage.getItem = () => '["saved-paper","other-tab-paper"]';
+  assert.equal(runInNewContext("toggleReadingItem('new-paper')", state), true);
+  assert.deepEqual(writes, [["new-paper", "saved-paper", "other-tab-paper"]]);
+});
