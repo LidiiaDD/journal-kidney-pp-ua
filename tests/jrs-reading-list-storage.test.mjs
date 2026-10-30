@@ -69,3 +69,42 @@ test("bookmark toggle refuses stale writes after a blocked read and resumes afte
   assert.equal(runInNewContext("toggleReadingItem('new-paper')", state), true);
   assert.deepEqual(writes, [["new-paper", "saved-paper", "other-tab-paper"]]);
 });
+
+test("removing unavailable bookmarks preserves new valid bookmarks from another tab", () => {
+  const writes = [];
+  let raw = '["saved-paper"]';
+  const state = sandbox(() => raw);
+  state.lastReadFailed = false;
+  state.saveReadingList = items => { writes.push(Array.from(items)); return true; };
+  const start = source.indexOf("export function removeUnavailableReadingItems(allowedSlugs: readonly string[]): boolean {");
+  assert.ok(start >= 0, "execute the real unavailable-bookmark cleanup");
+  const cleanup = source.slice(start).replace(
+    "export function removeUnavailableReadingItems(allowedSlugs: readonly string[]): boolean",
+    "function removeUnavailableReadingItems(allowedSlugs)",
+  );
+  runInNewContext(reader + "\n" + cleanup + "\nread()", state);
+  raw = '["saved-paper","newer-paper","unpublished-paper"]';
+  assert.equal(runInNewContext('removeUnavailableReadingItems(["saved-paper","newer-paper"])', state), true);
+  assert.deepEqual(writes, [["saved-paper", "newer-paper"]]);
+});
+
+test("removing unavailable bookmarks never writes when browser storage cannot be read", () => {
+  const writes = [];
+  const state = sandbox(() => '["saved-paper"]');
+  state.lastReadFailed = false;
+  state.saveReadingList = items => { writes.push(Array.from(items)); return true; };
+  const start = source.indexOf("export function removeUnavailableReadingItems(allowedSlugs: readonly string[]): boolean {");
+  const cleanup = source.slice(start).replace(
+    "export function removeUnavailableReadingItems(allowedSlugs: readonly string[]): boolean",
+    "function removeUnavailableReadingItems(allowedSlugs)",
+  );
+  runInNewContext(reader + "\n" + cleanup + "\nread()", state);
+  state.window.localStorage.getItem = () => { throw new Error("SecurityError"); };
+  assert.equal(runInNewContext('removeUnavailableReadingItems(["saved-paper"])', state), false);
+  assert.deepEqual(writes, []);
+});
+
+test("library cleanup passes the whole public catalogue, not a stale saved snapshot", () => {
+  const component = readFileSync(new URL("../app/components/ReadingLibrary.tsx", import.meta.url), "utf8");
+  assert.match(component, /removeUnavailableReadingItems\(articles\.map\(article => article\.slug\)\)/);
+});
