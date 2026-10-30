@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import type { Publication } from "@/app/lib/publications";
 import { formatPublicationDate, publicationTypeLabels } from "@/app/lib/publications";
 import { articleUrl, toBibtex, toRis } from "@/app/lib/citations";
-import { saveReadingList, useReadingList } from "@/app/lib/reading-list";
+import { removeUnavailableReadingItems, saveReadingList, useReadingList } from "@/app/lib/reading-list";
 import BookmarkButton from "@/app/components/BookmarkButton";
 
 export default function ReadingLibrary({ articles }: { articles: Publication[] }) {
@@ -70,8 +70,7 @@ export default function ReadingLibrary({ articles }: { articles: Publication[] }
   }
 
   function removeMissing() {
-    const allowed = new Set(available.map(article => article.slug));
-    if (!saveReadingList(saved.filter(slug => allowed.has(slug)))) {
+    if (!removeUnavailableReadingItems(articles.map(article => article.slug))) {
       setNotice("Не вдалося оновити закладки в браузері.");
     } else {
       setNotice("Недоступні посилання прибрано.");
