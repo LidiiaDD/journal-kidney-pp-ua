@@ -55,7 +55,8 @@ test("bookmark toggle refuses stale writes after a blocked read and resumes afte
   state.saveReadingList = items => { writes.push(Array.from(items)); return true; };
   const start = source.indexOf("export function toggleReadingItem(slug: string): boolean {");
   assert.ok(start >= 0, "execute the actual bookmark toggle");
-  const toggle = source.slice(start).replace(
+  const nextExport = source.indexOf("\nexport function removeUnavailableReadingItems(", start);
+  const toggle = source.slice(start, nextExport > start ? nextExport : undefined).replace(
     "export function toggleReadingItem(slug: string): boolean",
     "function toggleReadingItem(slug)",
   );
