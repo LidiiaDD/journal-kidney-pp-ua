@@ -95,3 +95,25 @@ test("each specialist channel is valid when its type has no published records", 
   assert.doesNotMatch(articles, /<item>/);
   assert.doesNotMatch(notices, /<item>/);
 });
+
+
+test("RSS copy handles successful, blocked and unavailable Clipboard APIs", async () => {
+  const { tryCopyFeedAddress } = await import("../app/lib/jrs-feed-copy.ts");
+  const url = "https://journal.kidney.pp.ua/feeds/articles.xml";
+  let received = "";
+  assert.equal(await tryCopyFeedAddress(url, { writeText: async value => { received = value; } }), true);
+  assert.equal(received, url);
+  assert.equal(await tryCopyFeedAddress(url, { writeText: async () => { throw new Error("NotAllowedError"); } }), false);
+  assert.equal(await tryCopyFeedAddress(url, undefined), false);
+});
+
+test("RSS copy failure reveals a selectable, labelled read-only address", async () => {
+  const { readFileSync } = await import("node:fs");
+  const component = readFileSync(new URL("../app/components/FeedCopyButton.tsx", import.meta.url), "utf8");
+  assert.match(component, /setManualCopy\(!copied\)/);
+  assert.match(component, /\{manualCopy && \(/);
+  assert.match(component, /readOnly/);
+  assert.match(component, /value=\{url\}/);
+  assert.match(component, /aria-label="RSS-адреса для ручного копіювання"/);
+  assert.match(component, /currentTarget\.select\(\)/);
+});
