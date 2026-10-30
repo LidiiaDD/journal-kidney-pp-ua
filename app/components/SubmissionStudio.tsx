@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { prepareSubmissionMailto } from "@/app/lib/jrs-mailto";
 import { manuscriptGuides, type ManuscriptKind } from "@/app/lib/manuscript-guide";
 
 const editorialEmail = "editor@kidney.pp.ua";
@@ -76,17 +77,17 @@ export default function SubmissionStudio() {
     ].join("\n");
   }, [fields, typeLabel]);
 
-  // Mail clients have different URL-length limits; keep the encoded draft compact.
-  // The full text always remains available to copy without truncation.
-  const mailBody = letter.length <= 1400 ? letter : [
+  // The mailto URL limit applies to percent-encoded bytes, not raw Cyrillic characters.
+  // Keep the full letter in the preview and clipboard even when the mailto is compact.
+  const fallbackBody = [
     "Шановна редакціє Journal of Renal Science!",
     "",
-    `Прошу розглянути рукопис «${title.slice(0, 170)}» (${typeLabel}).`,
+    `Прошу розглянути рукопис «${Array.from(title).slice(0, 60).join("")}» (${typeLabel}).`,
     "Повний супровідний текст підготовлено окремо та буде додано до листа.",
     "",
-    `З повагою, ${author.slice(0, 100)}`,
+    `З повагою, ${Array.from(author).slice(0, 40).join("")}`,
   ].join("\n");
-  const mailto = `mailto:${editorialEmail}?subject=${encodeURIComponent(subject.slice(0, 230))}&body=${encodeURIComponent(mailBody)}`;
+  const mail = prepareSubmissionMailto(subject, letter, fallbackBody);
 
   async function copyLetter() {
     if (!ready) {
@@ -213,13 +214,13 @@ export default function SubmissionStudio() {
             Копіювати лист
           </button>
           <a className={ready ? "" : "is-disabled"} aria-disabled={!ready} tabIndex={ready ? 0 : -1}
-            href={ready ? mailto : undefined}
+            href={ready ? mail.href : undefined}
             onClick={event => { if (!ready) event.preventDefault(); else setMessage("Перевірте лист у поштовій програмі та прикріпіть файли вручну."); }}>
             Відкрити пошту ↗
           </a>
         </div>
         <p className="submission-feedback" role="status" aria-live="polite">{message}</p>
-        {ready && letter.length > 1400 && <p className="submission-mail-warning">Через обмеження поштових програм при відкритті пошти буде використаний скорочений текст. Скопіюйте повний лист окремо, якщо хочете надіслати його цілком.</p>}
+        {ready && mail.shortened && <p className="submission-mail-warning">Через обмеження поштових програм тема або текст листа в пошті можуть бути скорочені. Скопіюйте повний лист окремо, якщо хочете надіслати його цілком.</p>}
       </section>
       <p className="submission-last-note">Майстер допомагає з оформленням звернення, але не підтверджує якість, етичне схвалення чи прийняття статті. Не вводьте персональні дані пацієнтів, результати з ідентифікаторами або неопубліковані конфіденційні матеріали.</p>
     </div>
