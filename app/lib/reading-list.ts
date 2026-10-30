@@ -88,3 +88,16 @@ export function toggleReadingItem(slug: string): boolean {
     : [slug, ...existing];
   return saveReadingList(next);
 }
+
+/**
+ * Remove only bookmarks whose articles are absent from the current public catalogue.
+ * Read storage again at click time: a second tab may have added a bookmark since render.
+ * A failed read must never overwrite the last known (possibly stale) selection.
+ */
+export function removeUnavailableReadingItems(allowedSlugs: readonly string[]): boolean {
+  if (typeof window === "undefined") return false;
+  const current = read();
+  if (lastReadFailed) return false;
+  const allowed = new Set(allowedSlugs);
+  return saveReadingList(current.filter(slug => allowed.has(slug)));
+}
