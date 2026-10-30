@@ -1,17 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import { tryCopyFeedAddress } from "@/app/lib/jrs-feed-copy";
 
 export default function FeedCopyButton({ url }: { url: string }) {
   const [notice, setNotice] = useState("");
+  const [manualCopy, setManualCopy] = useState(false);
 
   async function copy() {
-    try {
-      await navigator.clipboard.writeText(url);
-      setNotice("Посилання скопійовано.");
-    } catch {
-      setNotice("Не вдалося скопіювати. Відкрийте стрічку й скопіюйте адресу вручну.");
-    }
+    const copied = await tryCopyFeedAddress(url, navigator.clipboard);
+    setManualCopy(!copied);
+    setNotice(copied
+      ? "Посилання скопійовано."
+      : "Автоматичне копіювання недоступне. Виділіть адресу нижче й скопіюйте вручну.");
   }
 
   return (
@@ -20,6 +21,16 @@ export default function FeedCopyButton({ url }: { url: string }) {
         Скопіювати RSS-адресу
       </button>
       <span role="status" aria-live="polite" className="jrs-feed-copy-notice">{notice}</span>
+      {manualCopy && (
+        <input
+          type="text"
+          readOnly
+          value={url}
+          aria-label="RSS-адреса для ручного копіювання"
+          onFocus={event => event.currentTarget.select()}
+          style={{ maxWidth: "100%", boxSizing: "border-box" }}
+        />
+      )}
     </span>
   );
 }
