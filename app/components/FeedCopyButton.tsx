@@ -8,7 +8,7 @@ export default function FeedCopyButton({ url }: { url: string }) {
   const [manualCopy, setManualCopy] = useState(false);
 
   async function copy() {
-    const copied = await tryCopyFeedAddress(url, navigator.clipboard);
+    const copied = await tryCopyFeedAddress(url, () => navigator.clipboard);
     setManualCopy(!copied);
     setNotice(copied
       ? "Посилання скопійовано."
