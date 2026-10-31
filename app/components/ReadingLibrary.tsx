@@ -186,8 +186,9 @@ export default function ReadingLibrary({ articles }: { articles: Publication[] }
                   <button type="button" onClick={() => download("bib")}>Експорт BibTeX</button>
                 </div>
                 {manualLinks && (
-                  <label className="reading-manual-copy">Перелік для ручного копіювання
+                  <label className="reading-manual-copy mt-4 block text-sm">Перелік для ручного копіювання
                     <textarea readOnly rows={5} value={manualLinks}
+                      className="mt-2 w-full min-w-0 box-border resize-y border border-white/40 bg-white p-3 text-slate-900"
                       aria-label="Перелік статей і посилань для ручного копіювання"
                       onFocus={event => event.currentTarget.select()} />
                   </label>
