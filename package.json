@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm run test:preflight && npm run test:contributors && npm run test:feed && npm run test:issues && npm run test:english-articles && npm run test:publication-gate && npm run test:editor-triage && npm run test:draft-export && npm run test:unsaved-pdf-guard && npm run test:english-notices && npm run test:release-verification && npm run test:english-atlas && npm run test:vercel-deploy-policy && npm run test:international-contributors && npm run test:robots && npm run test:international-issues && npm run test:live-coverage && npm run test:keyboard-navigation && npm run test:citation-download && npm run test:reading-list && npm run test:submission-mailto && next build",
+    "build": "npm run test:preflight && npm run test:contributors && npm run test:feed && npm run test:issues && npm run test:english-articles && npm run test:publication-gate && npm run test:editor-triage && npm run test:draft-export && npm run test:unsaved-pdf-guard && npm run test:english-notices && npm run test:release-verification && npm run test:english-atlas && npm run test:vercel-deploy-policy && npm run test:international-contributors && npm run test:robots && npm run test:international-issues && npm run test:live-coverage && npm run test:keyboard-navigation && npm run test:citation-download && npm run test:reading-list && npm run test:submission-mailto && npm run test:manuscript-copy && next build",
     "start": "next start",
     "lint": "eslint",
     "test:preflight": "node --experimental-strip-types --test tests/jrs-preflight.test.mjs",
@@ -28,7 +28,8 @@
     "test:keyboard-navigation": "node --test tests/jrs-keyboard-navigation.test.mjs",
     "test:citation-download": "node --test tests/jrs-citation-download.test.mjs",
     "test:reading-list": "node --test tests/jrs-reading-list-storage.test.mjs",
-    "test:submission-mailto": "node --experimental-strip-types --test tests/jrs-submission-mailto.test.mjs"
+    "test:submission-mailto": "node --experimental-strip-types --test tests/jrs-submission-mailto.test.mjs",
+    "test:manuscript-copy": "node --test tests/jrs-manuscript-copy.test.mjs"
   },
   "dependencies": {
     "next": "16.2.7",

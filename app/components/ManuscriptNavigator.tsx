@@ -15,6 +15,7 @@ export default function ManuscriptNavigator() {
   const [kind, setKind] = useState<ManuscriptKind>("observational");
   const [checked, setChecked] = useState<Record<string, boolean>>({});
   const [feedback, setFeedback] = useState("");
+  const [manualCopy, setManualCopy] = useState("");
   const guide = findGuide(kind);
 
   const groups = useMemo(() => [
@@ -36,6 +37,7 @@ export default function ManuscriptNavigator() {
   function setItem(item: ChecklistItem, group: string, next: boolean) {
     setChecked(previous => ({ ...previous, [itemKey(item, group)]: next }));
     setFeedback("");
+    setManualCopy("");
   }
 
   async function copyRemaining() {
@@ -49,9 +51,11 @@ export default function ManuscriptNavigator() {
     ].join("\n");
     try {
       await navigator.clipboard.writeText(text);
+      setManualCopy("");
       setFeedback("Список скопійовано.");
     } catch {
-      setFeedback("Не вдалося скопіювати автоматично. Можна роздрукувати сторінку.");
+      setManualCopy(text);
+      setFeedback("Автоматичне копіювання недоступне. Виділіть список нижче та скопіюйте вручну.");
     }
   }
 
@@ -79,7 +83,7 @@ export default function ManuscriptNavigator() {
             key={item.id}
             className={`manu-kind${kind === item.id ? " is-current" : ""}`}
             aria-pressed={kind === item.id}
-            onClick={() => { setKind(item.id); setFeedback(""); }}
+            onClick={() => { setKind(item.id); setFeedback(""); setManualCopy(""); }}
           >
             <span className="manu-kind-id">{String(index + 1).padStart(2, "0")}</span>
             <span className="manu-kind-title">{item.label}</span>
@@ -167,10 +171,20 @@ export default function ManuscriptNavigator() {
         </div>
         <div className="manu-finale-footer">
           <p role="status" aria-live="polite">{feedback}</p>
-          <button type="button" onClick={() => { setChecked({}); setFeedback("Позначки очищено."); }}>
+          <button type="button" onClick={() => { setChecked({}); setManualCopy(""); setFeedback("Позначки очищено."); }}>
             Очистити всі позначки
           </button>
         </div>
+        {manualCopy && (
+          <textarea
+            aria-label="Список пунктів для ручного копіювання"
+            readOnly
+            value={manualCopy}
+            rows={Math.min(10, Math.max(4, manualCopy.split("\n").length))}
+            onFocus={event => event.currentTarget.select()}
+            style={{ display: "block", width: "100%", boxSizing: "border-box", marginTop: 14, padding: 12, fontSize: 16, lineHeight: 1.5 }}
+          />
+        )}
       </div>
       <p className="manu-disclaimer">
         Це довідковий інструмент самоперевірки, а не офіційна сертифікація якості,
