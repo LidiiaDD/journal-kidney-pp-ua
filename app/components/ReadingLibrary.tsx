@@ -12,6 +12,7 @@ export default function ReadingLibrary({ articles }: { articles: Publication[] }
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState<"saved" | "newest" | "title">("saved");
   const [notice, setNotice] = useState("");
+  const [manualLinks, setManualLinks] = useState("");
   const [confirmClear, setConfirmClear] = useState(false);
 
   const available = useMemo(() => {
@@ -43,11 +44,14 @@ export default function ReadingLibrary({ articles }: { articles: Publication[] }
     if (!available.length) return;
     const lines = available.map((article, index) =>
       `${index + 1}. ${article.title}\n${articleUrl(article)}`);
+    const text = lines.join("\n\n");
     try {
-      await navigator.clipboard.writeText(lines.join("\n\n"));
+      await navigator.clipboard.writeText(text);
+      setManualLinks("");
       setNotice("Перелік статей і посилань скопійовано.");
     } catch {
-      setNotice("Не вдалося скопіювати. Перевірте налаштування браузера.");
+      setManualLinks(text);
+      setNotice("Автоматичне копіювання недоступне. Виділіть перелік нижче й скопіюйте вручну.");
     }
   }
 
@@ -181,6 +185,13 @@ export default function ReadingLibrary({ articles }: { articles: Publication[] }
                   <button type="button" onClick={() => download("ris")}>Експорт RIS</button>
                   <button type="button" onClick={() => download("bib")}>Експорт BibTeX</button>
                 </div>
+                {manualLinks && (
+                  <label className="reading-manual-copy">Перелік для ручного копіювання
+                    <textarea readOnly rows={5} value={manualLinks}
+                      aria-label="Перелік статей і посилань для ручного копіювання"
+                      onFocus={event => event.currentTarget.select()} />
+                  </label>
+                )}
                 <div className="reading-library-actions">
                   {confirmClear ? (
                     <div className="reading-confirm">
