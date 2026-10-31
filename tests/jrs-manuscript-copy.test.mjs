@@ -51,6 +51,6 @@ test("successful retry clears stale manual text and preserves existing success f
   assert.match(component, /aria-label="Список пунктів для ручного копіювання"/);
   assert.match(component, /readOnly[\s\S]*?value=\{manualCopy\}/);
   assert.match(component, /onFocus=\{event => event\.currentTarget\.select\(\)\}/);
-  assert.match(component, /setKind\(item\.id\); setFeedback\(" "\); setManualCopy\(" "\);/.source.replaceAll('" "', '""'));
-  assert.match(component, /setChecked\(\{\}\); setManualCopy\(" "\);/.source.replaceAll('" "', '""'));
+  assert.match(component, /setKind\(item\.id\); setFeedback\(""\); setManualCopy\(""\);/);
+  assert.match(component, /setChecked\(\{\}\); setManualCopy\(""\);/);
 });
