@@ -109,3 +109,47 @@ test("library cleanup passes the whole public catalogue, not a stale saved snaps
   const component = readFileSync(new URL("../app/components/ReadingLibrary.tsx", import.meta.url), "utf8");
   assert.match(component, /removeUnavailableReadingItems\(articles\.map\(article => article\.slug\)\)/);
 });
+
+test("reading-library copy failure exposes the actual article links for manual selection", async () => {
+  const component = readFileSync(new URL("../app/components/ReadingLibrary.tsx", import.meta.url), "utf8");
+  const start = component.indexOf("  async function copyLinks() {");
+  const end = component.indexOf("\n  function download(", start);
+  assert.ok(start >= 0 && end > start, "execute the real reading-list copy handler");
+  const handler = component.slice(start, end);
+  let manual = "";
+  let notice = "";
+  let attempted = "";
+  const context = {
+    available: [{ slug: "renal-study", title: "Renal study" }],
+    articleUrl: article => "https://journal.kidney.pp.ua/publications/" + article.slug,
+    navigator: { clipboard: { writeText: async text => { attempted = text; throw Error("NotAllowedError"); } } },
+    setManualLinks: text => { manual = text; },
+    setNotice: text => { notice = text; },
+  };
+  await runInNewContext(handler + "\ncopyLinks()", context);
+  assert.equal(attempted, "1. Renal study\nhttps://journal.kidney.pp.ua/publications/renal-study");
+  assert.equal(manual, attempted, "fallback must contain the same real links");
+  assert.match(notice, /вручну/);
+  assert.match(component, /\{manualLinks && \(/);
+  assert.match(component, /<textarea readOnly rows=\{5\} value=\{manualLinks\}/);
+  assert.match(component, /onFocus=\{event => event\.currentTarget\.select\(\)\}/);
+});
+
+test("successful later reading-list copy clears stale manual fallback", async () => {
+  const component = readFileSync(new URL("../app/components/ReadingLibrary.tsx", import.meta.url), "utf8");
+  const start = component.indexOf("  async function copyLinks() {");
+  const end = component.indexOf("\n  function download(", start);
+  const handler = component.slice(start, end);
+  let manual = "old fallback";
+  let copied = "";
+  const context = {
+    available: [{ slug: "renal-study", title: "Renal study" }],
+    articleUrl: article => "https://journal.kidney.pp.ua/publications/" + article.slug,
+    navigator: { clipboard: { writeText: async text => { copied = text; } } },
+    setManualLinks: text => { manual = text; },
+    setNotice: () => {},
+  };
+  await runInNewContext(handler + "\ncopyLinks()", context);
+  assert.match(copied, /renal-study/);
+  assert.equal(manual, "", "a successful copy should dismiss the old manual field");
+});
