@@ -117,3 +117,16 @@ test("RSS copy failure reveals a selectable, labelled read-only address", async 
   assert.match(component, /aria-label="RSS-адреса для ручного копіювання"/);
   assert.match(component, /currentTarget\.select\(\)/);
 });
+
+
+test("RSS copy survives a throwing Clipboard API getter and retains manual fallback", async () => {
+  const { tryCopyFeedAddress } = await import("../app/lib/jrs-feed-copy.ts");
+  const url = "https://journal.kidney.pp.ua/feed.xml";
+  assert.equal(await tryCopyFeedAddress(url, () => { throw new Error("SecurityError"); }), false);
+  let copied = "";
+  assert.equal(await tryCopyFeedAddress(url, () => ({ writeText: async text => { copied = text; } })), true);
+  assert.equal(copied, url);
+  const { readFileSync } = await import("node:fs");
+  const component = readFileSync(new URL("../app/components/FeedCopyButton.tsx", import.meta.url), "utf8");
+  assert.match(component, /tryCopyFeedAddress\(url, \(\) => navigator\.clipboard\)/);
+});
