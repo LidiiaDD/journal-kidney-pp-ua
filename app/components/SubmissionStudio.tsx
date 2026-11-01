@@ -38,11 +38,13 @@ export default function SubmissionStudio() {
   const [fields, setFields] = useState<LetterFields>(initialFields);
   const [prepared, setPrepared] = useState<Record<string, boolean>>({});
   const [message, setMessage] = useState("");
+  const [manualCopy, setManualCopy] = useState("");
   const typeLabel = manuscriptGuides.find(guide => guide.id === kind)?.label ?? "Науковий матеріал";
 
   const update = (name: keyof LetterFields, value: string) => {
     setFields(current => ({ ...current, [name]: value }));
     setMessage("");
+    setManualCopy("");
   };
 
   const title = trimmed(fields.title);
@@ -94,11 +96,14 @@ export default function SubmissionStudio() {
       setMessage("Спочатку введіть назву, ім’я автора та коротку цінність роботи.");
       return;
     }
+    const copyText = `Тема: ${subject}\n\n${letter}`;
     try {
-      await navigator.clipboard.writeText(`Тема: ${subject}\n\n${letter}`);
+      await navigator.clipboard.writeText(copyText);
+      setManualCopy("");
       setMessage("Супровідний лист скопійовано. Додайте файли до листа вручну.");
     } catch {
-      setMessage("Копіювання недоступне. Виділіть текст у попередньому перегляді.");
+      setManualCopy(copyText);
+      setMessage("Автоматичне копіювання недоступне. Виділіть повний лист нижче та скопіюйте вручну.");
     }
   }
 
@@ -129,7 +134,7 @@ export default function SubmissionStudio() {
 
           <div className="submission-fields">
             <label>Тип матеріалу
-              <select value={kind} onChange={event => { setKind(event.target.value as ManuscriptKind); setMessage(""); }}>
+              <select value={kind} onChange={event => { setKind(event.target.value as ManuscriptKind); setMessage(""); setManualCopy(""); }}>
                 {manuscriptGuides.map(guide => <option key={guide.id} value={guide.id}>{guide.label}</option>)}
               </select>
             </label>
@@ -220,6 +225,10 @@ export default function SubmissionStudio() {
           </a>
         </div>
         <p className="submission-feedback" role="status" aria-live="polite">{message}</p>
+        {manualCopy && <textarea aria-label="Повний лист для ручного копіювання"
+          readOnly value={manualCopy} rows={8}
+          onFocus={event => event.currentTarget.select()}
+          style={{ width: "100%", boxSizing: "border-box" }} />}
         {ready && mail.shortened && <p className="submission-mail-warning">Через обмеження поштових програм тема або текст листа в пошті можуть бути скорочені. Скопіюйте повний лист окремо, якщо хочете надіслати його цілком.</p>}
       </section>
       <p className="submission-last-note">Майстер допомагає з оформленням звернення, але не підтверджує якість, етичне схвалення чи прийняття статті. Не вводьте персональні дані пацієнтів, результати з ідентифікаторами або неопубліковані конфіденційні матеріали.</p>
