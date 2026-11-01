@@ -12,6 +12,7 @@ export default function EnglishCitationTools({ article }: { article: Publication
   const [style, setStyle] = useState<CitationStyle>("vancouver");
   const [language, setLanguage] = useState<ArticleLanguage>(langs.includes("en") ? "en" : article.language);
   const [message, setMessage] = useState("");
+  const [manualCopy, setManualCopy] = useState("");
   const citation = useMemo(
     () => formatCitation(article, style, language),
     [article, style, language]
@@ -20,9 +21,11 @@ export default function EnglishCitationTools({ article }: { article: Publication
   async function copy(value: string, success: string) {
     try {
       await navigator.clipboard.writeText(value);
+      setManualCopy("");
       setMessage(success);
     } catch {
-      setMessage("Clipboard access was denied. Please select and copy the text manually.");
+      setManualCopy(value);
+      setMessage("Clipboard access was denied. Select the text below and copy it manually.");
     }
   }
 
@@ -46,13 +49,13 @@ export default function EnglishCitationTools({ article }: { article: Publication
     <div className="jrs-en-citation-widget">
       <div className="jrs-en-citation-controls">
         <label>Citation style
-          <select value={style} onChange={event => setStyle(event.target.value as CitationStyle)}>
+          <select value={style} onChange={event => { setStyle(event.target.value as CitationStyle); setManualCopy(""); }}>
             <option value="vancouver">Vancouver (simplified)</option>
             <option value="apa">APA (simplified)</option>
           </select>
         </label>
         {langs.length > 1 && <label>Title language
-          <select value={language} onChange={event => setLanguage(event.target.value as ArticleLanguage)}>
+          <select value={language} onChange={event => { setLanguage(event.target.value as ArticleLanguage); setManualCopy(""); }}>
             {langs.includes("en") && <option value="en">English</option>}
             {langs.includes("uk") && <option value="uk">Ukrainian</option>}
           </select>
@@ -66,6 +69,9 @@ export default function EnglishCitationTools({ article }: { article: Publication
         <button type="button" onClick={() => download("bib")}>Download BibTeX</button>
       </div>
       <p className="jrs-en-citation-status" role="status" aria-live="polite">{message}</p>
+      {manualCopy && <textarea aria-label="Text for manual copying" readOnly value={manualCopy}
+        rows={3} onFocus={event => event.currentTarget.select()}
+        style={{ width: "100%", boxSizing: "border-box" }} />}
       <p className="jrs-en-citation-footnote">Formats are simplified and generated from published metadata. Verify author conventions and punctuation before submitting a bibliography. DOI, volume, issue and page details are included only when actually recorded.</p>
     </div>
   );

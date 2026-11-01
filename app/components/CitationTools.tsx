@@ -11,14 +11,17 @@ export default function CitationTools({ article }: { article: Publication }) {
   const [style, setStyle] = useState<CitationStyle>("vancouver");
   const [language, setLanguage] = useState<ArticleLanguage>(article.language);
   const [notice, setNotice] = useState("");
+  const [manualCopy, setManualCopy] = useState("");
   const citation = useMemo(() => formatCitation(article, style, language), [article, style, language]);
 
   async function copy(value: string, success: string) {
     try {
       await navigator.clipboard.writeText(value);
+      setManualCopy("");
       setNotice(success);
     } catch {
-      setNotice("Копіювання не вдалося. Виділіть запис вручну.");
+      setManualCopy(value);
+      setNotice("Копіювання не вдалося. Виділіть текст нижче й скопіюйте вручну.");
     }
   }
 
@@ -44,14 +47,14 @@ export default function CitationTools({ article }: { article: Publication }) {
     <div className="jrs-citation-tools">
       <div className="jrs-citation-controls">
         <label>Формат цитування
-          <select value={style} onChange={event => setStyle(event.target.value as CitationStyle)}>
+          <select value={style} onChange={event => { setStyle(event.target.value as CitationStyle); setManualCopy(""); }}>
             <option value="vancouver">Vancouver (спрощений)</option>
             <option value="apa">APA (спрощений)</option>
           </select>
         </label>
         {languages.length > 1 && (
           <label>Мова назви
-            <select value={language} onChange={event => setLanguage(event.target.value as ArticleLanguage)}>
+            <select value={language} onChange={event => { setLanguage(event.target.value as ArticleLanguage); setManualCopy(""); }}>
               {languages.includes("uk") && <option value="uk">Українська</option>}
               {languages.includes("en") && <option value="en">English</option>}
             </select>
@@ -66,6 +69,9 @@ export default function CitationTools({ article }: { article: Publication }) {
         <button type="button" onClick={() => exportFile("bib")}>Експорт BibTeX</button>
         <span role="status" aria-live="polite">{notice}</span>
       </div>
+      {manualCopy && <textarea aria-label="Текст для ручного копіювання" readOnly value={manualCopy}
+        rows={3} onFocus={event => event.currentTarget.select()}
+        style={{ width: "100%", boxSizing: "border-box" }} />}
       <p className="pub-source-note">
         Формати APA та Vancouver сформовано автоматично з перевірених редакцією полів.
         Остаточне оформлення варто звірити з вимогами видання, куди ви цитуєте.
