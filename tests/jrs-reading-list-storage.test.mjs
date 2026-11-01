@@ -79,7 +79,7 @@ test("removing unavailable bookmarks preserves new valid bookmarks from another 
   state.saveReadingList = items => { writes.push(Array.from(items)); return true; };
   const start = source.indexOf("export function removeUnavailableReadingItems(allowedSlugs: readonly string[]): boolean {");
   assert.ok(start >= 0, "execute the real unavailable-bookmark cleanup");
-  const cleanup = source.slice(start).replace(
+  const cleanup = source.slice(start, source.indexOf("\nexport function clearReadingListIfUnchanged(", start)).replace(
     "export function removeUnavailableReadingItems(allowedSlugs: readonly string[]): boolean",
     "function removeUnavailableReadingItems(allowedSlugs)",
   );
@@ -95,7 +95,7 @@ test("removing unavailable bookmarks never writes when browser storage cannot be
   state.lastReadFailed = false;
   state.saveReadingList = items => { writes.push(Array.from(items)); return true; };
   const start = source.indexOf("export function removeUnavailableReadingItems(allowedSlugs: readonly string[]): boolean {");
-  const cleanup = source.slice(start).replace(
+  const cleanup = source.slice(start, source.indexOf("\nexport function clearReadingListIfUnchanged(", start)).replace(
     "export function removeUnavailableReadingItems(allowedSlugs: readonly string[]): boolean",
     "function removeUnavailableReadingItems(allowedSlugs)",
   );
