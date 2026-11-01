@@ -153,3 +153,50 @@ test("successful later reading-list copy clears stale manual fallback", async ()
   assert.match(copied, /renal-study/);
   assert.equal(manual, "", "a successful copy should dismiss the old manual field");
 });
+
+test("clear confirmation refuses bookmarks added or removed by another tab", () => {
+  let raw = '["first-paper"]';
+  const writes = [];
+  const state = sandbox(() => raw);
+  state.lastReadFailed = false;
+  state.saveReadingList = items => { writes.push(Array.from(items)); return true; };
+  const start = source.indexOf("export function clearReadingListIfUnchanged(");
+  assert.ok(start >= 0, "execute the actual guarded clear");
+  const guard = source.slice(start).replace(
+    /export function clearReadingListIfUnchanged\(expectedSlugs: readonly string\[\]\): "cleared" \| "changed" \| "unavailable"/,
+    "function clearReadingListIfUnchanged(expectedSlugs)",
+  );
+  runInNewContext(reader + "\n" + guard + "\nread()", state);
+  raw = '["newer-paper","first-paper"]';
+  assert.equal(runInNewContext('clearReadingListIfUnchanged(["first-paper"])', state), "changed");
+  assert.deepEqual(writes, []);
+  raw = '["first-paper"]';
+  assert.equal(runInNewContext('clearReadingListIfUnchanged(["first-paper"])', state), "cleared");
+  assert.deepEqual(writes, [[]]);
+});
+
+test("clear confirmation refuses writes if browser storage becomes unreadable or unwritable", () => {
+  const writes = [];
+  const state = sandbox(() => '["first-paper"]');
+  state.lastReadFailed = false;
+  state.saveReadingList = items => { writes.push(Array.from(items)); return false; };
+  const start = source.indexOf("export function clearReadingListIfUnchanged(");
+  const guard = source.slice(start).replace(
+    /export function clearReadingListIfUnchanged\(expectedSlugs: readonly string\[\]\): "cleared" \| "changed" \| "unavailable"/,
+    "function clearReadingListIfUnchanged(expectedSlugs)",
+  );
+  runInNewContext(reader + "\n" + guard + "\nread()", state);
+  state.window.localStorage.getItem = () => { throw Error("SecurityError"); };
+  assert.equal(runInNewContext('clearReadingListIfUnchanged(["first-paper"])', state), "unavailable");
+  assert.deepEqual(writes, []);
+  state.window.localStorage.getItem = () => '["first-paper"]';
+  assert.equal(runInNewContext('clearReadingListIfUnchanged(["first-paper"])', state), "unavailable");
+  assert.deepEqual(writes, [[]], "failed storage write cannot be treated as cleared");
+});
+
+test("library confirmation captures the displayed selection before asking to clear", () => {
+  const component = readFileSync(new URL("../app/components/ReadingLibrary.tsx", import.meta.url), "utf8");
+  assert.match(component, /setConfirmClear\(\[\.\.\.saved\]\)/);
+  assert.match(component, /clearReadingListIfUnchanged\(confirmClear\)/);
+  assert.match(component, /result === "changed"/);
+});
