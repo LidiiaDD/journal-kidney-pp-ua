@@ -101,3 +101,19 @@ export function removeUnavailableReadingItems(allowedSlugs: readonly string[]): 
   const allowed = new Set(allowedSlugs);
   return saveReadingList(current.filter(slug => allowed.has(slug)));
 }
+
+/**
+ * Clear only the selection the reader explicitly confirmed. A second tab
+ * may have added a bookmark while the confirmation was open.
+ * Browser storage is not transactional, so this guards sequential changes.
+ */
+export function clearReadingListIfUnchanged(expectedSlugs: readonly string[]): "cleared" | "changed" | "unavailable" {
+  if (typeof window === "undefined") return "unavailable";
+  const current = read();
+  if (lastReadFailed) return "unavailable";
+  if (current.length !== expectedSlugs.length ||
+      current.some((slug, index) => slug !== expectedSlugs[index])) {
+    return "changed";
+  }
+  return saveReadingList([]) ? "cleared" : "unavailable";
+}
