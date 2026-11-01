@@ -29,7 +29,7 @@ test("English RIS/BibTeX downloads keep blob URLs alive for asynchronous mobile 
 
 import { runInNewContext } from "node:vm";
 
-function citationCopyHarness(source, english = false, clipboard) {
+function citationCopyHarness(source, clipboard) {
   const handler = source.match(/  async function copy\(value: string, success: string\) \{([\s\S]*?)\n  \}\n\n  function (?:exportFile|download)/);
   assert.ok(handler, "actual citation copy handler remains available");
   const messages = [], manual = [];
@@ -53,7 +53,7 @@ for (const [label, source, success, manualLabel] of [
       if (!allowed) throw new Error("NotAllowedError");
       written = value;
     } };
-    const ui = citationCopyHarness(source, label === "English", api);
+    const ui = citationCopyHarness(source, api);
     await ui.copy("https://journal.kidney.pp.ua/publications/example", success);
     assert.equal(ui.manual.at(-1), "https://journal.kidney.pp.ua/publications/example");
     assert.match(ui.messages.at(-1), /вручну|manually/);
@@ -62,13 +62,13 @@ for (const [label, source, success, manualLabel] of [
     assert.equal(written, "Citation example");
     assert.equal(ui.manual.at(-1), "");
     assert.equal(ui.messages.at(-1), success);
-    const absent = citationCopyHarness(source, label === "English", null);
+    const absent = citationCopyHarness(source, null);
     await absent.copy("https://journal.kidney.pp.ua/publications/example", success);
     assert.equal(absent.manual.at(-1), "https://journal.kidney.pp.ua/publications/example");
     assert.ok(source.includes('aria-label="' + manualLabel + '"'));
     assert.match(source, /readOnly value=\{manualCopy\}/);
     assert.match(source, /onFocus=\{event => event\.currentTarget\.select\(\)\}/);
-    assert.match(source, /setStyle\(event\.target\.value as CitationStyle\); setManualCopy\("?"\)/);
-    assert.match(source, /setLanguage\(event\.target\.value as ArticleLanguage\); setManualCopy\("?"\)/);
+    assert.match(source, /setStyle\(event\.target\.value as CitationStyle\); setManualCopy\(""\)/);
+    assert.match(source, /setLanguage\(event\.target\.value as ArticleLanguage\); setManualCopy\(""\)/);
   });
 }
