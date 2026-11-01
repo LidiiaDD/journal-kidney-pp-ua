@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import type { Publication } from "@/app/lib/publications";
 import { formatPublicationDate, publicationTypeLabels } from "@/app/lib/publications";
 import { articleUrl, toBibtex, toRis } from "@/app/lib/citations";
-import { removeUnavailableReadingItems, saveReadingList, useReadingList } from "@/app/lib/reading-list";
+import { clearReadingListIfUnchanged, removeUnavailableReadingItems, useReadingList } from "@/app/lib/reading-list";
 import BookmarkButton from "@/app/components/BookmarkButton";
 
 export default function ReadingLibrary({ articles }: { articles: Publication[] }) {
@@ -13,7 +13,7 @@ export default function ReadingLibrary({ articles }: { articles: Publication[] }
   const [sort, setSort] = useState<"saved" | "newest" | "title">("saved");
   const [notice, setNotice] = useState("");
   const [manualLinks, setManualLinks] = useState("");
-  const [confirmClear, setConfirmClear] = useState(false);
+  const [confirmClear, setConfirmClear] = useState<readonly string[] | null>(null);
 
   const available = useMemo(() => {
     const bySlug = new Map(articles.map(article => [article.slug, article]));
@@ -82,11 +82,18 @@ export default function ReadingLibrary({ articles }: { articles: Publication[] }
   }
 
   function clear() {
-    if (!saveReadingList([])) {
+    if (!confirmClear) return;
+    const result = clearReadingListIfUnchanged(confirmClear);
+    setConfirmClear(null);
+    if (result === "changed") {
+      setNotice("Закладки змінилися в іншій вкладці. Перевірте список і підтвердьте очищення ще раз.");
+      return;
+    }
+    if (result === "unavailable") {
       setNotice("Не вдалося очистити бібліотеку.");
       return;
     }
-    setConfirmClear(false);
+    setManualLinks("");
     setNotice("Усі закладки очищено.");
   }
 
@@ -198,9 +205,9 @@ export default function ReadingLibrary({ articles }: { articles: Publication[] }
                     <div className="reading-confirm">
                       <span>Видалити всі локальні закладки?</span>
                       <button type="button" onClick={clear}>Так, очистити</button>
-                      <button type="button" onClick={() => setConfirmClear(false)}>Скасувати</button>
+                      <button type="button" onClick={() => setConfirmClear(null)}>Скасувати</button>
                     </div>
-                  ) : <button type="button" onClick={() => setConfirmClear(true)}>Очистити мою бібліотеку</button>}
+                  ) : <button type="button" onClick={() => setConfirmClear([...saved])}>Очистити мою бібліотеку</button>}
                 </div>
               </div>
             </>
