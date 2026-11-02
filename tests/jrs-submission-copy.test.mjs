@@ -16,13 +16,14 @@ function setup(clipboard, ready = true) {
     subject: "JRS — подання рукопису: Дослідження",
     letter: "Шановна редакціє!\nТекст листа українською.",
     navigator: clipboard === null ? {} : { clipboard: {
-      writeText: async value => { written.push(value); if (clipboard === "denied") throw new Error("NotAllowedError"); },
+      writeText: async value => { written.push(value); if (clipboard === "denied") throw new Error("NotAllowedError"); if (typeof clipboard === "function") await clipboard(value); },
     } },
     setMessage: value => messages.push(value),
     setManualCopy: value => manual.push(value),
+    copyRequest: { current: 0 },
   };
   const copy = runInNewContext("(async function copyLetter() {" + handler[1] + "\n})", context);
-  return { copy, messages, manual, written };
+  return { copy, messages, manual, written, copyRequest: context.copyRequest };
 }
 
 test("blocked clipboard exposes the exact full submission text for manual copy", async () => {
@@ -56,5 +57,34 @@ test("manual field is accessible and stale fallback clears when author edits the
   assert.match(component, /readOnly value=\{manualCopy\}/);
   assert.match(component, /onFocus=\{event => event\.currentTarget\.select\(\)\}/);
   assert.match(component, /const update = [\s\S]*?setManualCopy\(""\);/);
-  assert.match(component, /setKind\(event\.target\.value as ManuscriptKind\); setMessage\(""\); setManualCopy\(""\);/);
+  assert.match(component, /copyRequest\.current\+\+; setKind\(event\.target\.value as ManuscriptKind\); setMessage\(""\); setManualCopy\(""\);/);
+});
+
+
+test("a successful clipboard result cannot overwrite feedback after the author edits the draft", async () => {
+  let resolve;
+  const pending = new Promise(done => { resolve = done; });
+  const copy = setup(() => pending);
+  const operation = copy.copy();
+  // The field-change handler increments the same request counter.
+  copy.copyRequest.current++;
+  resolve();
+  await operation;
+  assert.equal(copy.written.length, 1);
+  assert.deepEqual(copy.messages, []);
+  assert.deepEqual(copy.manual, []);
+  assert.match(component, /const update = [\s\S]*?copyRequest\.current\+\+;/);
+});
+
+test("a denied stale clipboard result cannot resurrect an obsolete manual letter", async () => {
+  let reject;
+  const pending = new Promise((_, fail) => { reject = fail; });
+  const copy = setup(() => pending);
+  const operation = copy.copy();
+  copy.copyRequest.current++;
+  reject(new Error("NotAllowedError"));
+  await operation;
+  assert.equal(copy.written.length, 1);
+  assert.deepEqual(copy.messages, []);
+  assert.deepEqual(copy.manual, []);
 });

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { prepareSubmissionMailto } from "@/app/lib/jrs-mailto";
 import { manuscriptGuides, type ManuscriptKind } from "@/app/lib/manuscript-guide";
 
@@ -39,9 +39,11 @@ export default function SubmissionStudio() {
   const [prepared, setPrepared] = useState<Record<string, boolean>>({});
   const [message, setMessage] = useState("");
   const [manualCopy, setManualCopy] = useState("");
+  const copyRequest = useRef(0);
   const typeLabel = manuscriptGuides.find(guide => guide.id === kind)?.label ?? "Науковий матеріал";
 
   const update = (name: keyof LetterFields, value: string) => {
+    copyRequest.current++;
     setFields(current => ({ ...current, [name]: value }));
     setMessage("");
     setManualCopy("");
@@ -97,11 +99,14 @@ export default function SubmissionStudio() {
       return;
     }
     const copyText = `Тема: ${subject}\n\n${letter}`;
+    const request = ++copyRequest.current;
     try {
       await navigator.clipboard.writeText(copyText);
+      if (request !== copyRequest.current) return;
       setManualCopy("");
       setMessage("Супровідний лист скопійовано. Додайте файли до листа вручну.");
     } catch {
+      if (request !== copyRequest.current) return;
       setManualCopy(copyText);
       setMessage("Автоматичне копіювання недоступне. Виділіть повний лист нижче та скопіюйте вручну.");
     }
@@ -134,7 +139,7 @@ export default function SubmissionStudio() {
 
           <div className="submission-fields">
             <label>Тип матеріалу
-              <select value={kind} onChange={event => { setKind(event.target.value as ManuscriptKind); setMessage(""); setManualCopy(""); }}>
+              <select value={kind} onChange={event => { copyRequest.current++; setKind(event.target.value as ManuscriptKind); setMessage(""); setManualCopy(""); }}>
                 {manuscriptGuides.map(guide => <option key={guide.id} value={guide.id}>{guide.label}</option>)}
               </select>
             </label>
