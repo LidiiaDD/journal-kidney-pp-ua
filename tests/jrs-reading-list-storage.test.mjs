@@ -120,6 +120,7 @@ test("reading-library copy failure exposes the actual article links for manual s
   let notice = "";
   let attempted = "";
   const context = {
+    copyRequest: { current: 0 },
     available: [{ slug: "renal-study", title: "Renal study" }],
     articleUrl: article => "https://journal.kidney.pp.ua/publications/" + article.slug,
     navigator: { clipboard: { writeText: async text => { attempted = text; throw Error("NotAllowedError"); } } },
@@ -143,6 +144,7 @@ test("successful later reading-list copy clears stale manual fallback", async ()
   let manual = "old fallback";
   let copied = "";
   const context = {
+    copyRequest: { current: 0 },
     available: [{ slug: "renal-study", title: "Renal study" }],
     articleUrl: article => "https://journal.kidney.pp.ua/publications/" + article.slug,
     navigator: { clipboard: { writeText: async text => { copied = text; } } },
@@ -200,3 +202,32 @@ test("library confirmation captures the displayed selection before asking to cle
   assert.match(component, /clearReadingListIfUnchanged\(confirmClear\)/);
   assert.match(component, /result === "changed"/);
 });
+
+for (const denied of [false, true]) {
+  test(`reading-library ignores an obsolete ${denied ? "failed" : "successful"} clipboard response after bookmarks change`, async () => {
+    const component = readFileSync(new URL("../app/components/ReadingLibrary.tsx", import.meta.url), "utf8");
+    const start = component.indexOf("  async function copyLinks() {");
+    const end = component.indexOf("\n  function download(", start);
+    assert.ok(start >= 0 && end > start);
+    const handler = component.slice(start, end);
+    let settle;
+    const notices = [], manual = [];
+    const context = {
+      copyRequest: { current: 0 },
+      available: [{ slug: "renal-study", title: "Renal study" }],
+      articleUrl: article => "https://journal.kidney.pp.ua/publications/" + article.slug,
+      navigator: { clipboard: { writeText: () => new Promise((resolve, reject) => {
+        settle = () => denied ? reject(new Error("NotAllowedError")) : resolve();
+      }) } },
+      setManualLinks: text => manual.push(text),
+      setNotice: text => notices.push(text),
+    };
+    const pending = runInNewContext(handler + "\ncopyLinks()", context);
+    context.copyRequest.current++; // A bookmark change invalidates the in-flight request.
+    settle();
+    await pending;
+    assert.deepEqual(manual, [], "old links must not reappear after the selection changes");
+    assert.deepEqual(notices, [], "stale copy completion must not announce an outdated result");
+    assert.match(component, /useEffect\(\(\) => \{ copyRequest\.current\+\+; \}, \[saved\]\)/);
+  });
+}

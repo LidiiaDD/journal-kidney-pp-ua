@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { Publication } from "@/app/lib/publications";
 import { formatPublicationDate, publicationTypeLabels } from "@/app/lib/publications";
 import { articleUrl, toBibtex, toRis } from "@/app/lib/citations";
@@ -14,6 +14,10 @@ export default function ReadingLibrary({ articles }: { articles: Publication[] }
   const [notice, setNotice] = useState("");
   const [manualLinks, setManualLinks] = useState("");
   const [confirmClear, setConfirmClear] = useState<readonly string[] | null>(null);
+  const copyRequest = useRef(0);
+
+  // An in-flight clipboard request must not show feedback for an old selection.
+  useEffect(() => { copyRequest.current++; }, [saved]);
 
   const available = useMemo(() => {
     const bySlug = new Map(articles.map(article => [article.slug, article]));
@@ -45,11 +49,14 @@ export default function ReadingLibrary({ articles }: { articles: Publication[] }
     const lines = available.map((article, index) =>
       `${index + 1}. ${article.title}\n${articleUrl(article)}`);
     const text = lines.join("\n\n");
+    const request = ++copyRequest.current;
     try {
       await navigator.clipboard.writeText(text);
+      if (request !== copyRequest.current) return;
       setManualLinks("");
       setNotice("Перелік статей і посилань скопійовано.");
     } catch {
+      if (request !== copyRequest.current) return;
       setManualLinks(text);
       setNotice("Автоматичне копіювання недоступне. Виділіть перелік нижче й скопіюйте вручну.");
     }
@@ -57,6 +64,7 @@ export default function ReadingLibrary({ articles }: { articles: Publication[] }
 
   function download(format: "ris" | "bib") {
     if (!available.length) return;
+    copyRequest.current++;
     const text = available.map(article =>
       format === "ris" ? toRis(article, article.language) : toBibtex(article, article.language)
     ).join("\n");
@@ -74,6 +82,7 @@ export default function ReadingLibrary({ articles }: { articles: Publication[] }
   }
 
   function removeMissing() {
+    copyRequest.current++;
     if (!removeUnavailableReadingItems(articles.map(article => article.slug))) {
       setNotice("Не вдалося оновити закладки в браузері.");
     } else {
@@ -83,6 +92,7 @@ export default function ReadingLibrary({ articles }: { articles: Publication[] }
 
   function clear() {
     if (!confirmClear) return;
+    copyRequest.current++;
     const result = clearReadingListIfUnchanged(confirmClear);
     setConfirmClear(null);
     if (result === "changed") {
