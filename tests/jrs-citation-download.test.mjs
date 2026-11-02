@@ -88,8 +88,8 @@ for (const [label, source] of [
     await pending;
     assert.deepEqual(ui.manual, [], "an obsolete citation must not appear in the fallback field");
     assert.deepEqual(ui.messages, [], "an obsolete copy must not announce an error");
-    assert.match(source, /copyRequest\\.current\\+\\+; setStyle\\(/);
-    assert.match(source, /copyRequest\\.current\\+\\+; setLanguage\\(/);
+    assert.match(source, /copyRequest\.current\+\+; setStyle\(/);
+    assert.match(source, /copyRequest\.current\+\+; setLanguage\(/);
   });
   test(label + " citation widget ignores an obsolete successful copy after another request", async () => {
     let resolveFirst;
