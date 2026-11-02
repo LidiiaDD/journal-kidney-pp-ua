@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import type { Publication } from "@/app/lib/publications";
 import {
   articleUrl, availableLanguages, formatCitation, toBibtex, toRis,
@@ -12,14 +12,18 @@ export default function CitationTools({ article }: { article: Publication }) {
   const [language, setLanguage] = useState<ArticleLanguage>(article.language);
   const [notice, setNotice] = useState("");
   const [manualCopy, setManualCopy] = useState("");
+  const copyRequest = useRef(0);
   const citation = useMemo(() => formatCitation(article, style, language), [article, style, language]);
 
   async function copy(value: string, success: string) {
+    const request = ++copyRequest.current;
     try {
       await navigator.clipboard.writeText(value);
+      if (request !== copyRequest.current) return;
       setManualCopy("");
       setNotice(success);
     } catch {
+      if (request !== copyRequest.current) return;
       setManualCopy(value);
       setNotice("Копіювання не вдалося. Виділіть текст нижче й скопіюйте вручну.");
     }
@@ -47,14 +51,14 @@ export default function CitationTools({ article }: { article: Publication }) {
     <div className="jrs-citation-tools">
       <div className="jrs-citation-controls">
         <label>Формат цитування
-          <select value={style} onChange={event => { setStyle(event.target.value as CitationStyle); setManualCopy(""); }}>
+          <select value={style} onChange={event => { copyRequest.current++; setStyle(event.target.value as CitationStyle); setManualCopy(""); }}>
             <option value="vancouver">Vancouver (спрощений)</option>
             <option value="apa">APA (спрощений)</option>
           </select>
         </label>
         {languages.length > 1 && (
           <label>Мова назви
-            <select value={language} onChange={event => { setLanguage(event.target.value as ArticleLanguage); setManualCopy(""); }}>
+            <select value={language} onChange={event => { copyRequest.current++; setLanguage(event.target.value as ArticleLanguage); setManualCopy(""); }}>
               {languages.includes("uk") && <option value="uk">Українська</option>}
               {languages.includes("en") && <option value="en">English</option>}
             </select>

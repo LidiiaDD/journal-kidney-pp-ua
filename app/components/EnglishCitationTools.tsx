@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import type { Publication } from "@/app/lib/publications";
 import {
   articleUrl, availableLanguages, formatCitation, toBibtex, toRis,
@@ -13,17 +13,21 @@ export default function EnglishCitationTools({ article }: { article: Publication
   const [language, setLanguage] = useState<ArticleLanguage>(langs.includes("en") ? "en" : article.language);
   const [message, setMessage] = useState("");
   const [manualCopy, setManualCopy] = useState("");
+  const copyRequest = useRef(0);
   const citation = useMemo(
     () => formatCitation(article, style, language),
     [article, style, language]
   );
 
   async function copy(value: string, success: string) {
+    const request = ++copyRequest.current;
     try {
       await navigator.clipboard.writeText(value);
+      if (request !== copyRequest.current) return;
       setManualCopy("");
       setMessage(success);
     } catch {
+      if (request !== copyRequest.current) return;
       setManualCopy(value);
       setMessage("Clipboard access was denied. Select the text below and copy it manually.");
     }
@@ -49,13 +53,13 @@ export default function EnglishCitationTools({ article }: { article: Publication
     <div className="jrs-en-citation-widget">
       <div className="jrs-en-citation-controls">
         <label>Citation style
-          <select value={style} onChange={event => { setStyle(event.target.value as CitationStyle); setManualCopy(""); }}>
+          <select value={style} onChange={event => { copyRequest.current++; setStyle(event.target.value as CitationStyle); setManualCopy(""); }}>
             <option value="vancouver">Vancouver (simplified)</option>
             <option value="apa">APA (simplified)</option>
           </select>
         </label>
         {langs.length > 1 && <label>Title language
-          <select value={language} onChange={event => { setLanguage(event.target.value as ArticleLanguage); setManualCopy(""); }}>
+          <select value={language} onChange={event => { copyRequest.current++; setLanguage(event.target.value as ArticleLanguage); setManualCopy(""); }}>
             {langs.includes("en") && <option value="en">English</option>}
             {langs.includes("uk") && <option value="uk">Ukrainian</option>}
           </select>

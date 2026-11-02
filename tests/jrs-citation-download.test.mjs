@@ -33,14 +33,16 @@ function citationCopyHarness(source, clipboard) {
   const handler = source.match(/  async function copy\(value: string, success: string\) \{([\s\S]*?)\n  \}\n\n  function (?:exportFile|download)/);
   assert.ok(handler, "actual citation copy handler remains available");
   const messages = [], manual = [];
+  const copyRequest = { current: 0 };
   const context = {
+    copyRequest,
     navigator: clipboard === null ? {} : { clipboard },
     setNotice: value => messages.push(value),
     setMessage: value => messages.push(value),
     setManualCopy: value => manual.push(value),
   };
   const copy = runInNewContext("(async function copy(value, success) {" + handler[1] + "\n})", context);
-  return { copy, messages, manual };
+  return { copy, messages, manual, invalidate: () => { copyRequest.current++; } };
 }
 
 for (const [label, source, success, manualLabel] of [
@@ -70,5 +72,34 @@ for (const [label, source, success, manualLabel] of [
     assert.match(source, /onFocus=\{event => event\.currentTarget\.select\(\)\}/);
     assert.match(source, /setStyle\(event\.target\.value as CitationStyle\); setManualCopy\(""\)/);
     assert.match(source, /setLanguage\(event\.target\.value as ArticleLanguage\); setManualCopy\(""\)/);
+  });
+}
+
+for (const [label, source] of [
+  ["Ukrainian", citationTools],
+  ["English", englishCitationTools],
+]) {
+  test(label + " citation widget ignores an obsolete rejected copy after selection changes", async () => {
+    let rejectWrite;
+    const ui = citationCopyHarness(source, { writeText: () => new Promise((_, reject) => { rejectWrite = reject; }) });
+    const pending = ui.copy("old citation", "Copied");
+    ui.invalidate(); // Same token invalidation as the style/language selectors.
+    rejectWrite(new Error("NotAllowedError"));
+    await pending;
+    assert.deepEqual(ui.manual, [], "an obsolete citation must not appear in the fallback field");
+    assert.deepEqual(ui.messages, [], "an obsolete copy must not announce an error");
+    assert.match(source, /copyRequest\.current\+\+; setStyle\(/);
+    assert.match(source, /copyRequest\.current\+\+; setLanguage\(/);
+  });
+  test(label + " citation widget ignores an obsolete successful copy after another request", async () => {
+    let resolveFirst;
+    const ui = citationCopyHarness(source, { writeText: value => value === "first"
+      ? new Promise(resolve => { resolveFirst = resolve; }) : Promise.resolve() });
+    const first = ui.copy("first", "First copied");
+    await ui.copy("second", "Second copied");
+    resolveFirst();
+    await first;
+    assert.deepEqual(ui.messages, ["Second copied"]);
+    assert.deepEqual(ui.manual, [""]);
   });
 }
